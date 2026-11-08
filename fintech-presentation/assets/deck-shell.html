@@ -13,9 +13,11 @@
   --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html,body{height:100%;overflow:hidden;background:var(--grey);font-family:var(--font-sans);color:var(--ink)}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px}
 .num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 .deck{
   position:relative;width:min(100vw,177.78vh);height:min(100vh,56.25vw);
@@ -23,7 +25,7 @@ html,body{height:100%;overflow:hidden;background:var(--grey);font-family:var(--f
 }
 .stage{position:absolute;inset:0}
 .slide{
-  position:absolute;inset:0;padding:4cqw 5cqw;
+  position:absolute;inset:0;padding:3.4cqw 4.4cqw;
   display:flex;flex-direction:column;justify-content:center;
   background:var(--white);opacity:0;transform:translateY(8px);pointer-events:none;
   transition:opacity .18s ease-out,transform .18s ease-out;
@@ -36,8 +38,8 @@ html,body{height:100%;overflow:hidden;background:var(--grey);font-family:var(--f
     repeating-linear-gradient(90deg,rgba(215,216,214,.30) 0 1px,transparent 1px 64px);
 }
 .slide>*{position:relative;z-index:1}
-.slide.cover{background:var(--dark);color:var(--white)}
-.slide.cover::before{opacity:.16;
+.slide.cover,.slide.divider{background:var(--dark);color:var(--white)}
+.slide.cover::before,.slide.divider::before{opacity:.16;
   background-image:
     repeating-linear-gradient(0deg,rgba(255,255,255,.14) 0 1px,transparent 1px 64px),
     repeating-linear-gradient(90deg,rgba(255,255,255,.14) 0 1px,transparent 1px 64px);
@@ -45,57 +47,177 @@ html,body{height:100%;overflow:hidden;background:var(--grey);font-family:var(--f
 .slide.cover::after{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--red)}
 .slide.closing{border-top:6px solid var(--red)}
 
-.eyebrow{font-size:13px;font-size:.78cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
-.cover .eyebrow{color:#D7D8D6}
-.title{font-size:40px;font-size:2.9cqw;line-height:1.15;font-weight:700;color:var(--black);letter-spacing:-.02em}
-h2.title{font-size:28px;font-size:1.85cqw;margin-bottom:2.4cqw}
-.cover .title{color:var(--white);max-width:78%}
-.sub{font-size:18px;font-size:1.05cqw;color:var(--muted);margin-top:1.6cqw;max-width:64%}
-.cover .sub{color:#D7D8D6}
-.note{font-size:13px;font-size:.72cqw;color:var(--muted);margin-top:3.2cqw}
-.cover .note{color:#D7D8D6}
+/* Angular detailing: the public "Embrace our angles" principle, used as a
+   small chamfer on structural blocks only. Never on the brand mark. */
+.chamfer{clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
 
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw}
-.card{border-top:2px solid var(--black);background:var(--grey);padding:1.6cqw;min-height:11cqw}
-.card .idx{display:block;font-size:.85cqw;color:var(--red);margin-bottom:1cqw}
-.card h3{font-size:20px;font-size:1.1cqw;color:var(--black);margin-bottom:.6cqw}
-.card p,.card li{font-size:16px;font-size:.88cqw;line-height:1.6}
+.eyebrow{font-size:13px;font-size:.72cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.8cqw}
+.cover .eyebrow,.divider .eyebrow{color:#D7D8D6}
+.title{font-size:40px;font-size:2.7cqw;line-height:1.15;font-weight:700;color:var(--black);letter-spacing:-.02em}
+h2.title{font-size:28px;font-size:1.72cqw;margin-bottom:.3cqw}
+.cover .title{color:var(--white);max-width:76%}
+.cover .title.big{font-size:56px;font-size:3.6cqw}
+.sub{font-size:18px;font-size:1cqw;color:var(--muted);margin-top:1.2cqw;max-width:64%}
+.cover .sub,.divider .sub{color:#D7D8D6}
+.note{font-size:13px;font-size:.68cqw;color:var(--muted);margin-top:1.4cqw}
+.cover .note,.divider .note{color:#D7D8D6}
 
-.metric{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:2.4cqw}
-.metric .value{font-size:64px;font-size:5cqw;font-weight:700;line-height:1;color:var(--red)}
-.metric .unit{font-size:24px;font-size:1.5cqw;margin-left:.3cqw;font-weight:500}
-.metric .label{font-size:18px;font-size:1cqw;color:var(--ink);margin-top:.6cqw}
-.metric .delta{font-size:14px;font-size:.8cqw;color:var(--muted);margin-top:.4cqw}
-.metric-row{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
-.metric-row>div{padding:1.2cqw 0;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:.4cqw}
-.metric-row>div:last-child{border-right:0}
-.metric-row .num{font-size:22px;font-size:1.3cqw;color:var(--black)}
-.metric-row .label{font-size:13px;font-size:.75cqw;color:var(--muted)}
+.head-row{display:flex;align-items:flex-end;justify-content:space-between;gap:2cqw;margin-bottom:1.4cqw}
+.head-row .title{margin-bottom:0}
+.sec-tag{font-family:var(--font-mono);font-size:11px;font-size:.62cqw;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-left:2px solid var(--red);padding-left:.7cqw;white-space:nowrap}
+.byline{display:flex;gap:1.4cqw;align-items:center;margin-top:.7cqw;font-size:13px;font-size:.7cqw;color:var(--muted)}
 
-.split{display:grid;grid-template-columns:1fr 1fr;gap:2cqw}
-.split .col{border-left:1px solid var(--line);padding-left:1.6cqw}
-.split .col.accent{border-left:2px solid var(--red)}
-.split h3{font-size:20px;font-size:1.1cqw;color:var(--black);margin-bottom:1cqw}
-.split .col.accent h3{color:var(--red)}
-.split li{font-size:16px;font-size:.88cqw;line-height:1.9;margin-left:1.2em}
+/* Section divider */
+.div-no{font-size:120px;font-size:9cqw;font-weight:700;line-height:.9;color:var(--white);letter-spacing:-.04em}
+.divider .title{color:var(--white);font-size:44px;font-size:2.9cqw;margin-top:1cqw}
+.divider .rule{width:12cqw;height:6px;background:var(--red);margin-top:1.6cqw}
+/* One narrow angled red band on the left, clear of the right-hand TOC dots.
+   It stays under 10% of the screen so red remains scarce. */
+.slide.divider{padding-left:10cqw}
+.divider::after{content:"";position:absolute;left:0;top:0;width:7cqw;height:100%;
+  background:var(--red);clip-path:polygon(0 0,100% 0,58% 100%,0 100%)}
+.divider>*{z-index:2}
 
-.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2cqw;border-top:1px solid var(--line);padding-top:1.6cqw}
-.tl-item{border-right:1px solid var(--line);padding-right:1cqw}
-.tl-item:last-child{border-right:0}
-.tl-item .when{display:block;font-size:.85cqw;color:var(--red);margin-bottom:.8cqw}
-.tl-item h3{font-size:18px;font-size:1cqw;color:var(--black);margin-bottom:.5cqw}
-.tl-item p{font-size:14px;font-size:.78cqw;color:var(--muted);line-height:1.6}
+/* Agenda */
+.agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2cqw;margin-top:1cqw}
+.agenda-item{display:flex;flex-direction:column;align-items:flex-start;text-align:left;
+  border-top:2px solid var(--black);background:var(--grey);padding:1.4cqw;min-height:12cqw;transition:border-color .15s ease-out}
+.agenda-item:hover,.agenda-item:focus-visible{border-top-color:var(--red)}
+.agenda-item .n{font-family:var(--font-mono);font-size:.85cqw;color:var(--red);margin-bottom:1cqw}
+.agenda-item h3{font-size:19px;font-size:1.05cqw;color:var(--black);margin-bottom:.5cqw}
+.agenda-item p{font-size:13px;font-size:.72cqw;color:var(--muted);line-height:1.5}
+.agenda-item .go{margin-top:auto;padding-top:1cqw;font-family:var(--font-mono);font-size:.65cqw;color:var(--muted)}
 
-.figure{margin-top:1cqw}
-.figure svg{width:100%;max-height:26cqw;display:block}
-.figure figcaption{font-size:13px;font-size:.72cqw;color:var(--muted);margin-top:.8cqw}
-table.data{width:100%;border-collapse:collapse;font-size:16px;font-size:.88cqw}
-table.data th,table.data td{text-align:left;padding:.8cqw 1cqw;border-bottom:1px solid var(--line)}
-table.data th{font-weight:600;color:var(--black);border-bottom:2px solid var(--black)}
+/* KPI strip */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:1.2cqw}
+.kpi{padding:1cqw 1.2cqw;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:.35cqw;min-width:0}
+.kpi:first-child{padding-left:0}
+.kpi:last-child{border-right:0}
+.kpi .k{font-size:11px;font-size:.62cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .v{font-size:28px;font-size:1.75cqw;font-weight:700;line-height:1.1;color:var(--black)}
+.kpi .v.hot{color:var(--red)}
+.kpi .u{font-size:14px;font-size:.82cqw;font-weight:500;color:var(--muted);margin-left:.25cqw}
+.kpi .d{font-size:12px;font-size:.66cqw;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spark{height:1.6cqw;width:100%;margin-top:.2cqw;display:block}
+
+/* Controls */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:1cqw;margin-bottom:.6cqw}
+.toolbar .hint{font-size:12px;font-size:.66cqw;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);background:var(--white)}
+.seg button{padding:.45cqw .95cqw;font-size:12px;font-size:.68cqw;letter-spacing:.04em;
+  border-right:1px solid var(--line);color:var(--muted);transition:color .15s ease-out}
+.seg button:last-child{border-right:0}
+.seg button:hover{color:var(--black)}
+.seg button[aria-pressed="true"]{background:var(--black);color:var(--white)}
+.seg button[aria-pressed="true"]:focus-visible{outline-offset:-3px}
+.toggle{display:inline-flex;align-items:center;gap:.5cqw;font-size:12px;font-size:.68cqw;color:var(--muted)}
+.toggle .box{width:1.1cqw;height:1.1cqw;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:.7cqw;color:var(--white)}
+.toggle[aria-pressed="true"] .box{background:var(--red);border-color:var(--red)}
+.toggle[aria-pressed="true"]{color:var(--black)}
+
+/* Charts */
+.chart{width:100%;position:relative}
+.chart svg{width:100%;height:23cqw;display:block;overflow:visible}
+.chart svg text{font-family:var(--font-sans)}
+.chart svg .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.chart svg .pt{cursor:pointer}
+.chart svg .pt:focus-visible{outline:none;stroke:var(--red);stroke-width:2}
+.chart-tip{position:absolute;z-index:35;pointer-events:none;display:none;min-width:11cqw;
+  background:var(--white);border:1px solid var(--black);border-top:3px solid var(--red);
+  padding:.55cqw .7cqw;transform:translate(-50%,-115%);box-shadow:none}
+.chart-tip.show{display:block}
+.chart-tip .k{display:block;font-size:11px;font-size:.62cqw;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.chart-tip .v{display:block;font-size:15px;font-size:.86cqw;color:var(--black);margin-top:.2cqw}
+.chart-legend{display:flex;gap:1.6cqw;align-items:center;font-size:12px;font-size:.66cqw;color:var(--muted);margin-top:.2cqw}
+.chart-legend .cap{margin-left:auto;white-space:nowrap}
+.chart-legend i{display:inline-block;width:.85cqw;height:.5cqw;margin-right:.35cqw;vertical-align:middle}
+.chart-legend .dash{height:0;border-top:1px dashed var(--red);width:1.2cqw}
+
+/* Expandable rows */
+.levers{border-top:1px solid var(--line)}
+.lever{border-bottom:1px solid var(--line)}
+.lever-head{width:100%;display:grid;grid-template-columns:2.2cqw 1fr 8cqw 1.4cqw;align-items:center;gap:1cqw;
+  padding:.85cqw 0;text-align:left}
+.lever-head:hover .lh-t{color:var(--red)}
+.lever-head .lh-n{font-family:var(--font-mono);font-size:.72cqw;color:var(--red)}
+.lever-head .lh-t{font-size:16px;font-size:.9cqw;color:var(--black);font-weight:600}
+.lever-head .lh-v{font-size:14px;font-size:.8cqw;color:var(--black);text-align:right}
+.lever-head .lh-i{font-family:var(--font-mono);font-size:.9cqw;color:var(--muted);text-align:center}
+.lever-head[aria-expanded="true"] .lh-i{color:var(--red)}
+.lever-body{padding:0 0 1cqw 3.2cqw;display:grid;grid-template-columns:1fr 1fr;gap:1.6cqw}
+.lever-body p{font-size:13px;font-size:.72cqw;line-height:1.6;color:var(--ink)}
+.lever-body dl{font-size:13px;font-size:.72cqw;line-height:1.8}
+.lever-body dt{color:var(--muted);display:inline-block;min-width:7cqw}
+.lever-body dd{display:inline;color:var(--black)}
+.lever-body dd::after{content:"";display:block}
+
+/* Data tables */
+table.data{width:100%;border-collapse:collapse;font-size:15px;font-size:.8cqw}
+table.data th,table.data td{text-align:left;padding:.62cqw .8cqw;border-bottom:1px solid var(--line)}
+table.data thead th{font-weight:600;color:var(--black);border-bottom:2px solid var(--black);white-space:nowrap}
 table.data td.num,table.data th.num{text-align:right}
-.kicker{font-size:34px;font-size:2.2cqw;font-weight:700;color:var(--black);line-height:1.3;max-width:80%}
-.actions{margin-top:2.4cqw;list-style:none;display:flex;gap:2cqw}
-.actions li{border-top:1px solid var(--line);padding-top:.8cqw;font-size:15px;font-size:.85cqw;flex:1}
+table.data tbody tr:hover{background:var(--grey)}
+table.data th button{display:inline-flex;align-items:center;gap:.4cqw;font-weight:600;color:inherit;font-size:inherit;padding:0}
+table.data th button:hover{color:var(--red)}
+table.data th .arrow{font-family:var(--font-mono);color:var(--muted);font-size:.7cqw}
+table.data th[aria-sort] .arrow{color:var(--red)}
+.status{display:inline-block;font-family:var(--font-mono);font-size:10px;font-size:.6cqw;letter-spacing:.06em;
+  text-transform:uppercase;padding:.15cqw .45cqw;border:1px solid var(--line);color:var(--muted)}
+.status.ok{border-color:var(--line);color:var(--muted)}
+.status.risk{border-color:var(--red);color:var(--red)}
+
+/* Solutions matrix */
+.opt-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:2cqw;align-items:start}
+.matrix td .dots{display:inline-flex;gap:3px}
+.matrix td .dots i{width:.55cqw;height:.55cqw;border:1px solid var(--line);display:block}
+.matrix td .dots i.on{background:var(--black);border-color:var(--black)}
+.matrix td.focus-col{background:var(--grey)}
+.matrix td.focus-col .dots i.on{background:var(--red);border-color:var(--red)}
+.matrix th.focus-col{color:var(--red)}
+.opt-detail{border-left:2px solid var(--red);padding:.4cqw 0 .4cqw 1.4cqw;min-height:14cqw}
+.opt-detail .tag{font-family:var(--font-mono);font-size:.65cqw;letter-spacing:.1em;color:var(--red);text-transform:uppercase}
+.opt-detail h3{font-size:22px;font-size:1.25cqw;color:var(--black);margin:.6cqw 0}
+.opt-detail p{font-size:14px;font-size:.76cqw;line-height:1.65;margin-bottom:1cqw}
+.opt-detail dl{display:grid;grid-template-columns:auto 1fr;gap:.35cqw 1cqw;
+  font-size:13px;font-size:.7cqw;border-top:1px solid var(--line);padding-top:.8cqw}
+.opt-detail dt{color:var(--muted);white-space:nowrap}
+.opt-detail dd{margin:0;color:var(--black);text-align:right}
+
+/* Architecture */
+.arch-wrap{display:grid;grid-template-columns:1.7fr 1fr;gap:1.6cqw;align-items:start}
+.arch svg{width:100%;height:26cqw;display:block}
+.arch svg .layer{cursor:pointer}
+.arch svg .layer:hover .lr-box,.arch svg .layer.sel .lr-box{stroke:var(--red);stroke-width:2}
+.arch svg .layer:focus-visible{outline:none}
+.arch svg .layer:focus-visible .lr-box{stroke:var(--red);stroke-width:2}
+.arch svg .cmp{fill:var(--white);stroke:var(--line);stroke-width:1}
+.arch svg .cmp.on{fill:var(--grey);stroke:var(--black)}
+.layer-detail{border-top:2px solid var(--black);padding-top:1cqw;min-height:15cqw}
+.layer-detail .tag{font-family:var(--font-mono);font-size:.65cqw;color:var(--red);letter-spacing:.1em;text-transform:uppercase}
+.layer-detail h3{font-size:21px;font-size:1.15cqw;margin:.6cqw 0;color:var(--black)}
+.layer-detail p{font-size:13px;font-size:.72cqw;line-height:1.7;margin-bottom:1cqw}
+.layer-detail ul{list-style:none;font-size:13px;font-size:.72cqw;line-height:1.9}
+.layer-detail li::before{content:"— ";color:var(--red)}
+
+/* Roadmap */
+.road{display:grid;grid-template-columns:repeat(4,1fr);gap:1cqw;border-top:1px solid var(--line);padding-top:1.2cqw}
+.road-item{text-align:left;border-top:3px solid var(--line);padding:.8cqw .8cqw .8cqw 0;transition:border-color .15s ease-out}
+.road-item:hover{border-top-color:var(--black)}
+.road-item[aria-pressed="true"]{border-top-color:var(--red)}
+.road-item .when{font-family:var(--font-mono);font-size:.72cqw;color:var(--red);display:block;margin-bottom:.5cqw}
+.road-item h3{font-size:17px;font-size:.95cqw;color:var(--black);margin-bottom:.35cqw}
+.road-item p{font-size:12px;font-size:.68cqw;color:var(--muted);line-height:1.5}
+.road-detail{margin-top:1.4cqw;border-left:2px solid var(--red);padding:.2cqw 0 .2cqw 1.2cqw;min-height:6cqw}
+.road-detail h4{font-size:16px;font-size:.88cqw;color:var(--black);margin-bottom:.4cqw}
+.road-detail p{font-size:13px;font-size:.72cqw;line-height:1.6;max-width:80cqw}
+.road-detail .chips{display:flex;gap:.6cqw;margin-top:.7cqw;flex-wrap:wrap}
+.road-detail .chip{font-family:var(--font-mono);font-size:11px;font-size:.62cqw;border:1px solid var(--line);padding:.2cqw .5cqw;color:var(--muted)}
+
+/* Closing */
+.kicker{font-size:34px;font-size:2.1cqw;font-weight:700;color:var(--black);line-height:1.3;max-width:80%}
+.actions{margin-top:2cqw;list-style:none;display:flex;gap:2cqw}
+.actions li{border-top:1px solid var(--line);padding-top:.8cqw;font-size:15px;font-size:.82cqw;flex:1}
+.actions li b{display:block;font-family:var(--font-mono);font-size:.65cqw;color:var(--red);margin-bottom:.4cqw;font-weight:400}
 
 /* Brand mark: a white badge holds the red Hexagon so dark covers and light
    content pages behave alike. Fixed #DB0011, never reversed; set data-brand to hide to switch it off. */
@@ -109,18 +231,47 @@ html[data-brand="hide"] .brand{display:none}
 .progress{position:fixed;top:0;left:0;right:0;height:3px;background:var(--line);z-index:40;cursor:pointer}
 .progress .bar{height:100%;width:0;background:var(--red);transition:width .18s ease-out}
 .hud{position:fixed;bottom:14px;left:18px;z-index:40;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
-.toc{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:10px}
+.hud .keys{opacity:.75}
+.toc{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:8px}
 .toc .dot{width:10px;height:10px;padding:0;border:1px solid var(--muted);border-radius:0;background:transparent;cursor:pointer;transition:background .15s ease-out,border-color .15s ease-out,height .15s ease-out}
 .toc .dot:hover{border-color:var(--red)}
 .toc .dot.active{background:var(--red);border-color:var(--red);height:20px}
+.toc .dot.chapter{border-color:var(--black)}
+.toc .dot.chapter.active{background:var(--red);border-color:var(--red)}
+/* Dark cover and divider slides need a lighter dot outline to stay visible. */
+html[data-dark="true"] .hud{color:#D7D8D6}
+html[data-dark="true"] .toc .dot{border-color:#D7D8D6}
+html[data-dark="true"] .toc .dot.chapter{border-color:#D7D8D6}
+/* Divider slides carry a red band on the left: move the page counter clear of it. */
+html[data-divider="true"] .hud{left:9cqw}
 .overview{position:fixed;inset:0;z-index:60;background:var(--white);display:none;overflow:auto;padding:48px}
 .overview.open{display:block}
 .overview h2{font-size:22px;color:var(--black);margin-bottom:24px;font-weight:600}
 .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
 .ov-card{display:flex;gap:14px;align-items:flex-start;text-align:left;padding:20px;border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:var(--font-sans);font-size:15px;cursor:pointer;transition:border-color .15s ease-out}
 .ov-card:hover{border-color:var(--red)}
+.ov-card.cur{border-left:3px solid var(--red)}
 .ov-no{font-family:var(--font-mono);color:var(--red);font-size:13px;padding-top:2px}
 .ov-hint{position:fixed;bottom:18px;right:20px;font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+
+.notes-drawer{position:fixed;left:0;right:0;bottom:0;z-index:55;background:var(--dark);color:var(--white);
+  border-top:3px solid var(--red);padding:18px 28px 22px;display:none;font-size:14px;line-height:1.6}
+.notes-drawer.open{display:block}
+.notes-drawer .nt{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--red);text-transform:uppercase;display:block;margin-bottom:6px}
+.notes-drawer .nb{max-width:1100px;color:#EDEDED}
+.notes-drawer .nb b{color:var(--white)}
+.help{position:fixed;inset:0;z-index:70;background:rgba(20,20,20,.94);display:none;align-items:center;justify-content:center}
+.help.open{display:flex}
+.help-card{background:var(--white);border-top:6px solid var(--red);padding:32px 40px;min-width:520px;max-width:90vw}
+.help-card h2{font-size:22px;color:var(--black);margin-bottom:16px}
+.help-card table{border-collapse:collapse;width:100%;font-size:14px}
+.help-card td{padding:7px 12px;border-bottom:1px solid var(--line)}
+.help-card td:first-child{font-family:var(--font-mono);color:var(--red);white-space:nowrap;width:180px}
+.help-card .close{margin-top:18px;font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+
+.print-views{display:none}
+.print-view-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:.8cqw 0 .2cqw}
+.print-views svg{width:100%;height:14cqw;display:block}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{transition-duration:0s!important;animation:none!important}
@@ -135,9 +286,14 @@ html[data-brand="hide"] .brand{display:none}
     display:flex;page-break-after:always;break-after:page;border-bottom:1px solid var(--line)}
   .slide:last-child{page-break-after:auto;break-after:auto;border-bottom:0}
   .slide::before{display:none}
-  .progress,.toc,.hud,.overview,.ov-hint{display:none!important}
+  .progress,.toc,.hud,.overview,.ov-hint,.notes-drawer,.help,.chart-tip,.toolbar{display:none!important}
   .brand{position:fixed;top:10mm;right:10mm;width:24mm;height:14mm}
   .brand svg{width:17mm;height:8.7mm}
+  .lever-body,.panel-body{display:grid!important}
+  .print-views{display:block}
+  .chart>.chart-svg{display:none}
+  .arch svg,.chart svg{height:16cqw}
+  .agenda-item,.card,.kpi{break-inside:avoid}
 }
 </style>
 </head>
@@ -160,71 +316,309 @@ html[data-brand="hide"] .brand{display:none}
   <div class="brand">
     <svg viewBox="0 5.9 24 12.2" role="img" aria-label="HSBC"><use href="#brand-hex"/></svg>
   </div>
+  <div class="chart-tip" id="tip" role="status" aria-live="polite"></div>
   <div class="stage" id="stage">
 
-    <section class="slide cover" data-title="Cover">
-      <p class="eyebrow">Internal talk · sample content</p>
-      <h1 class="title">Turn a complex system into one clear line</h1>
-      <p class="sub">A sample deck about tiers, boundaries and information density</p>
-      <p class="note">Sample shell · replace all copy and figures · 30 minutes</p>
+    <!-- 01 · Cover -->
+    <section class="slide cover" data-title="Cover" data-chapter="Start">
+      <p class="eyebrow">Internal tech talk · sample deck</p>
+      <h1 class="title big">One platform, three questions:<br>what it costs, how it runs, where it goes</h1>
+      <p class="sub">A working shell for FinOps, service metrics and solution options — every figure below is sample data.</p>
+      <div class="byline"><span>Platform Engineering · Internal</span><span>·</span><span>30 min</span><span>·</span><span class="num">14 slides</span></div>
+      <p class="note">Sample shell · replace all copy, data and option names before use · N opens speaker notes</p>
+      <template class="notes"><b>Opening line.</b> Frame the talk as three questions, not a status update. Land on the cost question first because it is the one the room will ask about anyway. Keep this slide under 45 seconds.</template>
     </section>
 
-    <section class="slide" data-title="Three principles">
-      <h2 class="title">This shell holds three things</h2>
-      <div class="grid-3">
-        <div class="card"><span class="idx num">01</span><h3>Restraint</h3><p>Red marks only the focal point; hierarchy comes from whitespace and weight, not effects.</p></div>
-        <div class="card"><span class="idx num">02</span><h3>Precision</h3><p>Tabular numerals, a shared baseline and a 1px grid carry the technical feel.</p></div>
-        <div class="card"><span class="idx num">03</span><h3>Clickable</h3><p>Keyboard, TOC, progress bar and overview all work, with zero offline requests.</p></div>
+    <!-- 02 · Agenda -->
+    <section class="slide" data-title="Agenda" data-chapter="Start">
+      <div class="head-row"><div><p class="eyebrow">What we will cover</p><h2 class="title">Four stops, one argument</h2></div><span class="sec-tag">Agenda · click a card to jump</span></div>
+      <div class="agenda" data-no-paging>
+        <button class="agenda-item chamfer" data-goto="3"><span class="n num">01</span><h3>FinOps</h3><p>Budget vs. actual, variance drivers and the savings levers worth taking.</p><span class="go num">→ slide 04</span></button>
+        <button class="agenda-item chamfer" data-goto="6"><span class="n num">02</span><h3>Metrics</h3><p>Twelve months of trend, SLA posture and where the breaches sit.</p><span class="go num">→ slide 07</span></button>
+        <button class="agenda-item chamfer" data-goto="9"><span class="n num">03</span><h3>Solutions</h3><p>Three options, scored on the same five dimensions, with a reference shape.</p><span class="go num">→ slide 10</span></button>
+        <button class="agenda-item chamfer" data-goto="11"><span class="n num">04</span><h3>Delivery</h3><p>Sequencing, dependencies, risks and the controls that hold them.</p><span class="go num">→ slide 12</span></button>
       </div>
-      <p class="note">Sample content · replace</p>
+      <p class="note">All numbers are fictional sample values · switch views with the on-slide controls</p>
+      <template class="notes"><b>Routing.</b> Tell the room which section they can interrupt. If time is short, offer to skip FinOps detail and keep the decision slide. This is the only slide where you invite scope changes.</template>
     </section>
 
-    <section class="slide" data-title="Key metric">
-      <h2 class="title">One number carries the slide</h2>
-      <div class="metric">
-        <span class="value num">128<span class="unit">ms</span></span>
-        <span class="label">End-to-end latency (sample data)</span>
-        <span class="delta">Down <b class="num">37%</b> vs. before (sample data)</span>
+    <!-- 03 · Divider -->
+    <section class="slide divider" data-title="01 · FinOps" data-chapter="FinOps">
+      <p class="eyebrow">Section one</p>
+      <div class="div-no num">01</div>
+      <h2 class="title">FinOps — spend as an engineering signal</h2>
+      <div class="rule"></div>
+      <p class="sub">Not a cost-cutting exercise. A way to see which design decisions show up on the invoice.</p>
+      <p class="note">Sample data · USD millions</p>
+      <template class="notes"><b>Transition.</b> Position FinOps as observability for money. Avoid apologising for the spend; go straight to the variance. Pause here for one beat before the chart slide.</template>
+    </section>
+
+    <!-- 04 · FinOps cost -->
+    <section class="slide" data-title="Cost vs. budget" data-chapter="FinOps">
+      <div class="head-row"><div><p class="eyebrow">FinOps · budget vs. actual</p><h2 class="title">Where the variance is coming from</h2></div><span class="sec-tag">01 / FinOps</span></div>
+      <div class="kpi-row" id="finopsKpi"></div>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Reporting period" data-seg="finops" data-no-paging>
+          <button type="button" data-view="Q1" aria-pressed="true">Q1</button>
+          <button type="button" data-view="Q2" aria-pressed="false">Q2</button>
+          <button type="button" data-view="Q3" aria-pressed="false">Q3</button>
+          <button type="button" data-view="Q4" aria-pressed="false">Q4</button>
+        </div>
+        <button type="button" class="toggle" id="varianceToggle" aria-pressed="false" data-no-paging><span class="box" aria-hidden="true">✓</span> Highlight variance</button>
+        <span class="hint">Hover or focus a bar for exact values</span>
       </div>
-      <div class="metric-row">
-        <div><span class="num">3</span><span class="label">Connected systems (sample)</span></div>
-        <div><span class="num">99.9%</span><span class="label">Availability (sample)</span></div>
-        <div><span class="num">0</span><span class="label">Manual interventions (sample)</span></div>
+      <div class="chart" id="finopsChart" data-chart="finops"></div>
+      <div class="chart-legend"><span><i style="background:#D7D8D6"></i>Budget</span><span><i style="background:#141414"></i>Actual</span><span><i style="background:#DB0011"></i>Largest overrun when highlighted</span><span class="cap num" id="finopsCaption">Q1 · sample</span></div>
+      <p class="note">Figure 1 · Budget and actual by cost category (sample data; replace with verified figures)</p>
+      <div class="print-views" data-print-views="finops"></div>
+      <template class="notes"><b>Key point.</b> One category drives most of the variance; do not read every bar aloud. Use the period control to show the trend, then switch on Highlight variance to make the single red bar the focal point. If challenged on the source, say these are sample values and point to the real ledger.</template>
+    </section>
+
+    <!-- 05 · FinOps levers -->
+    <section class="slide" data-title="Savings levers" data-chapter="FinOps">
+      <div class="head-row"><div><p class="eyebrow">FinOps · actions</p><h2 class="title">Three levers, ranked by effort</h2></div><span class="sec-tag">01 / FinOps</span></div>
+      <p class="sub" style="max-width:78cqw;margin:0 0 1cqw;font-size:14px;font-size:.78cqw">Expand a row for the mechanism, the owner and the guardrail. Amounts are illustrative sample values.</p>
+      <div class="levers" data-no-paging>
+        <div class="lever">
+          <button class="lever-head" type="button" data-expand="lv1" aria-expanded="false" aria-controls="lv1">
+            <span class="lh-n num">01</span><span class="lh-t">Right-size idle compute windows</span><span class="lh-v num">− 4.2 USD m / yr</span><span class="lh-i" aria-hidden="true">+</span>
+          </button>
+          <div class="lever-body" id="lv1" hidden><p>Sample mechanism: scheduled scale-down for non-production windows, with an opt-out tag for teams running nightly batches. No change to production capacity.</p><dl><dt>Owner</dt><dd>Platform runtime</dd><dt>Guardrail</dt><dd>p99 latency SLO unchanged</dd><dt>Effort</dt><dd>Low · 2 sprints</dd></dl></div>
+        </div>
+        <div class="lever">
+          <button class="lever-head" type="button" data-expand="lv2" aria-expanded="false" aria-controls="lv2">
+            <span class="lh-n num">02</span><span class="lh-t">Tier the object storage policy</span><span class="lh-v num">− 2.6 USD m / yr</span><span class="lh-i" aria-hidden="true">+</span>
+          </button>
+          <div class="lever-body" id="lv2" hidden><p>Sample mechanism: lifecycle rules move cold objects to an archive tier after 90 days. Restore time is documented in the service catalogue before rollout.</p><dl><dt>Owner</dt><dd>Data platform</dd><dt>Guardrail</dt><dd>Retention and audit policy</dd><dt>Effort</dt><dd>Medium · 1 quarter</dd></dl></div>
+        </div>
+        <div class="lever">
+          <button class="lever-head" type="button" data-expand="lv3" aria-expanded="false" aria-controls="lv3">
+            <span class="lh-n num">03</span><span class="lh-t">Consolidate duplicate observability pipelines</span><span class="lh-v num">− 1.1 USD m / yr</span><span class="lh-i" aria-hidden="true">+</span>
+          </button>
+          <div class="lever-body" id="lv3" hidden><p>Sample mechanism: one ingest path with sampling at source; dashboards read from a single store. Requires agreement on metric naming before migration.</p><dl><dt>Owner</dt><dd>Observability guild</dd><dt>Guardrail</dt><dd>No loss of audit-grade events</dd><dt>Effort</dt><dd>High · 2 quarters</dd></dl></div>
+        </div>
       </div>
+      <p class="note">Figure 2 · Indicative annual effect, sample values only · not a committed saving</p>
+      <template class="notes"><b>Decision ask.</b> Only lever 01 is being asked for today. The other two are shown to make the ranking visible. If Finance is in the room, be explicit that these are illustrative and not booked.</template>
     </section>
 
-    <section class="slide" data-title="System tiers">
-      <h2 class="title">Overall layering</h2>
-      <figure class="figure">
-        <svg viewBox="0 0 1200 300" role="img" aria-label="Sample: four system tiers and call direction" font-family="Arial,Helvetica,sans-serif">
-          <g fill="none" stroke="#D7D8D6" stroke-width="1">
-            <rect x="20" y="20" width="1160" height="52"/>
-            <rect x="20" y="90" width="1160" height="52"/>
-            <rect x="20" y="160" width="1160" height="52"/>
-            <rect x="20" y="230" width="1160" height="52"/>
-          </g>
-          <g fill="#767676" font-size="12">
-            <text x="36" y="14">EXTERNAL</text><text x="36" y="84">INGRESS</text>
-            <text x="36" y="154">SERVICES</text><text x="36" y="224">DATA</text>
-          </g>
-          <g fill="#333333" font-size="15">
-            <text x="140" y="52">Sample client</text>
-            <text x="140" y="122">Sample gateway</text>
-            <text x="140" y="192">Sample service A / B</text>
-            <text x="140" y="262">Sample DB / cache / message queue</text>
-          </g>
-          <g stroke="#DB0011" stroke-width="2" fill="none">
-            <path d="M600 72 L600 90"/><path d="M600 142 L600 160"/><path d="M600 212 L600 230"/>
-          </g>
-        </svg>
-        <figcaption>Figure 1 · System tiers and call direction (sample; replace with the real design)</figcaption>
-      </figure>
+    <!-- 06 · Divider -->
+    <section class="slide divider" data-title="02 · Metrics" data-chapter="Metrics">
+      <p class="eyebrow">Section two</p>
+      <div class="div-no num">02</div>
+      <h2 class="title">Metrics — the service, not the dashboard</h2>
+      <div class="rule"></div>
+      <p class="sub">Four series, one threshold each. The point is the shape of the line, not the decoration around it.</p>
+      <p class="note">Sample data · trailing 12 months</p>
+      <template class="notes"><b>Transition.</b> Move from money to behaviour. Ask the room to pick a series; the segmented control lets you follow their choice instead of forcing your own order.</template>
     </section>
 
-    <section class="slide closing" data-title="Summary">
-      <p class="kicker">Settle the boundaries before the implementation.</p>
-      <ul class="actions"><li>Next step one (sample)</li><li>Next step two (sample)</li><li>Next step three (sample)</li></ul>
-      <p class="note">Q&amp;A · ← → navigate · Esc overview · TOC is clickable</p>
+    <!-- 07 · Metrics trend -->
+    <section class="slide" data-title="Service trend" data-chapter="Metrics">
+      <div class="head-row"><div><p class="eyebrow">Metrics · trailing 12 months</p><h2 class="title" id="metricTitle">End-to-end latency</h2></div><span class="sec-tag">02 / Metrics</span></div>
+      <div class="kpi-row" id="metricKpi"></div>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Metric series" data-seg="metric" data-no-paging>
+          <button type="button" data-view="latency" aria-pressed="true">Latency</button>
+          <button type="button" data-view="availability" aria-pressed="false">Availability</button>
+          <button type="button" data-view="throughput" aria-pressed="false">Throughput</button>
+          <button type="button" data-view="cost" aria-pressed="false">Unit cost</button>
+        </div>
+        <button type="button" class="toggle" id="targetToggle" aria-pressed="true" data-no-paging><span class="box" aria-hidden="true">✓</span> Show target</button>
+        <span class="hint">Hover or focus a point for the monthly value</span>
+      </div>
+      <div class="chart" id="metricChart" data-chart="metric"></div>
+      <div class="chart-legend"><span><i style="background:#141414"></i>Actual</span><span><i class="dash"></i>Target / threshold</span><span><i style="background:#DB0011"></i>Latest month</span><span class="cap num" id="metricCaption">Jan – Dec · sample</span></div>
+      <p class="note">Figure 3 · Monthly series with target line (sample data; replace with verified measurements)</p>
+      <div class="print-views" data-print-views="metric"></div>
+      <template class="notes"><b>Reading the line.</b> Latency improves steadily; the story is the sustained direction, not the last point. Availability is the one to pre-empt: explain the two early breaches before someone asks. Switch to Unit cost to connect back to section one.</template>
+    </section>
+
+    <!-- 08 · SLA -->
+    <section class="slide" data-title="SLA posture" data-chapter="Metrics">
+      <div class="head-row"><div><p class="eyebrow">Metrics · service level objectives</p><h2 class="title">Which services are inside the line</h2></div><span class="sec-tag">02 / Metrics · sortable table</span></div>
+      <div class="kpi-row" id="slaKpi"></div>
+      <table class="data" id="slaTable">
+        <thead><tr>
+          <th><button type="button" data-sort="0" data-no-paging>Service <span class="arrow">↕</span></button></th>
+          <th class="num"><button type="button" data-sort="1" data-no-paging>SLO <span class="arrow">↕</span></button></th>
+          <th class="num"><button type="button" data-sort="2" data-no-paging>Actual <span class="arrow">↕</span></button></th>
+          <th class="num"><button type="button" data-sort="3" data-no-paging>Breaches <span class="arrow">↕</span></button></th>
+          <th><button type="button" data-sort="4" data-no-paging>Status <span class="arrow">↕</span></button></th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Ingress API (sample)</td><td class="num">99.90%</td><td class="num">99.96%</td><td class="num">0</td><td><span class="status ok">on track</span></td></tr>
+          <tr><td>Decisioning (sample)</td><td class="num">99.90%</td><td class="num">99.87%</td><td class="num">2</td><td><span class="status risk">at risk</span></td></tr>
+          <tr><td>Data ingest (sample)</td><td class="num">99.50%</td><td class="num">99.81%</td><td class="num">0</td><td><span class="status ok">on track</span></td></tr>
+          <tr><td>Reporting (sample)</td><td class="num">99.00%</td><td class="num">99.42%</td><td class="num">0</td><td><span class="status ok">on track</span></td></tr>
+          <tr><td>Identity (sample)</td><td class="num">99.95%</td><td class="num">99.97%</td><td class="num">0</td><td><span class="status ok">on track</span></td></tr>
+          <tr><td>Batch (sample)</td><td class="num">99.00%</td><td class="num">98.88%</td><td class="num">3</td><td><span class="status risk">at risk</span></td></tr>
+        </tbody>
+      </table>
+      <p class="note">Table 1 · Click a column header to sort · sample values, no real service names</p>
+      <template class="notes"><b>Do not hide the red rows.</b> Two services are at risk; name them, give the cause in one line, and move to the plan. Sorting is there so you can reorder by breaches live if the room wants that view.</template>
+    </section>
+
+    <!-- 09 · Divider -->
+    <section class="slide divider" data-title="03 · Solutions" data-chapter="Solutions">
+      <p class="eyebrow">Section three</p>
+      <div class="div-no num">03</div>
+      <h2 class="title">Solutions — one comparison, one shape</h2>
+      <div class="rule"></div>
+      <p class="sub">Three options scored on identical dimensions, then the reference architecture behind the recommended one.</p>
+      <p class="note">Sample options · fictional names</p>
+      <template class="notes"><b>Transition.</b> This is the decision section. State the scoring dimensions before showing scores, so the room cannot accuse the matrix of being tuned to the answer.</template>
+    </section>
+
+    <!-- 10 · Solutions matrix -->
+    <section class="slide" data-title="Option comparison" data-chapter="Solutions">
+      <div class="head-row"><div><p class="eyebrow">Solutions · option matrix</p><h2 class="title">Score every option on the same five dimensions</h2></div><span class="sec-tag">03 / Solutions</span></div>
+      <div class="toolbar" style="margin-bottom:1cqw">
+        <div class="seg" role="group" aria-label="Solution option" data-seg="option" data-no-paging>
+          <button type="button" data-view="A" aria-pressed="true">Option A</button>
+          <button type="button" data-view="B" aria-pressed="false">Option B</button>
+          <button type="button" data-view="C" aria-pressed="false">Option C</button>
+        </div>
+        <span class="hint">Five filled squares = strongest on that dimension</span>
+      </div>
+      <div class="opt-grid">
+        <table class="data matrix" id="optionMatrix">
+          <thead><tr><th>Dimension</th><th data-col="A" class="focus-col">A · Reuse</th><th data-col="B">B · Managed</th><th data-col="C">C · Build</th></tr></thead>
+          <tbody>
+            <tr><td>Time to value</td><td data-col="A" class="focus-col" data-score="5"></td><td data-col="B" data-score="3"></td><td data-col="C" data-score="1"></td></tr>
+            <tr><td>Run cost</td><td data-col="A" class="focus-col" data-score="4"></td><td data-col="B" data-score="3"></td><td data-col="C" data-score="2"></td></tr>
+            <tr><td>Control</td><td data-col="A" class="focus-col" data-score="3"></td><td data-col="B" data-score="2"></td><td data-col="C" data-score="5"></td></tr>
+            <tr><td>Portability</td><td data-col="A" class="focus-col" data-score="3"></td><td data-col="B" data-score="2"></td><td data-col="C" data-score="4"></td></tr>
+            <tr><td>Data residency</td><td data-col="A" class="focus-col" data-score="5"></td><td data-col="B" data-score="4"></td><td data-col="C" data-score="5"></td></tr>
+          </tbody>
+        </table>
+        <div class="opt-detail" id="optDetail"></div>
+      </div>
+      <p class="note">Table 2 · Illustrative scoring, sample options only · red marks the selected column, not a recommendation in itself</p>
+      <template class="notes"><b>The ask.</b> Option A is recommended because of time to value and residency; concede that it scores lower on control. Switch to Option C to show you have read the trade-off. Do not say the matrix proves the answer — it structures the conversation.</template>
+    </section>
+
+    <!-- 11 · Architecture -->
+    <section class="slide" data-title="Reference architecture" data-chapter="Solutions">
+      <div class="head-row"><div><p class="eyebrow">Solutions · reference shape</p><h2 class="title">Four tiers, one focal path</h2></div><span class="sec-tag">03 / Solutions</span></div>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Call path" data-seg="flow" data-no-paging>
+          <button type="button" data-view="sync" aria-pressed="true">Synchronous</button>
+          <button type="button" data-view="async" aria-pressed="false">Asynchronous</button>
+        </div>
+        <span class="hint">Click or focus a tier for its contract</span>
+      </div>
+      <div class="arch-wrap">
+        <div class="arch" data-no-paging>
+          <svg viewBox="0 0 900 470" role="img" aria-label="Sample: four-tier reference architecture with a selectable call path" font-family="Arial,Helvetica,sans-serif">
+            <g fill="none" stroke="#D7D8D6" stroke-width="1">
+              <line x1="0" y1="78" x2="900" y2="78"/><line x1="0" y1="188" x2="900" y2="188"/>
+              <line x1="0" y1="298" x2="900" y2="298"/><line x1="0" y1="408" x2="900" y2="408"/>
+            </g>
+            <g class="layer" data-layer="external" tabindex="0" role="button" aria-label="External tier: clients and third parties">
+              <rect class="lr-box" x="0" y="0" width="900" height="78" fill="none" stroke="none"/>
+              <text x="6" y="20" font-size="10" fill="#767676" letter-spacing="2">EXTERNAL</text>
+              <g class="cmp" data-cmp="external"><rect x="150" y="26" width="180" height="40"/></g>
+              <g class="cmp" data-cmp="external"><rect x="360" y="26" width="180" height="40"/></g>
+              <g class="cmp" data-cmp="external"><rect x="570" y="26" width="180" height="40"/></g>
+              <g fill="#333333" font-size="12" text-anchor="middle"><text x="240" y="50">Sample client</text><text x="450" y="50">Sample partner</text><text x="660" y="50">Third-party API</text></g>
+            </g>
+            <g class="layer" data-layer="ingress" tabindex="0" role="button" aria-label="Ingress tier: gateway, identity and load balancing">
+              <rect class="lr-box" x="0" y="78" width="900" height="110" fill="none" stroke="none"/>
+              <text x="6" y="98" font-size="10" fill="#767676" letter-spacing="2">INGRESS</text>
+              <g class="cmp" data-cmp="ingress"><rect x="150" y="116" width="180" height="40"/></g>
+              <g class="cmp" data-cmp="ingress"><rect x="360" y="116" width="180" height="40"/></g>
+              <g class="cmp" data-cmp="ingress"><rect x="570" y="116" width="180" height="40"/></g>
+              <g fill="#333333" font-size="12" text-anchor="middle"><text x="240" y="140">Sample gateway</text><text x="450" y="140">Identity</text><text x="660" y="140">Load balancer</text></g>
+            </g>
+            <g class="layer" data-layer="services" tabindex="0" role="button" aria-label="Services tier: API, processing and orchestration">
+              <rect class="lr-box" x="0" y="188" width="900" height="110" fill="none" stroke="none"/>
+              <text x="6" y="208" font-size="10" fill="#767676" letter-spacing="2">SERVICES</text>
+              <g class="cmp" data-cmp="services"><rect x="150" y="226" width="180" height="40"/></g>
+              <g class="cmp" data-cmp="services"><rect x="360" y="226" width="180" height="40"/></g>
+              <g class="cmp" data-cmp="services"><rect x="570" y="226" width="180" height="40"/></g>
+              <g fill="#333333" font-size="12" text-anchor="middle"><text x="240" y="250">Sample API tier</text><text x="450" y="250">Core processing</text><text x="660" y="250">Orchestration</text></g>
+            </g>
+            <g class="layer" data-layer="data" tabindex="0" role="button" aria-label="Data tier: primary store, cache and message queue">
+              <rect class="lr-box" x="0" y="298" width="900" height="110" fill="none" stroke="none"/>
+              <text x="6" y="318" font-size="10" fill="#767676" letter-spacing="2">DATA</text>
+              <g class="cmp" data-cmp="data"><rect x="150" y="336" width="180" height="40"/></g>
+              <g class="cmp" data-cmp="data"><rect x="360" y="336" width="180" height="40"/></g>
+              <g class="cmp" data-cmp="data"><rect x="570" y="336" width="180" height="40"/></g>
+              <g fill="#333333" font-size="12" text-anchor="middle"><text x="240" y="360">Sample primary DB</text><text x="450" y="360">Cache</text><text x="660" y="360">Message queue</text></g>
+            </g>
+            <g id="flowSync" fill="none" stroke="#DB0011" stroke-width="2">
+              <path d="M240 66 V116"/><path d="M240 156 V226"/><path d="M240 266 V336"/>
+              <g fill="#DB0011" stroke="none"><rect x="160" y="430" width="14" height="4"/><text x="184" y="437" font-size="11">Synchronous read path</text></g>
+            </g>
+            <g id="flowAsync" fill="none" stroke="#DB0011" stroke-width="2" stroke-dasharray="6 4" style="display:none">
+              <path d="M450 66 V116"/><path d="M450 156 V226"/><path d="M660 266 V276 H450 V336"/>
+              <g fill="#DB0011" stroke="none"><rect x="160" y="430" width="14" height="4"/><text x="184" y="437" font-size="11">Asynchronous write path</text></g>
+            </g>
+          </svg>
+        </div>
+        <div class="layer-detail" id="layerDetail"></div>
+      </div>
+      <p class="note">Figure 4 · Component names are fictional samples · replace with the confirmed design before sharing</p>
+      <template class="notes"><b>Walk the path.</b> Start synchronous, then switch to asynchronous to show where the queue absorbs the write. Click the Data tier when someone asks about residency. One red path at a time; never highlight two.</template>
+    </section>
+
+    <!-- 12 · Roadmap -->
+    <section class="slide" data-title="Delivery roadmap" data-chapter="Delivery">
+      <div class="head-row"><div><p class="eyebrow">Delivery · sequencing</p><h2 class="title">Four phases, each with an exit condition</h2></div><span class="sec-tag">04 / Delivery</span></div>
+      <div class="road" data-no-paging id="road">
+        <button class="road-item" type="button" data-phase="0" aria-pressed="true"><span class="when num">Q1</span><h3>Map</h3><p>Inventory, baseline and ownership</p></button>
+        <button class="road-item" type="button" data-phase="1" aria-pressed="false"><span class="when num">Q2</span><h3>Pilot</h3><p>One domain, one measurable SLO</p></button>
+        <button class="road-item" type="button" data-phase="2" aria-pressed="false"><span class="when num">Q3</span><h3>Scale</h3><p>Migration waves and FinOps guardrails</p></button>
+        <button class="road-item" type="button" data-phase="3" aria-pressed="false"><span class="when num">Q4</span><h3>Settle</h3><p>Decommission and handover</p></button>
+      </div>
+      <div class="road-detail" id="roadDetail"></div>
+      <p class="note">Figure 5 · Indicative sequencing, sample content · exit conditions are the commitment, not the dates</p>
+      <template class="notes"><b>Commit to conditions, not dates.</b> Click through all four phases. If the room pushes on timing, return to Q2 and point at the exit condition rather than the quarter label.</template>
+    </section>
+
+    <!-- 13 · Risks -->
+    <section class="slide" data-title="Risks and controls" data-chapter="Delivery">
+      <div class="head-row"><div><p class="eyebrow">Delivery · risk register</p><h2 class="title">What could break the plan, and what holds it</h2></div><span class="sec-tag">04 / Delivery · sortable</span></div>
+      <table class="data" id="riskTable">
+        <thead><tr>
+          <th><button type="button" data-sort="0" data-no-paging>Risk <span class="arrow">↕</span></button></th>
+          <th><button type="button" data-sort="1" data-no-paging>Impact <span class="arrow">↕</span></button></th>
+          <th><button type="button" data-sort="2" data-no-paging>Likelihood <span class="arrow">↕</span></button></th>
+          <th><button type="button" data-sort="3" data-no-paging>Control <span class="arrow">↕</span></button></th>
+          <th><button type="button" data-sort="4" data-no-paging>Owner <span class="arrow">↕</span></button></th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Migration window overrun (sample)</td><td>High</td><td>Medium</td><td>Wave gate with rollback</td><td>Platform lead</td></tr>
+          <tr><td>Unverified cost baseline (sample)</td><td>Medium</td><td>High</td><td>Reconcile to ledger first</td><td>FinOps partner</td></tr>
+          <tr><td>Data residency exception (sample)</td><td>High</td><td>Low</td><td>Regional review board</td><td>Data owner</td></tr>
+          <tr><td>Key-role availability (sample)</td><td>Medium</td><td>Medium</td><td>Named deputy per workstream</td><td>Delivery lead</td></tr>
+        </tbody>
+      </table>
+      <p class="sub" style="max-width:78cqw;margin:1.2cqw 0 .6cqw;font-size:14px;font-size:.76cqw">Controls are expandable for the audience that wants the detail.</p>
+      <div class="levers" data-no-paging>
+        <div class="lever">
+          <button class="lever-head" type="button" data-expand="rk1" aria-expanded="false" aria-controls="rk1">
+            <span class="lh-n num">01</span><span class="lh-t">Wave gate and rollback criteria</span><span class="lh-v num">before each wave</span><span class="lh-i" aria-hidden="true">+</span>
+          </button>
+          <div class="lever-body" id="rk1" hidden><p>Sample control: a wave proceeds only when the prior wave has held its SLO for two consecutive weeks. Rollback is a rehearsed runbook, not a decision made during the incident.</p><dl><dt>Evidence</dt><dd>Wave report</dd><dt>Escalation</dt><dd>Change board</dd></dl></div>
+        </div>
+      </div>
+      <p class="note">Table 3 · Sample risk register · no real systems, owners or incidents</p>
+      <template class="notes"><b>Credibility slide.</b> Name the risk you are least comfortable with. Expanding the wave-gate control shows the plan has teeth. Do not read all four rows aloud.</template>
+    </section>
+
+    <!-- 14 · Closing -->
+    <section class="slide closing" data-title="Summary" data-chapter="Start">
+      <p class="eyebrow">Close</p>
+      <p class="kicker">Spend, service and options are the same conversation.</p>
+      <ul class="actions">
+        <li><b class="num">01</b>Confirm the cost baseline</li>
+        <li><b class="num">02</b>Agree the recommended option</li>
+        <li><b class="num">03</b>Set the Q2 exit condition</li>
+      </ul>
+      <p class="note">Q&amp;A · N speaker notes · F fullscreen · ? shortcuts · Esc overview · ← → navigate</p>
+      <template class="notes"><b>Close on the ask.</b> Three decisions, named owners, one week. Then stop talking. If there is no decision, say explicitly what remains open and who will close it.</template>
     </section>
 
   </div>
@@ -238,6 +632,23 @@ html[data-brand="hide"] .brand{display:none}
   <div class="ov-grid" id="ovGrid"></div>
   <p class="ov-hint">Esc to return · click a card to jump</p>
 </div>
+<div class="notes-drawer" id="notesDrawer" aria-label="Speaker notes"><span class="nt">Speaker notes</span><div class="nb" id="notesBody"></div></div>
+<div class="help" id="help" aria-label="Keyboard shortcuts">
+  <div class="help-card chamfer">
+    <h2>Keyboard shortcuts</h2>
+    <table>
+      <tr><td>→ / Space / PgDn</td><td>Next slide</td></tr>
+      <tr><td>← / PgUp</td><td>Previous slide</td></tr>
+      <tr><td>Home / End</td><td>First / last slide</td></tr>
+      <tr><td>Esc</td><td>Overview · close panel</td></tr>
+      <tr><td>N</td><td>Speaker notes for this slide</td></tr>
+      <tr><td>F</td><td>Full screen on / off</td></tr>
+      <tr><td>?</td><td>This shortcut list</td></tr>
+      <tr><td>Tab / Enter</td><td>Reach every on-slide control</td></tr>
+    </table>
+    <p class="close">Esc or ? to close · all controls work offline with zero network requests</p>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -250,81 +661,483 @@ html[data-brand="hide"] .brand{display:none}
   var progress = document.getElementById('progress');
   var ov = document.getElementById('overview');
   var ovGrid = document.getElementById('ovGrid');
-  var cur = 0, ovOpen = false;
+  var tip = document.getElementById('tip');
+  var notesDrawer = document.getElementById('notesDrawer');
+  var notesBody = document.getElementById('notesBody');
+  var help = document.getElementById('help');
+  var cur = 0, ovOpen = false, notesOpen = false, helpOpen = false;
 
+  /* ---------------- sample data (fictional, replace before use) ---------------- */
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var CATS = [
+    {name:'Compute', base:42}, {name:'Storage', base:26}, {name:'Data transfer', base:14},
+    {name:'Managed services', base:31}, {name:'Observability', base:9}, {name:'Licences', base:18}
+  ];
+  var QUARTERS = {
+    Q1:[1.12,.96,1.05,1.00,1.08,1.00], Q2:[1.05,.93,1.14,1.02,1.10,1.00],
+    Q3:[.97,.90,1.08,1.06,1.14,.98],   Q4:[.88,.86,.99,1.04,1.18,.96]
+  };
+  var METRICS = {
+    latency:{label:'End-to-end latency', unit:'ms', target:180, better:'down', dec:0,
+      values:[203,198,194,187,185,176,171,166,158,151,138,128]},
+    availability:{label:'Availability', unit:'%', target:99.90, better:'up', dec:2,
+      values:[99.81,99.83,99.85,99.84,99.88,99.89,99.90,99.92,99.91,99.94,99.95,99.97]},
+    throughput:{label:'Throughput', unit:'k/min', target:100, better:'up', dec:0,
+      values:[82,85,88,91,95,99,104,108,112,117,121,126]},
+    cost:{label:'Cost per 1k transactions', unit:'USD', target:4.0, better:'down', dec:1,
+      values:[4.8,4.7,4.6,4.5,4.4,4.2,4.1,3.9,3.8,3.6,3.5,3.3]}
+  };
+  var OPTIONS = {
+    A:{name:'Reuse existing platform', tag:'Option A · reuse', scores:[5,4,3,3,5],
+      text:'Extends the platform already in place. Fastest to value and inherits the existing residency posture, at the cost of less control over the roadmap.',
+      facts:[['Time to value','2 quarters (sample)'],['Run cost','Lowest of three (sample)'],['Main trade-off','Roadmap dependency']]},
+    B:{name:'Managed service', tag:'Option B · managed', scores:[3,3,2,2,4],
+      text:'Buys an external service and integrates it. Removes a class of operational work, but adds contract, exit and data-handling questions that need early answers.',
+      facts:[['Time to value','3 quarters (sample)'],['Run cost','Medium (sample)'],['Main trade-off','Exit and residency']]},
+    C:{name:'Build in-house', tag:'Option C · build', scores:[1,2,5,4,5],
+      text:'Maximum control and portability. Carries the longest lead time and the highest permanent engineering cost; only defensible if control is a hard requirement.',
+      facts:[['Time to value','5 quarters (sample)'],['Run cost','Highest (sample)'],['Main trade-off','Permanent headcount']]}
+  };
+  var LAYERS = {
+    external:{name:'External', text:'Clients, partners and third-party APIs. This tier owns no infrastructure; it defines the contracts the platform must honour.',
+      items:['Authentication is delegated to Ingress','Rate limits are published per consumer','No direct data-tier access'], contract:'Published API contract'},
+    ingress:{name:'Ingress', text:'The single entry point. Identity, routing and traffic shaping happen here so downstream services stay simple.',
+      items:['One gateway, one identity decision','Request IDs assigned at the edge','TLS terminates here'], contract:'Authenticated request'},
+    services:{name:'Services', text:'Stateless processing behind a stable contract. Orchestration lives here, not in the client.',
+      items:['Horizontal scale by default','No shared mutable state','Idempotent handlers'], contract:'Domain command'},
+    data:{name:'Data', text:'Durable state, cache and asynchronous hand-off. Residency and retention rules are enforced at this tier.',
+      items:['Primary store is the source of truth','Cache is never authoritative','Queue absorbs write bursts'], contract:'Committed record'}
+  };
+  var PHASES = [
+    {t:'Q1 · Map', h:'Baseline before promises', p:'Complete the inventory, reconcile the cost baseline to the ledger and confirm ownership for every tier. No migration starts until the baseline is signed off.', chips:['Exit: signed baseline','Owner: platform lead','Sample plan']},
+    {t:'Q2 · Pilot', h:'One domain, one SLO', p:'Run a single domain through the target shape and hold its SLO for two consecutive weeks. The pilot is the evidence for the scale decision, not a demo.', chips:['Exit: 2-week SLO hold','Owner: domain team','Sample plan']},
+    {t:'Q3 · Scale', h:'Waves, not a big bang', p:'Migrate in waves with a gate between each. FinOps guardrails and the savings levers agreed earlier are applied as each wave lands.', chips:['Exit: wave gate passed','Owner: delivery lead','Sample plan']},
+    {t:'Q4 · Settle', h:'Decommission and hand over', p:'Retire the duplicated paths, close the temporary controls and hand the runbook to the operating team with named deputies.', chips:['Exit: runbook accepted','Owner: operations','Sample plan']}
+  ];
+
+  var state = {finops:'Q1', variance:false, metric:'latency', target:true, option:'A', flow:'sync', layer:'external', phase:0};
+
+  /* ---------------- helpers ---------------- */
   function pad(n){ return String(n).padStart(2,'0'); }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function fmt(n, dec){ return Number(n).toFixed(dec); }
+  function el(id){ return document.getElementById(id); }
+  function svg(viewBox, inner, label){
+    return '<svg class="chart-svg" viewBox="'+viewBox+'" role="img" aria-label="'+esc(label)+'" preserveAspectRatio="xMidYMid meet">'+inner+'</svg>';
+  }
+  function tipAttrs(k, v){ return ' class="pt" tabindex="0" role="img" data-tip="'+esc(k)+'" data-tip-v="'+esc(v)+'" aria-label="'+esc(k+': '+v)+'"'; }
 
+  /* ---------------- FinOps chart ---------------- */
+  function finopsData(q){
+    var f = QUARTERS[q];
+    return CATS.map(function(c, i){
+      var b = c.base, a = Math.round(c.base * f[i] * 10) / 10;
+      return {name:c.name, b:b, a:a, d:Math.round((a-b)*10)/10, pct:Math.round((a/b-1)*1000)/10};
+    });
+  }
+  function finopsSvg(q, highlight){
+    var rows = finopsData(q), W = 1200, H = 320, left = 60, right = 24, top = 18, base = 262;
+    var max = 56, plotW = W-left-right, group = plotW/rows.length, bw = Math.min(38, group*.28);
+    var s = '';
+    for (var g = 0; g <= 4; g++){
+      var y = base - (base-top)*(g/4);
+      s += '<line x1="'+left+'" y1="'+y+'" x2="'+(W-right)+'" y2="'+y+'" stroke="#D7D8D6" stroke-width="1"/>';
+      s += '<text class="mono" x="'+(left-10)+'" y="'+(y+4)+'" font-size="11" fill="#767676" text-anchor="end">'+Math.round(max*g/4)+'</text>';
+    }
+    var worst = -1, worstPct = 0;
+    rows.forEach(function(r, i){ if (r.pct > worstPct){ worstPct = r.pct; worst = i; } });
+    rows.forEach(function(r, i){
+      var cx = left + group*i + group/2;
+      var hb = (base-top)*(r.b/max), ha = (base-top)*(r.a/max);
+      var x1 = cx-bw-3, x2 = cx+3;
+      s += '<rect'+tipAttrs(q+' · '+r.name, 'Budget '+fmt(r.b,1)+' USD m')+' x="'+x1+'" y="'+(base-hb)+'" width="'+bw+'" height="'+hb+'" fill="#D7D8D6"/>';
+      var colour = (highlight && i === worst && r.pct > 0) ? '#DB0011' : '#141414';
+      s += '<rect'+tipAttrs(q+' · '+r.name, 'Actual '+fmt(r.a,1)+' USD m · '+((r.pct>0)?'+':'')+fmt(r.pct,1)+'% vs budget')+' x="'+x2+'" y="'+(base-ha)+'" width="'+bw+'" height="'+ha+'" fill="'+colour+'"/>';
+      s += '<text x="'+cx+'" y="'+(base+20)+'" font-size="12" fill="#333333" text-anchor="middle">'+esc(r.name)+'</text>';
+      /* Variance labels stay neutral; only the single highlighted overrun turns red. */
+      var pctColour = (highlight && i === worst && r.pct > 0) ? '#DB0011' : '#767676';
+      s += '<text class="mono" x="'+cx+'" y="'+(base+38)+'" font-size="11" fill="'+pctColour+'" text-anchor="middle">'+((r.pct>0)?'+':'')+fmt(r.pct,1)+'%</text>';
+    });
+    s += '<line x1="'+left+'" y1="'+base+'" x2="'+(W-right)+'" y2="'+base+'" stroke="#000000" stroke-width="1"/>';
+    s += '<text x="'+left+'" y="'+(H-8)+'" font-size="11" fill="#767676">USD m · sample data</text>';
+    return svg('0 0 '+W+' '+H, s, 'Budget and actual by cost category for '+q+', sample data');
+  }
+  function sparkline(values){
+    var min = Math.min.apply(null, values), max = Math.max.apply(null, values), span = (max-min)||1;
+    var pts = values.map(function(v,i){ return (i/(values.length-1)*100).toFixed(1)+','+(24-((v-min)/span)*20).toFixed(1); }).join(' ');
+    return '<svg class="spark" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><polyline points="'+pts+'" fill="none" stroke="#141414" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>';
+  }
+  function kpi(cells){
+    return cells.map(function(c){
+      return '<div class="kpi"><span class="k">'+esc(c.k)+'</span>'+
+        '<span class="v'+((c.hot)?' hot':'')+' num">'+c.v+((c.u)?'<span class="u">'+esc(c.u)+'</span>':'')+'</span>'+
+        '<span class="d">'+c.d+'</span>'+((c.spark)?sparkline(c.spark):'')+'</div>';
+    }).join('');
+  }
+  function renderFinops(){
+    var rows = finopsData(state.finops);
+    var bt = rows.reduce(function(a,r){return a+r.b;},0), at = rows.reduce(function(a,r){return a+r.a;},0);
+    var over = rows.filter(function(r){return r.d>0;}).length;
+    var series = ['Q1','Q2','Q3','Q4'].map(function(q){return finopsData(q).reduce(function(a,r){return a+r.a;},0);});
+    el('finopsKpi').innerHTML = kpi([
+      {k:'Budget · '+state.finops, v:fmt(bt,1), u:'USD m', d:'Approved plan (sample)', spark:series},
+      {k:'Actual · '+state.finops, v:fmt(at,1), u:'USD m', d:'Booked spend (sample)'},
+      {k:'Variance', v:((at-bt>0)?'+':'')+fmt(at-bt,1), u:'USD m', hot:(at>bt), d:((at-bt>0)?'+':'')+fmt((at/bt-1)*100,1)+'% vs plan'},
+      {k:'Categories over plan', v:String(over), u:'/ 6', d:'Red marks the largest overrun'}
+    ]);
+    el('finopsChart').innerHTML = finopsSvg(state.finops, state.variance);
+    el('finopsCaption').textContent = state.finops + ' · sample';
+  }
+
+  /* ---------------- Metrics chart ---------------- */
+  function metricSvg(key, showTarget){
+    var m = METRICS[key], v = m.values, W = 1200, H = 320, left = 66, right = 30, top = 24, base = 258;
+    var lo = Math.min.apply(null, v.concat(showTarget?[m.target]:[]));
+    var hi = Math.max.apply(null, v.concat(showTarget?[m.target]:[]));
+    var pad = (hi-lo)*.18 || 1; lo -= pad; hi += pad;
+    var X = function(i){ return left + i*(W-left-right)/(v.length-1); };
+    var Y = function(n){ return base - (n-lo)/(hi-lo)*(base-top); };
+    var s = '';
+    for (var g = 0; g <= 4; g++){
+      var y = top + (base-top)*g/4, val = hi-(hi-lo)*g/4;
+      s += '<line x1="'+left+'" y1="'+y+'" x2="'+(W-right)+'" y2="'+y+'" stroke="#D7D8D6" stroke-width="1"/>';
+      s += '<text class="mono" x="'+(left-10)+'" y="'+(y+4)+'" font-size="11" fill="#767676" text-anchor="end">'+fmt(val,m.dec)+'</text>';
+    }
+    if (showTarget){
+      var ty = Y(m.target);
+      s += '<line x1="'+left+'" y1="'+ty+'" x2="'+(W-right)+'" y2="'+ty+'" stroke="#DB0011" stroke-width="1.5" stroke-dasharray="7 5"/>';
+      s += '<text x="'+(W-right-4)+'" y="'+(ty-7)+'" font-size="11" fill="#DB0011" text-anchor="end">Target '+fmt(m.target,m.dec)+' '+esc(m.unit)+'</text>';
+    }
+    var pts = v.map(function(n,i){ return X(i).toFixed(1)+','+Y(n).toFixed(1); });
+    s += '<polygon points="'+left+','+base+' '+pts.join(' ')+' '+(W-right)+','+base+'" fill="#F4F4F4"/>';
+    s += '<polyline points="'+pts.join(' ')+'" fill="none" stroke="#141414" stroke-width="2.5"/>';
+    v.forEach(function(n,i){
+      var x = X(i), y = Y(n), last = i===v.length-1;
+      s += '<circle'+tipAttrs(MONTHS[i]+' · '+m.label, fmt(n,m.dec)+' '+m.unit)+' cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(last?6:4)+'" fill="'+(last?'#DB0011':'#FFFFFF')+'" stroke="'+(last?'#DB0011':'#141414')+'" stroke-width="2"/>';
+      s += '<text x="'+x.toFixed(1)+'" y="'+(base+20)+'" font-size="11" fill="#767676" text-anchor="middle">'+MONTHS[i]+'</text>';
+    });
+    s += '<line x1="'+left+'" y1="'+base+'" x2="'+(W-right)+'" y2="'+base+'" stroke="#000000" stroke-width="1"/>';
+    s += '<text x="'+left+'" y="'+(H-8)+'" font-size="11" fill="#767676">'+esc(m.unit)+' · sample data · trailing 12 months</text>';
+    return svg('0 0 '+W+' '+H, s, m.label+' monthly trend, sample data');
+  }
+  function renderMetric(){
+    var m = METRICS[state.metric], v = m.values, first = v[0], last = v[v.length-1];
+    var change = (last-first)/Math.abs(first)*100;
+    var breaches = v.filter(function(n){ return (m.better==='down') ? n>m.target : n<m.target; }).length;
+    var improved = (m.better === 'down') ? change < 0 : change > 0;
+    el('metricTitle').textContent = m.label;
+    el('metricKpi').innerHTML = kpi([
+      {k:'Latest · Dec', v:fmt(last,m.dec), u:m.unit, d:'Latest month (sample)', hot:true, spark:v},
+      {k:'12-month change', v:((change>0)?'+':'')+fmt(change,1), u:'%', d:(improved?'Improved':'Worsened')+' vs Jan'},
+      {k:'Target', v:fmt(m.target,m.dec), u:m.unit, d:m.better==='down'?'Upper bound':'Lower bound'},
+      {k:'Months outside target', v:String(breaches), u:'/ 12', d:'Trailing 12 months'}
+    ]);
+    el('metricChart').innerHTML = metricSvg(state.metric, state.target);
+    el('metricCaption').textContent = 'Jan – Dec · sample';
+  }
+
+  /* ---------------- SLA KPI ---------------- */
+  function renderSla(){
+    el('slaKpi').innerHTML = kpi([
+      {k:'Services in scope', v:'6', u:'sample', d:'Fictional service names'},
+      {k:'Within SLO', v:'4', u:'/ 6', d:'Table 1 (sample)'},
+      {k:'At risk', v:'2', u:'/ 6', d:'Decisioning, Batch (sample)', hot:true},
+      {k:'Breaches, 12m', v:'5', u:'total', d:'Across all services (sample)'}
+    ]);
+  }
+
+  /* ---------------- Solutions ---------------- */
+  function renderDots(){
+    Array.prototype.forEach.call(document.querySelectorAll('#optionMatrix td[data-score]'), function(td){
+      var n = parseInt(td.getAttribute('data-score'),10), s = '<span class="dots" aria-label="'+n+' out of 5">';
+      for (var i=0;i<5;i++) s += '<i class="'+((i<n)?'on':'')+'"></i>';
+      td.innerHTML = s + '</span>';
+    });
+  }
+  function renderOption(){
+    var o = OPTIONS[state.option];
+    Array.prototype.forEach.call(document.querySelectorAll('#optionMatrix [data-col]'), function(c){
+      c.classList.toggle('focus-col', c.getAttribute('data-col') === state.option);
+    });
+    el('optDetail').innerHTML = '<span class="tag">'+esc(o.tag)+'</span><h3>'+esc(o.name)+'</h3><p>'+esc(o.text)+'</p><dl>'+
+      o.facts.map(function(f){ return '<dt>'+esc(f[0])+'</dt><dd class="num">'+esc(f[1])+'</dd>'; }).join('') +
+      '<dt>Score total</dt><dd class="num">'+o.scores.reduce(function(a,b){return a+b;},0)+' / 25</dd></dl>';
+  }
+
+  /* ---------------- Architecture ---------------- */
+  function renderFlow(){
+    /* style.display, not the hidden attribute: hidden is unreliable on SVG children. */
+    el('flowSync').style.display = state.flow === 'sync' ? '' : 'none';
+    el('flowAsync').style.display = state.flow === 'async' ? '' : 'none';
+  }
+  function renderLayer(){
+    var l = LAYERS[state.layer];
+    Array.prototype.forEach.call(document.querySelectorAll('.arch .layer'), function(g){
+      var on = g.getAttribute('data-layer') === state.layer;
+      g.classList.toggle('sel', on);
+      g.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.arch .cmp'), function(c){
+      c.classList.toggle('on', c.getAttribute('data-cmp') === state.layer);
+    });
+    el('layerDetail').innerHTML = '<span class="tag">'+esc(l.contract)+'</span><h3>'+esc(l.name)+' tier</h3><p>'+esc(l.text)+'</p><ul>'+
+      l.items.map(function(i){ return '<li>'+esc(i)+'</li>'; }).join('') + '</ul>';
+  }
+
+  /* ---------------- Roadmap ---------------- */
+  function renderPhase(){
+    var p = PHASES[state.phase];
+    Array.prototype.forEach.call(document.querySelectorAll('#road .road-item'), function(b){
+      b.setAttribute('aria-pressed', b.getAttribute('data-phase') === String(state.phase) ? 'true' : 'false');
+    });
+    el('roadDetail').innerHTML = '<h4>'+esc(p.t)+' · '+esc(p.h)+'</h4><p>'+esc(p.p)+'</p><div class="chips">'+
+      p.chips.map(function(c){ return '<span class="chip">'+esc(c)+'</span>'; }).join('') + '</div>';
+  }
+
+  /* ---------------- Tooltip ---------------- */
+  function showTip(node){
+    tip.innerHTML = '<span class="k">'+esc(node.getAttribute('data-tip'))+'</span><span class="v num">'+esc(node.getAttribute('data-tip-v'))+'</span>';
+    var r = node.getBoundingClientRect(), d = deck.getBoundingClientRect();
+    var x = Math.max(80, Math.min(d.width-80, r.left - d.left + r.width/2));
+    var y = Math.max(60, r.top - d.top);
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+    tip.classList.add('show');
+  }
+  function hideTip(){ tip.classList.remove('show'); }
+  document.addEventListener('mouseover', function(e){ var t = e.target.closest && e.target.closest('[data-tip]'); if (t) showTip(t); });
+  document.addEventListener('focusin', function(e){ var t = e.target.closest && e.target.closest('[data-tip]'); if (t) showTip(t); });
+  document.addEventListener('mouseout', function(e){ if (e.target.closest && e.target.closest('[data-tip]')) hideTip(); });
+  document.addEventListener('focusout', function(e){ if (e.target.closest && e.target.closest('[data-tip]')) hideTip(); });
+
+  /* ---------------- On-slide controls ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-seg]'), function(group){
+    group.addEventListener('click', function(e){
+      var b = e.target.closest('button[data-view]'); if (!b) return;
+      var key = group.getAttribute('data-seg'), view = b.getAttribute('data-view');
+      state[key] = view;
+      Array.prototype.forEach.call(group.querySelectorAll('button'), function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      if (key === 'finops') renderFinops();
+      else if (key === 'metric') renderMetric();
+      else if (key === 'option') renderOption();
+      else if (key === 'flow') renderFlow();
+      hideTip();
+    });
+    group.addEventListener('keydown', function(e){
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var bs = Array.prototype.slice.call(group.querySelectorAll('button'));
+      var i = bs.indexOf(document.activeElement); if (i < 0) return;
+      e.preventDefault(); e.stopPropagation();
+      var n = (i + (e.key === 'ArrowRight' ? 1 : -1) + bs.length) % bs.length;
+      bs[n].focus(); bs[n].click();
+    });
+  });
+  function bindToggle(id, fn){
+    var b = el(id);
+    b.addEventListener('click', function(){
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      fn(on); hideTip();
+    });
+  }
+  bindToggle('varianceToggle', function(on){ state.variance = on; renderFinops(); });
+  bindToggle('targetToggle', function(on){ state.target = on; renderMetric(); });
+
+  document.addEventListener('click', function(e){
+    var exp = e.target.closest && e.target.closest('[data-expand]');
+    if (exp){
+      var body = el(exp.getAttribute('data-expand'));
+      var on = exp.getAttribute('aria-expanded') !== 'true';
+      exp.setAttribute('aria-expanded', on ? 'true' : 'false');
+      body.hidden = !on;
+      exp.querySelector('.lh-i').textContent = on ? '−' : '+';
+      return;
+    }
+    var go = e.target.closest && e.target.closest('[data-goto]');
+    if (go){ navigate(parseInt(go.getAttribute('data-goto'),10) - 1); return; }
+    var ph = e.target.closest && e.target.closest('[data-phase]');
+    if (ph){ state.phase = parseInt(ph.getAttribute('data-phase'),10); renderPhase(); return; }
+    var lay = e.target.closest && e.target.closest('[data-layer]');
+    if (lay){ state.layer = lay.getAttribute('data-layer'); renderLayer(); return; }
+    var sort = e.target.closest && e.target.closest('[data-sort]');
+    if (sort){ sortTable(sort); return; }
+  });
+  document.addEventListener('keydown', function(e){
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('[data-layer]')){
+      e.preventDefault(); e.target.closest('[data-layer]').click();
+    }
+  });
+
+  function sortTable(btn){
+    var th = btn.closest('th'), table = btn.closest('table'), tbody = table.tBodies[0];
+    var col = parseInt(btn.getAttribute('data-sort'),10);
+    var asc = th.getAttribute('aria-sort') !== 'ascending';
+    Array.prototype.forEach.call(table.querySelectorAll('thead th'), function(h){ h.removeAttribute('aria-sort'); });
+    th.setAttribute('aria-sort', asc ? 'ascending' : 'descending');
+    var rows = Array.prototype.slice.call(tbody.rows);
+    rows.sort(function(a,b){
+      var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
+      var nx = parseFloat(x.replace(/[^0-9.\-]/g,'')), ny = parseFloat(y.replace(/[^0-9.\-]/g,''));
+      var cmp = (!isNaN(nx) && !isNaN(ny)) ? nx-ny : x.localeCompare(y);
+      return asc ? cmp : -cmp;
+    });
+    rows.forEach(function(r){ tbody.appendChild(r); });
+    Array.prototype.forEach.call(table.querySelectorAll('thead .arrow'), function(a){ a.textContent = '↕'; });
+    btn.querySelector('.arrow').textContent = asc ? '↑' : '↓';
+  }
+
+  /* ---------------- Deck state machine ---------------- */
+  function updateNotes(){
+    var t = slides[cur].querySelector('template.notes');
+    notesBody.innerHTML = t ? t.innerHTML : '<b>No notes for this slide.</b>';
+  }
   slides.forEach(function(s, i){
     var title = s.getAttribute('data-title') || ('Slide ' + (i+1));
+    var chapter = s.getAttribute('data-chapter') || '';
     var dot = document.createElement('button');
     dot.type = 'button';
-    dot.className = 'dot';
+    dot.className = 'dot' + (s.classList.contains('divider') ? ' chapter' : '');
     dot.title = title;
     dot.setAttribute('aria-label', 'Go to slide ' + (i+1) + ': ' + title);
-    dot.addEventListener('click', function(){ go(i); });
+    dot.addEventListener('click', function(){ navigate(i); });
     toc.appendChild(dot);
 
     var card = document.createElement('button');
     card.type = 'button';
     card.className = 'ov-card';
-    var no = document.createElement('span');
-    no.className = 'ov-no';
-    no.textContent = pad(i+1);
+    var no = document.createElement('span'); no.className = 'ov-no'; no.textContent = pad(i+1);
     var label = document.createElement('span');
-    label.textContent = title;
-    card.appendChild(no);
-    card.appendChild(label);
-    card.addEventListener('click', function(){ closeOverview(); go(i); });
+    label.textContent = title + (chapter ? '  ·  ' + chapter : '');
+    card.appendChild(no); card.appendChild(label);
+    card.addEventListener('click', function(){ closeOverview(); navigate(i); });
     ovGrid.appendChild(card);
   });
 
   function render(){
-    slides.forEach(function(s, i){
-      s.classList.toggle('active', i === cur && !ovOpen);
-    });
+    slides.forEach(function(s, i){ s.classList.toggle('active', i === cur && !ovOpen); });
     bar.style.width = ((cur + 1) / slides.length * 100) + '%';
-    hud.textContent = pad(cur + 1) + ' / ' + pad(slides.length);
-    Array.prototype.forEach.call(toc.children, function(b, i){
-      b.classList.toggle('active', i === cur);
-    });
+    hud.innerHTML = pad(cur + 1) + ' / ' + pad(slides.length) + ' <span class="keys">· N notes · F full · ? keys</span>';
+    Array.prototype.forEach.call(toc.children, function(b, i){ b.classList.toggle('active', i === cur); });
+    Array.prototype.forEach.call(ovGrid.children, function(b, i){ b.classList.toggle('cur', i === cur); });
     progress.setAttribute('aria-valuemax', String(slides.length));
     progress.setAttribute('aria-valuenow', String(cur + 1));
+    var isDark = slides[cur].classList.contains('cover') || slides[cur].classList.contains('divider');
+    document.documentElement.setAttribute('data-dark', isDark ? 'true' : 'false');
+    document.documentElement.setAttribute('data-divider', slides[cur].classList.contains('divider') ? 'true' : 'false');
     document.title = (slides[cur].getAttribute('data-title') || 'Deck') + ' · Deck';
+    updateNotes(); hideTip();
     try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { /* ignore under file:// */ }
   }
-
-  function go(i){
+  function navigate(i){
     cur = Math.max(0, Math.min(slides.length - 1, i));
     render();
     deck.focus({preventScroll:true});
   }
   function openOverview(){ ovOpen = true; ov.classList.add('open'); render(); ov.focus({preventScroll:true}); }
   function closeOverview(){ ovOpen = false; ov.classList.remove('open'); render(); deck.focus({preventScroll:true}); }
+  function toggleNotes(){ notesOpen = !notesOpen; notesDrawer.classList.toggle('open', notesOpen); }
+  function toggleHelp(){ helpOpen = !helpOpen; help.classList.toggle('open', helpOpen); }
+  function toggleFullscreen(){
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } catch (e) { /* fullscreen unavailable, stay in window */ }
+  }
 
   document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape'){ e.preventDefault(); ovOpen ? closeOverview() : openOverview(); return; }
-    if (ovOpen) return;
+    if (e.key === '?'){ e.preventDefault(); toggleHelp(); return; }
+    if (e.key === 'Escape'){
+      e.preventDefault();
+      if (helpOpen){ toggleHelp(); return; }
+      if (ovOpen){ closeOverview(); return; }
+      if (notesOpen){ toggleNotes(); return; }
+      openOverview(); return;
+    }
+    if (helpOpen || ovOpen) return;
+    var k = e.key.toLowerCase();
+    if (k === 'n' && !e.metaKey && !e.ctrlKey && !e.altKey){ e.preventDefault(); toggleNotes(); return; }
+    if (k === 'f' && !e.metaKey && !e.ctrlKey && !e.altKey){ e.preventDefault(); toggleFullscreen(); return; }
+    if (e.target.closest && e.target.closest('[data-no-paging]')) {
+      if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight' || e.key === 'ArrowLeft') return;
+    }
     if ((e.key === ' ' || e.key === 'Enter') && e.target.closest && e.target.closest('button')) return;
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ' || e.key === 'Spacebar'){
-      e.preventDefault(); go(cur + 1);
+      e.preventDefault(); navigate(cur + 1);
     } else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){
-      e.preventDefault(); go(cur - 1);
+      e.preventDefault(); navigate(cur - 1);
     } else if (e.key === 'Home'){
-      e.preventDefault(); go(0);
+      e.preventDefault(); navigate(0);
     } else if (e.key === 'End'){
-      e.preventDefault(); go(slides.length - 1);
+      e.preventDefault(); navigate(slides.length - 1);
     }
   });
 
   progress.addEventListener('click', function(e){
     var r = progress.getBoundingClientRect();
-    go(Math.floor((e.clientX - r.left) / r.width * slides.length));
+    navigate(Math.floor((e.clientX - r.left) / r.width * slides.length));
   });
   progress.addEventListener('keydown', function(e){
-    if (e.key === 'ArrowRight'){ e.preventDefault(); go(cur + 1); }
-    if (e.key === 'ArrowLeft'){ e.preventDefault(); go(cur - 1); }
+    if (e.key === 'ArrowRight'){ e.preventDefault(); navigate(cur + 1); }
+    if (e.key === 'ArrowLeft'){ e.preventDefault(); navigate(cur - 1); }
   });
 
+  /* ---------------- Print: expand every collapsed view ----------------
+     All chart views are rendered up front so printing never depends on the
+     beforeprint event firing. Only the collapsed rows are toggled at print time. */
+  function chartSvgFor(kind, view){
+    if (kind === 'finops') return finopsSvg(view, true);
+    if (kind === 'metric') return metricSvg(view, true);
+    return '';
+  }
+  function renderPrintCharts(){
+    var specs = [
+      {kind:'finops', views:['Q1','Q2','Q3','Q4'], label:'FinOps · budget vs. actual'},
+      {kind:'metric', views:['latency','availability','throughput','cost'], label:'Metrics · 12-month trend'}
+    ];
+    specs.forEach(function(sp){
+      var host = document.querySelector('[data-print-views="'+sp.kind+'"]');
+      if (!host) return;
+      var html = '';
+      sp.views.forEach(function(v){
+        var name = (sp.kind === 'metric') ? METRICS[v].label : v;
+        html += '<div class="print-view-title">'+esc(sp.label+' · '+name)+'</div>' + chartSvgFor(sp.kind, v);
+      });
+      host.innerHTML = html;
+    });
+  }
+  var savedExpand = [];
+  function expandForPrint(){
+    savedExpand = [];
+    Array.prototype.forEach.call(document.querySelectorAll('[data-expand]'), function(b){
+      var body = el(b.getAttribute('data-expand'));
+      savedExpand.push([b, body, b.getAttribute('aria-expanded'), body.hidden]);
+      b.setAttribute('aria-expanded','true');
+      body.hidden = false;
+      b.querySelector('.lh-i').textContent = '−';
+    });
+  }
+  function restoreAfterPrint(){
+    savedExpand.forEach(function(r){
+      r[0].setAttribute('aria-expanded', r[2]);
+      r[1].hidden = r[3];
+      r[0].querySelector('.lh-i').textContent = r[2] === 'true' ? '−' : '+';
+    });
+    savedExpand = [];
+  }
+  window.addEventListener('beforeprint', expandForPrint);
+  window.addEventListener('afterprint', restoreAfterPrint);
+  if (window.matchMedia){
+    var mq = window.matchMedia('print');
+    if (mq.addEventListener) mq.addEventListener('change', function(e){ e.matches ? expandForPrint() : restoreAfterPrint(); });
+  }
+
+  /* Deep links: changing the hash in the address bar also changes the slide. */
+  window.addEventListener('hashchange', function(){
+    var n = parseInt((location.hash || '').slice(1), 10);
+    if (isFinite(n) && n >= 1 && n <= slides.length) navigate(n - 1);
+  });
+
+  /* ---------------- Init ---------------- */
+  renderDots(); renderFinops(); renderMetric(); renderSla(); renderOption(); renderFlow(); renderLayer(); renderPhase(); renderPrintCharts();
   var start = parseInt((location.hash || '').slice(1), 10);
   cur = (isFinite(start) && start >= 1 && start <= slides.length) ? start - 1 : 0;
   render();
