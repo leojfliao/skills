@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-brand="show">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -97,6 +97,15 @@ table.data td.num,table.data th.num{text-align:right}
 .actions{margin-top:2.4cqw;list-style:none;display:flex;gap:2cqw}
 .actions li{border-top:1px solid var(--line);padding-top:.8cqw;font-size:15px;font-size:.85cqw;flex:1}
 
+/* 品牌标志：白底托住红色 Hexagon，深色封面与浅色内容页表现一致。
+   标志固定色 #DB0011，不随主题反白；关闭标志把 <html> 的 data-brand 改成 hide。 */
+.brand{
+  position:absolute;top:2.2cqw;right:2.4cqw;z-index:30;
+  display:flex;align-items:center;justify-content:center;
+  width:3.8cqw;height:2.4cqw;background:var(--white);border:1px solid var(--line);
+}
+.brand svg{width:2.7cqw;height:1.38cqw;display:block}
+html[data-brand="hide"] .brand{display:none}
 .progress{position:fixed;top:0;left:0;right:0;height:3px;background:var(--line);z-index:40;cursor:pointer}
 .progress .bar{height:100%;width:0;background:var(--red);transition:width .18s ease-out}
 .hud{position:fixed;bottom:14px;left:18px;z-index:40;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
@@ -127,12 +136,30 @@ table.data td.num,table.data th.num{text-align:right}
   .slide:last-child{page-break-after:auto;break-after:auto;border-bottom:0}
   .slide::before{display:none}
   .progress,.toc,.hud,.overview,.ov-hint{display:none!important}
+  .brand{position:fixed;top:10mm;right:10mm;width:24mm;height:14mm}
+  .brand svg{width:17mm;height:8.7mm}
 }
 </style>
 </head>
 <body>
 
+<!-- 品牌标志：HSBC Hexagon 的示意重绘（非官方资产），几何与来源见 assets/brand-mark.svg。
+     商标权归 HSBC Holdings plc，本文件不由汇丰发布。
+     正式或对外物料请登录 https://create.hsbc/ 下载官方 logo 后使用。
+     替换官方资产：只改下面 <symbol id="brand-hex"> 内的路径，全页引用自动生效。
+     移除标志：把 <html> 上的 data-brand="show" 改为 "hide"。 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="brand-hex" viewBox="0 5.9 24 12.2">
+      <path fill="#DB0011" d="m24 12.007-5.996 5.997V5.996L24 12.007zm-5.996-6.01H6.01l5.996 6.01 5.997-6.01zM0 12.006l6.01 5.997V5.996L0 12.007zm6.01 5.997h11.994l-5.997-5.997-5.996 5.997z"/>
+    </symbol>
+  </defs>
+</svg>
+
 <div class="deck" id="deck" tabindex="-1">
+  <div class="brand">
+    <svg viewBox="0 5.9 24 12.2" role="img" aria-label="HSBC"><use href="#brand-hex"/></svg>
+  </div>
   <div class="stage" id="stage">
 
     <section class="slide cover" data-title="封面">

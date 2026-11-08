@@ -32,6 +32,16 @@
 </section>
 ```
 
+封面与所有页面右上角由骨架统一放置品牌标志，**不要在 `<section>` 里再写一次**。这段已存在于 `deck-shell.html` 的 `.deck` 内、`.stage` 外：
+
+```html
+<div class="brand">
+  <svg viewBox="0 5.9 24 12.2" role="img" aria-label="HSBC"><use href="#brand-hex"/></svg>
+</div>
+```
+
+`<symbol id="brand-hex">` 是唯一标志定义。整页关闭：`<html data-brand="hide">`；替换官方 logo：只改该 `<symbol>` 内的路径。几何、尺寸与限制见 `references/visual-system.md`「品牌标识」，可预览 `assets/brand-mark.svg`。
+
 ### 三栏要点
 
 ```html
@@ -135,7 +145,7 @@ SVG 必须整段内联，带 `viewBox` 和 `role="img"` / `aria-label`。不写 
 
 `deck-shell.html` 的脚本维护一个当前页索引，负责：切换 `.active`、更新进度条宽度、更新页码、同步目录高亮、写 URL hash、`Esc` 总览网格、点击跳转、打印展开。
 
-增删页面只做两件事：增删 `<section class="slide">`，以及保证每页的 `data-title` 非空。目录、总览、页码、进度条全部自动重算，不要手动改脚本里的页数常量，也不要另写一套翻页逻辑。
+增删页面只做两件事：增删 `<section class="slide">`，以及保证每页的 `data-title` 非空。目录、总览、页码、进度条全部自动重算，不要手动改脚本里的页数常量，也不要另写一套翻页逻辑。品牌标志不是页面，不参与翻页逻辑、不进目录与总览。
 
 删除页面后刷新一次，确认末页进度条到 100%、目录项数与页数一致。
 
@@ -153,6 +163,7 @@ SVG 必须整段内联，带 `viewBox` 和 `role="img"` / `aria-label`。不写 
 | 中文断行难看 | 标题末字单独成行 | 标题控制在 18 字内，或用 `<br>` 手动断在语义处 |
 | 图表无数据 | 画了轴没画点，仍占整页 | 没有确切数值就换成数据表或删掉该页 |
 | 目录不同步 | 总览里出现旧标题 | 标题只写在 `data-title`，不在脚本里另存一份 |
+| 标志变形或丢失 | 拉伸成长方形、中心白色沙漏糊掉、本地打开全白 | 保持 24 : 12.2 比例、宽不低于 32px、`<use>` 只引用同文档的 `#brand-hex` |
 
 ## 5. 验收
 
@@ -162,3 +173,4 @@ SVG 必须整段内联，带 `viewBox` 和 `role="img"` / `aria-label`。不写 
 - [ ] 所有内联 SVG 有 `viewBox` 与无障碍标注
 - [ ] 打印预览逐页检查无截断
 - [ ] 键盘全流程走通，焦点始终可见
+- [ ] 品牌标志每页至多一枚、比例正确、打印时每页正常出现

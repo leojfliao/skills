@@ -2,7 +2,7 @@
 
 三个可复用的 Skill，覆盖一次公司内部分享的完整链路：**先想清楚系统怎么画，再想清楚怎么讲，最后装进能点击的演示页**。
 
-> **非官方声明**：本仓库是个人整理的通用方法与素材，不是汇丰官方品牌规范，也不由汇丰发布。视觉部分只采用公开可查的视觉特征，不含 logo 图形、内部模板、真实客户或业务数据。依据与核验日期见 `visual-system.md`。
+> **非官方声明**：本仓库是个人整理的通用方法与素材，不是汇丰官方品牌规范，也不由汇丰发布。视觉部分只采用公开可查的视觉特征；演示页含一枚 HSBC Hexagon **示意重绘**（非官方资产，见「品牌标志与 create.hsbc」），不含内部模板、官方 logo 文件、真实客户或业务数据。依据与核验日期见 `visual-system.md`。
 
 ## 三个 Skill
 
@@ -37,7 +37,8 @@ skills/
 │   ├── SKILL.md
 │   ├── references/visual-system.md     规范副本，保证 Skill 独立可用
 │   ├── references/layout-and-interaction.md
-│   └── assets/deck-shell.html          可运行的单文件演示页骨架
+│   ├── assets/deck-shell.html          可运行的单文件演示页骨架（内置品牌标志）
+│   └── assets/brand-mark.svg           HSBC Hexagon 示意重绘与用法预览
 ├── internal-share-narrative/
 │   ├── SKILL.md
 │   └── references/narrative-modes.md
@@ -51,6 +52,22 @@ skills/
 ```
 
 视觉规范在三个位置各存一份，内容完全一致；要改规范时，先改根目录的 `visual-system.md`，再把内容同步到两个 `references/visual-system.md`。这样每个 Skill 单独拷走也能用，不依赖跨目录引用。
+
+## 品牌标志与 create.hsbc
+
+`fintech-presentation` 的演示页右上角带一枚 HSBC Hexagon 的**示意重绘**，几何与用法见 `fintech-presentation/assets/brand-mark.svg` 及 `visual-system.md`「品牌标识」。
+
+| 问题 | 结论 |
+|---|---|
+| `create.hsbc` 要不要登录 | **要**。首页与 `/external/newsfeed/*` 文章公开可读（含 Brand identity 全文与官方品牌原则）；品牌资产库、guidelines、toolkits、官方 logo 文件在登录后区域 |
+| 登录方式 | `https://create.hsbc/login.html` — 内网一键进入；网外用邮箱密码登录，可注册 |
+| 本仓库有没有官方资产 | 没有。不含任何登录后取得的文件，也不代为登录 |
+| 拿到官方 logo 后怎么换 | 只替换 `deck-shell.html` 里 `<symbol id="brand-hex">` 内的路径，全页 `<use>` 引用自动生效 |
+| 不想要标志 | 把 `<html>` 的 `data-brand="show"` 改成 `"hide"` |
+
+**商标声明**：HSBC 名称及 Hexagon 标志的权利归 HSBC Holdings plc 所有。本仓库为个人整理的非官方素材，不由汇丰发布；官方文章明确 "there's only one HSBC logo"，故示意重绘仅用于内部技术分享的版式示意，不得对外当作官方标志。几何路径参考 Simple Icons（CC0 1.0）并已渲染核验；其余 47 个架构图标为自绘，不打包第三方图标库。
+
+> 本仓库当前为 **public**。若不希望商标图形出现在公开仓库，可将仓库转为 private，或按上表关闭标志后再推送。
 
 ## 安装
 
@@ -86,4 +103,4 @@ skills/
 
 ## 未覆盖范围
 
-不生成 PPTX / Word / PDF 成品，不做 UI 界面设计稿，不绘制流程图与时序图，不接入真实数据源，不做自动发布或在线托管，不提供汇丰官方品牌资产。
+不生成 PPTX / Word / PDF 成品，不做 UI 界面设计稿，不绘制流程图与时序图，不接入真实数据源，不做自动发布或在线托管，不提供汇丰官方品牌资产（演示页中的 Hexagon 为示意重绘；获取官方资产须自行登录 `create.hsbc`）。
