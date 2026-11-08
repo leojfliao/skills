@@ -1,6 +1,6 @@
-# Three Narrative Modes: Templates and Samples
+# Four Narrative Modes: Templates and Samples
 
-This file provides three ready-to-use section templates, a time budget, filled-in samples, and common pitfalls. The samples all use neutral, fictional topics, and the numbers only demonstrate the format; they stand for no real system or business.
+This file provides four ready-to-use section templates, a time budget, filled-in samples, and common pitfalls. The samples all use neutral, fictional topics, and the numbers only demonstrate the format; they stand for no real system or business.
 
 ## 0. Time Budget
 
@@ -183,6 +183,100 @@ Distribute time evenly across pages, then fine-tune by information density, with
 
 ---
 
+## Mode D · Commercial Pitch Narrative
+
+Use when the audience is asked to allocate capital, sponsor a venture, or approve a business case, and the writer must produce the **words**, not the slides. Framework orders are documented in `fintech-presentation/references/pitch-frameworks.md`; use one only when the user has no outline of their own. If an outline exists, keep its order.
+
+### Section Template
+
+| # | Section | Role | 20-min Suggestion |
+|---|---|---|---|
+| 1 | Purpose | One declarative sentence; name the decision being asked for | 1 min |
+| 2 | Problem | Who has the pain today and how it is handled now | 2 min |
+| 3 | Solution | The insight, in as few words as possible | 2 min |
+| 4 | Why now | The change that made this possible now | 1 min |
+| 5 | Market | Bottom-up: units × price, with the denominator stated | 2 min |
+| 6 | Traction and unit economics | The strongest proof, placed before the model | 3 min |
+| 7 | Business model | Who pays, how much, how often | 2 min |
+| 8 | Competition and the weakest point | Direct, indirect, "do nothing", and the objection you would rather avoid | 2 min |
+| 9 | Team | Founders only, one proof line each | 1 min |
+| 10 | The ask | Amount, use, milestone with a date; the close repeats the thesis | 2 min |
+
+Leave 2 minutes of slack. When the Kawasaki-style 10 / 20 / 30 ceiling is applied, keep the presented story at roughly ten sections and move detail to an appendix.
+
+### Writing Rules
+
+- Every section heading in the resulting deck must be a full-sentence **action title**. In the narrative script, write that sentence at the top of the section before the script body.
+- The purpose fits on one line with no semicolon and no feature list. If it does not, mark `TBD: user to restate the purpose in one sentence`.
+- Market size always states the unit count, the price per unit, and the measurement period. A total without them becomes `TBD: unit count and price`.
+- Traction outranks adjectives: give the number and its basis, or write `TBD: measured value and reporting period`.
+- Competition includes the "do nothing" alternative and one indirect workaround.
+- The weakest point gets its own section. Acknowledge it; do not answer it with "this shows that" or "the results prove".
+- The ask states three separate things: amount, use, milestone with a date. Never compress them into one sentence.
+- No third-party framework names, investor-firm names, or upstream template branding appear in the narrative.
+- Facts, inferences, and recommendations stay separately labelled under the general rules.
+
+### Filled-in Sample (Excerpt)
+
+```markdown
+# Northwind Ledger · Commercial Pitch Narrative
+- Mode: D
+- Audience: investment committee
+- Duration: 20 min (includes 5 min Q&A)
+- Core message: A shared reconciliation layer removes a three-day close delay for mid-size treasury teams.
+
+## Narrative Thread
+State the decision first, then make the pain concrete before describing the product.
+Timing and bottom-up sizing answer the two questions a committee asks before it looks at traction.
+Proof leads the model, the weakest point is named before anyone else raises it, and the close repeats the one-sentence purpose.
+
+### 1. Purpose · 1 min
+- Action title: Northwind Ledger gives mid-size treasury teams a shared reconciliation layer so the close no longer waits on manual matching.
+- Points to cover: the one-sentence purpose; the decision being asked for
+- Speaker script: We build a shared reconciliation layer for mid-size treasury teams. Today we are asking the committee to approve a pilot budget.
+  Everything that follows explains why the timing is right, what the evidence is, and what the budget buys.
+- Supporting material: TBD: pilot budget amount and decision date
+
+### 5. Market · 2 min
+- Action title: A stated count of treasury teams multiplied by a stated annual contract value defines a serviceable market we can actually sell into.
+- Points to cover: unit count; price per unit; denominator; what is excluded
+- Speaker script: The sizing here is bottom-up. We count the teams that match the profile, multiply by the annual contract value we would charge,
+  and exclude the segments we cannot serve today. The exact count and price are to be supplied from the user's own figures;
+  I am not quoting a total until both are confirmed.
+- Supporting material: TBD: unit count, annual contract value, and the source for each
+
+### 8. Competition and the weakest point · 2 min
+- Action title: The strongest alternative is doing nothing, and our integration lead time is the part of the case that needs the most scrutiny.
+- Points to cover: direct alternatives; internal workarounds; "do nothing"; one named weakness
+- Speaker script: Most teams today keep the manual matching step, so "do nothing" is a real competitor and it costs nothing to adopt.
+  Our weakest point is integration lead time for teams with older ledger exports. It is measured in weeks, not days, and we are not claiming otherwise.
+  The pilot is designed to measure it on one real implementation.
+- Supporting material: TBD: measured integration lead time and pilot design
+
+### 10. The ask · 2 min
+- Action title: The requested budget funds one pilot, and the milestone is a signed result by a stated date.
+- Points to cover: amount; use of funds; milestone with a date; repeat the thesis
+- Speaker script: We are asking for a pilot budget. It funds the integration work and one measured implementation,
+  and the milestone is a signed pilot result by the date in the open items. To close where we started:
+  a shared reconciliation layer removes a three-day close delay for mid-size treasury teams.
+- Supporting material: TBD: amount, use-of-funds split, milestone date, named owner
+```
+
+### Objection Handling (Mode D Q&A)
+
+The "Likely Questions" table becomes an objection table. At least 3 items, including one hard commercial objection, and every answer names its basis or writes `TBD`.
+
+```markdown
+| Objection | Answer Points | Basis / To Be Supplied |
+|---|---|---|
+| Why is the market figure credible | Show units × price and what is excluded; state the source of each | TBD: unit count, price, source |
+| Why will "do nothing" not win | Name the cost of the manual step in the user's own terms; no invented savings | Fact: user's problem statement |
+| What happens if integration lead time doubles (hard objection) | Acknowledge the risk, state which milestone it moves, give no reassurance without a measurement | TBD: measured lead time and pilot exit condition |
+| What exactly does the budget buy | Use-of-funds split and the milestone it reaches | TBD: amount and split |
+```
+
+---
+
 ## Q&A Prep
 
 Fixed format, at least 3 items, and one of them must be a "hard question."
@@ -212,6 +306,11 @@ Do not delete the hard question, and do not invent a neat answer on the user's b
 | Forgetting to set aside Q&A | The script already runs over once read through | Set aside Q&A first, then budget the body from the remaining time |
 | Template fields read aloud | "to be supplied:" and "inference:" appear in the speaker script | Those belong only in lists and annotation areas, never in the speaker script |
 | Inconsistent terminology / mixed-language output | Half the terms in one language and half in another | Keep one language throughout and give the full term on first use |
+| Pitch reads as a feature list | Sections named "Product", "Market", "Team" | Write full-sentence action titles; the conclusion goes in the heading |
+| Market total with no denominator | "A $50B market" with no units or price | State units × price, or write `TBD: unit count and price` |
+| Weakest point hidden | Only strengths appear; the hard objection has no answer | Give it its own section and one objection row |
+| Ask compressed into one line | Amount, use and milestone fused into a vague sentence | Three separate pieces of information, including a date |
+| Framework branding in the script | Investor-firm or template names in the narrative | Remove all third-party names; structure only |
 
 ## Acceptance Checklist
 
@@ -222,3 +321,7 @@ Do not delete the hard question, and do not invent a neat answer on the user's b
 - [ ] Open items are specific about "who to ask for what"
 - [ ] Fact / inference / recommendation are kept separate
 - [ ] No illustrative numbers passed off as measured data
+- [ ] **Mode D**: one-sentence purpose, action-title headings, denominator for market size, "do nothing" alternative
+- [ ] **Mode D**: weakest point has its own section; ask states amount, use and a dated milestone
+- [ ] **Mode D**: objection table includes a hard commercial objection and names a basis or `TBD` for every answer
+- [ ] **Mode D**: no framework or third-party names in the narrative

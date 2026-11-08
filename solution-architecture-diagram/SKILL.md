@@ -1,7 +1,7 @@
 ---
 name: solution-architecture-diagram
 description: Turns a component list, call relationships and deployment environment into a single self-contained SVG system architecture or solution design diagram, with hand-drawn icons for cloud, compute, gateway, database, cache, message queue, storage, security and observability, organised by layer and trust zone with a legend and labelled connectors. Use when the user asks to "draw the architecture diagram for this solution", "produce a system context diagram", "show the cloud, databases and middleware", "make a solution design diagram", or "sketch the deployment topology". Technical architecture diagrams only: no UI mockups, no flowcharts or sequence diagrams, no PPTX, no invented components, no raster output.
-version: 1.2.0
+version: 1.2.1
 agent_created: true
 ---
 

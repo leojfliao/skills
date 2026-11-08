@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en" data-brand="show">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pitch Deck Shell</title>
+<style>
+:root{
+  --red:#DB0011; --white:#FFFFFF; --black:#000000; --ink:#333333;
+  --muted:#767676; --grey:#F4F4F4; --line:#D7D8D6; --dark:#141414;
+  --ok:#008580; --err:#A8000B;
+  --font-sans:'Univers Next','Nimbus Sans',Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,Helvetica,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%;overflow:hidden;background:var(--grey);font-family:var(--font-sans);color:var(--ink)}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+.deck{
+  position:relative;width:min(100vw,177.78vh);height:min(100vh,56.25vw);
+  margin:auto;background:var(--white);overflow:hidden;container-type:inline-size;
+}
+.stage{position:absolute;inset:0}
+.slide{
+  position:absolute;inset:0;padding:3.4cqw 4.4cqw;
+  display:flex;flex-direction:column;justify-content:center;
+  background:var(--white);opacity:0;transform:translateY(8px);pointer-events:none;
+  transition:opacity .18s ease-out,transform .18s ease-out;
+}
+.slide.active{opacity:1;transform:none;pointer-events:auto}
+.slide::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(215,216,214,.30) 0 1px,transparent 1px 64px),
+    repeating-linear-gradient(90deg,rgba(215,216,214,.30) 0 1px,transparent 1px 64px);
+}
+.slide>*{position:relative;z-index:1}
+.slide.cover,.slide.divider{background:var(--dark);color:var(--white)}
+.slide.cover::before,.slide.divider::before{opacity:.16;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.14) 0 1px,transparent 1px 64px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.14) 0 1px,transparent 1px 64px);
+}
+.slide.cover::after{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--red)}
+.slide.closing{border-top:6px solid var(--red)}
+
+/* Angular detailing: the public "Embrace our angles" principle, used as a
+   small chamfer on structural blocks only. Never on the brand mark. */
+.chamfer{clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
+
+.eyebrow{font-size:13px;font-size:.72cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.8cqw}
+.cover .eyebrow,.divider .eyebrow{color:#D7D8D6}
+.title{font-size:40px;font-size:2.7cqw;line-height:1.15;font-weight:700;color:var(--black);letter-spacing:-.02em}
+h2.title{font-size:28px;font-size:1.72cqw;margin-bottom:.3cqw}
+.cover .title{color:var(--white);max-width:76%}
+.cover .title.big{font-size:56px;font-size:3.6cqw}
+.sub{font-size:18px;font-size:1cqw;color:var(--muted);margin-top:1.2cqw;max-width:64%}
+.cover .sub,.divider .sub{color:#D7D8D6}
+.note{font-size:13px;font-size:.68cqw;color:var(--muted);margin-top:1.4cqw}
+.cover .note,.divider .note{color:#D7D8D6}
+
+.head-row{display:flex;align-items:flex-end;justify-content:space-between;gap:2cqw;margin-bottom:1.4cqw}
+.head-row .title{margin-bottom:0}
+.sec-tag{font-family:var(--font-mono);font-size:11px;font-size:.62cqw;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-left:2px solid var(--red);padding-left:.7cqw;white-space:nowrap}
+.byline{display:flex;gap:1.4cqw;align-items:center;margin-top:.7cqw;font-size:13px;font-size:.7cqw;color:var(--muted)}
+
+/* Section divider */
+.div-no{font-size:120px;font-size:9cqw;font-weight:700;line-height:.9;color:var(--white);letter-spacing:-.04em}
+.divider .title{color:var(--white);font-size:44px;font-size:2.9cqw;margin-top:1cqw}
+.divider .rule{width:12cqw;height:6px;background:var(--red);margin-top:1.6cqw}
+/* One narrow angled red band on the left, clear of the right-hand TOC dots.
+   It stays under 10% of the screen so red remains scarce. */
+.slide.divider{padding-left:10cqw}
+.divider::after{content:"";position:absolute;left:0;top:0;width:7cqw;height:100%;
+  background:var(--red);clip-path:polygon(0 0,100% 0,58% 100%,0 100%)}
+.divider>*{z-index:2}
+
+/* Agenda */
+.agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2cqw;margin-top:1cqw}
+.agenda-item{display:flex;flex-direction:column;align-items:flex-start;text-align:left;
+  border-top:2px solid var(--black);background:var(--grey);padding:1.4cqw;min-height:12cqw;transition:border-color .15s ease-out}
+.agenda-item:hover,.agenda-item:focus-visible{border-top-color:var(--red)}
+.agenda-item .n{font-family:var(--font-mono);font-size:.85cqw;color:var(--red);margin-bottom:1cqw}
+.agenda-item h3{font-size:19px;font-size:1.05cqw;color:var(--black);margin-bottom:.5cqw}
+.agenda-item p{font-size:13px;font-size:.72cqw;color:var(--muted);line-height:1.5}
+.agenda-item .go{margin-top:auto;padding-top:1cqw;font-family:var(--font-mono);font-size:.65cqw;color:var(--muted)}
+
+/* KPI strip */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:1.2cqw}
+.kpi{padding:1cqw 1.2cqw;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:.35cqw;min-width:0}
+.kpi:first-child{padding-left:0}
+.kpi:last-child{border-right:0}
+.kpi .k{font-size:11px;font-size:.62cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .v{font-size:28px;font-size:1.75cqw;font-weight:700;line-height:1.1;color:var(--black)}
+.kpi .v.hot{color:var(--red)}
+.kpi .u{font-size:14px;font-size:.82cqw;font-weight:500;color:var(--muted);margin-left:.25cqw}
+.kpi .d{font-size:12px;font-size:.66cqw;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spark{height:1.6cqw;width:100%;margin-top:.2cqw;display:block}
+
+/* Controls */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:1cqw;margin-bottom:.6cqw}
+.toolbar .hint{font-size:12px;font-size:.66cqw;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);background:var(--white)}
+.seg button{padding:.45cqw .95cqw;font-size:12px;font-size:.68cqw;letter-spacing:.04em;
+  border-right:1px solid var(--line);color:var(--muted);transition:color .15s ease-out}
+.seg button:last-child{border-right:0}
+.seg button:hover{color:var(--black)}
+.seg button[aria-pressed="true"]{background:var(--black);color:var(--white)}
+.seg button[aria-pressed="true"]:focus-visible{outline-offset:-3px}
+.toggle{display:inline-flex;align-items:center;gap:.5cqw;font-size:12px;font-size:.68cqw;color:var(--muted)}
+.toggle .box{width:1.1cqw;height:1.1cqw;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:.7cqw;color:var(--white)}
+.toggle[aria-pressed="true"] .box{background:var(--red);border-color:var(--red)}
+.toggle[aria-pressed="true"]{color:var(--black)}
+
+/* Charts */
+.chart{width:100%;position:relative}
+.chart svg{width:100%;height:23cqw;display:block;overflow:visible}
+.chart svg text{font-family:var(--font-sans)}
+.chart svg .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.chart svg .pt{cursor:pointer}
+.chart svg .pt:focus-visible{outline:none;stroke:var(--red);stroke-width:2}
+.chart-tip{position:absolute;z-index:35;pointer-events:none;display:none;min-width:11cqw;
+  background:var(--white);border:1px solid var(--black);border-top:3px solid var(--red);
+  padding:.55cqw .7cqw;transform:translate(-50%,-115%);box-shadow:none}
+.chart-tip.show{display:block}
+.chart-tip .k{display:block;font-size:11px;font-size:.62cqw;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.chart-tip .v{display:block;font-size:15px;font-size:.86cqw;color:var(--black);margin-top:.2cqw}
+.chart-legend{display:flex;gap:1.6cqw;align-items:center;font-size:12px;font-size:.66cqw;color:var(--muted);margin-top:.2cqw}
+.chart-legend .cap{margin-left:auto;white-space:nowrap}
+.chart-legend i{display:inline-block;width:.85cqw;height:.5cqw;margin-right:.35cqw;vertical-align:middle}
+.chart-legend .dash{height:0;border-top:1px dashed var(--red);width:1.2cqw}
+
+/* Expandable rows */
+.levers{border-top:1px solid var(--line)}
+.lever{border-bottom:1px solid var(--line)}
+.lever-head{width:100%;display:grid;grid-template-columns:2.2cqw 1fr 8cqw 1.4cqw;align-items:center;gap:1cqw;
+  padding:.85cqw 0;text-align:left}
+.lever-head:hover .lh-t{color:var(--red)}
+.lever-head .lh-n{font-family:var(--font-mono);font-size:.72cqw;color:var(--red)}
+.lever-head .lh-t{font-size:16px;font-size:.9cqw;color:var(--black);font-weight:600}
+.lever-head .lh-v{font-size:14px;font-size:.8cqw;color:var(--black);text-align:right}
+.lever-head .lh-i{font-family:var(--font-mono);font-size:.9cqw;color:var(--muted);text-align:center}
+.lever-head[aria-expanded="true"] .lh-i{color:var(--red)}
+.lever-body{padding:0 0 1cqw 3.2cqw;display:grid;grid-template-columns:1fr 1fr;gap:1.6cqw}
+.lever-body p{font-size:13px;font-size:.72cqw;line-height:1.6;color:var(--ink)}
+.lever-body dl{font-size:13px;font-size:.72cqw;line-height:1.8}
+.lever-body dt{color:var(--muted);display:inline-block;min-width:7cqw}
+.lever-body dd{display:inline;color:var(--black)}
+.lever-body dd::after{content:"";display:block}
+
+/* Data tables */
+table.data{width:100%;border-collapse:collapse;font-size:15px;font-size:.8cqw}
+table.data th,table.data td{text-align:left;padding:.62cqw .8cqw;border-bottom:1px solid var(--line)}
+table.data thead th{font-weight:600;color:var(--black);border-bottom:2px solid var(--black);white-space:nowrap}
+table.data td.num,table.data th.num{text-align:right}
+table.data tbody tr:hover{background:var(--grey)}
+table.data th button{display:inline-flex;align-items:center;gap:.4cqw;font-weight:600;color:inherit;font-size:inherit;padding:0}
+table.data th button:hover{color:var(--red)}
+table.data th .arrow{font-family:var(--font-mono);color:var(--muted);font-size:.7cqw}
+table.data th[aria-sort] .arrow{color:var(--red)}
+.status{display:inline-block;font-family:var(--font-mono);font-size:10px;font-size:.6cqw;letter-spacing:.06em;
+  text-transform:uppercase;padding:.15cqw .45cqw;border:1px solid var(--line);color:var(--muted)}
+.status.ok{border-color:var(--line);color:var(--muted)}
+.status.risk{border-color:var(--red);color:var(--red)}
+
+/* Solutions matrix */
+.opt-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:2cqw;align-items:start}
+.matrix td .dots{display:inline-flex;gap:3px}
+.matrix td .dots i{width:.55cqw;height:.55cqw;border:1px solid var(--line);display:block}
+.matrix td .dots i.on{background:var(--black);border-color:var(--black)}
+.matrix td.focus-col{background:var(--grey)}
+.matrix td.focus-col .dots i.on{background:var(--red);border-color:var(--red)}
+.matrix th.focus-col{color:var(--red)}
+.opt-detail{border-left:2px solid var(--red);padding:.4cqw 0 .4cqw 1.4cqw;min-height:14cqw}
+.opt-detail .tag{font-family:var(--font-mono);font-size:.65cqw;letter-spacing:.1em;color:var(--red);text-transform:uppercase}
+.opt-detail h3{font-size:22px;font-size:1.25cqw;color:var(--black);margin:.6cqw 0}
+.opt-detail p{font-size:14px;font-size:.76cqw;line-height:1.65;margin-bottom:1cqw}
+.opt-detail dl{display:grid;grid-template-columns:auto 1fr;gap:.35cqw 1cqw;
+  font-size:13px;font-size:.7cqw;border-top:1px solid var(--line);padding-top:.8cqw}
+.opt-detail dt{color:var(--muted);white-space:nowrap}
+.opt-detail dd{margin:0;color:var(--black);text-align:right}
+
+/* Architecture */
+.arch-wrap{display:grid;grid-template-columns:1.7fr 1fr;gap:1.6cqw;align-items:start}
+.arch svg{width:100%;height:26cqw;display:block}
+.arch svg .layer{cursor:pointer}
+.arch svg .layer:hover .lr-box,.arch svg .layer.sel .lr-box{stroke:var(--red);stroke-width:2}
+.arch svg .layer:focus-visible{outline:none}
+.arch svg .layer:focus-visible .lr-box{stroke:var(--red);stroke-width:2}
+.arch svg .cmp{fill:var(--white);stroke:var(--line);stroke-width:1}
+.arch svg .cmp.on{fill:var(--grey);stroke:var(--black)}
+.layer-detail{border-top:2px solid var(--black);padding-top:1cqw;min-height:15cqw}
+.layer-detail .tag{font-family:var(--font-mono);font-size:.65cqw;color:var(--red);letter-spacing:.1em;text-transform:uppercase}
+.layer-detail h3{font-size:21px;font-size:1.15cqw;margin:.6cqw 0;color:var(--black)}
+.layer-detail p{font-size:13px;font-size:.72cqw;line-height:1.7;margin-bottom:1cqw}
+.layer-detail ul{list-style:none;font-size:13px;font-size:.72cqw;line-height:1.9}
+.layer-detail li::before{content:"— ";color:var(--red)}
+
+/* Roadmap */
+.road{display:grid;grid-template-columns:repeat(4,1fr);gap:1cqw;border-top:1px solid var(--line);padding-top:1.2cqw}
+.road-item{text-align:left;border-top:3px solid var(--line);padding:.8cqw .8cqw .8cqw 0;transition:border-color .15s ease-out}
+.road-item:hover{border-top-color:var(--black)}
+.road-item[aria-pressed="true"]{border-top-color:var(--red)}
+.road-item .when{font-family:var(--font-mono);font-size:.72cqw;color:var(--red);display:block;margin-bottom:.5cqw}
+.road-item h3{font-size:17px;font-size:.95cqw;color:var(--black);margin-bottom:.35cqw}
+.road-item p{font-size:12px;font-size:.68cqw;color:var(--muted);line-height:1.5}
+.road-detail{margin-top:1.4cqw;border-left:2px solid var(--red);padding:.2cqw 0 .2cqw 1.2cqw;min-height:6cqw}
+.road-detail h4{font-size:16px;font-size:.88cqw;color:var(--black);margin-bottom:.4cqw}
+.road-detail p{font-size:13px;font-size:.72cqw;line-height:1.6;max-width:80cqw}
+.road-detail .chips{display:flex;gap:.6cqw;margin-top:.7cqw;flex-wrap:wrap}
+.road-detail .chip{font-family:var(--font-mono);font-size:11px;font-size:.62cqw;border:1px solid var(--line);padding:.2cqw .5cqw;color:var(--muted)}
+
+/* Closing */
+.kicker{font-size:34px;font-size:2.1cqw;font-weight:700;color:var(--black);line-height:1.3;max-width:80%}
+.actions{margin-top:2cqw;list-style:none;display:flex;gap:2cqw}
+.actions li{border-top:1px solid var(--line);padding-top:.8cqw;font-size:15px;font-size:.82cqw;flex:1}
+.actions li b{display:block;font-family:var(--font-mono);font-size:.65cqw;color:var(--red);margin-bottom:.4cqw;font-weight:400}
+
+/* Brand mark: a white badge holds the red Hexagon so dark covers and light
+   content pages behave alike. Fixed #DB0011, never reversed; set data-brand to hide to switch it off. */
+.brand{
+  position:absolute;top:2.2cqw;right:2.4cqw;z-index:30;
+  display:flex;align-items:center;justify-content:center;
+  width:3.8cqw;height:2.4cqw;background:var(--white);border:1px solid var(--line);
+}
+.brand svg{width:2.7cqw;height:1.38cqw;display:block}
+html[data-brand="hide"] .brand{display:none}
+.progress{position:fixed;top:0;left:0;right:0;height:3px;background:var(--line);z-index:40;cursor:pointer}
+.progress .bar{height:100%;width:0;background:var(--red);transition:width .18s ease-out}
+.hud{position:fixed;bottom:14px;left:18px;z-index:40;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.hud .keys{opacity:.75}
+.toc{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:8px}
+.toc .dot{width:10px;height:10px;padding:0;border:1px solid var(--muted);border-radius:0;background:transparent;cursor:pointer;transition:background .15s ease-out,border-color .15s ease-out,height .15s ease-out}
+.toc .dot:hover{border-color:var(--red)}
+.toc .dot.active{background:var(--red);border-color:var(--red);height:20px}
+.toc .dot.chapter{border-color:var(--black)}
+.toc .dot.chapter.active{background:var(--red);border-color:var(--red)}
+/* Dark cover and divider slides need a lighter dot outline to stay visible. */
+html[data-dark="true"] .hud{color:#D7D8D6}
+html[data-dark="true"] .toc .dot{border-color:#D7D8D6}
+html[data-dark="true"] .toc .dot.chapter{border-color:#D7D8D6}
+/* Divider slides carry a red band on the left: move the page counter clear of it. */
+html[data-divider="true"] .hud{left:9cqw}
+.overview{position:fixed;inset:0;z-index:60;background:var(--white);display:none;overflow:auto;padding:48px}
+.overview.open{display:block}
+.overview h2{font-size:22px;color:var(--black);margin-bottom:24px;font-weight:600}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.ov-card{display:flex;gap:14px;align-items:flex-start;text-align:left;padding:20px;border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:var(--font-sans);font-size:15px;cursor:pointer;transition:border-color .15s ease-out}
+.ov-card:hover{border-color:var(--red)}
+.ov-card.cur{border-left:3px solid var(--red)}
+.ov-no{font-family:var(--font-mono);color:var(--red);font-size:13px;padding-top:2px}
+.ov-hint{position:fixed;bottom:18px;right:20px;font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+
+.notes-drawer{position:fixed;left:0;right:0;bottom:0;z-index:55;background:var(--dark);color:var(--white);
+  border-top:3px solid var(--red);padding:18px 28px 22px;display:none;font-size:14px;line-height:1.6}
+.notes-drawer.open{display:block}
+.notes-drawer .nt{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--red);text-transform:uppercase;display:block;margin-bottom:6px}
+.notes-drawer .nb{max-width:1100px;color:#EDEDED}
+.notes-drawer .nb b{color:var(--white)}
+.help{position:fixed;inset:0;z-index:70;background:rgba(20,20,20,.94);display:none;align-items:center;justify-content:center}
+.help.open{display:flex}
+.help-card{background:var(--white);border-top:6px solid var(--red);padding:32px 40px;min-width:520px;max-width:90vw}
+.help-card h2{font-size:22px;color:var(--black);margin-bottom:16px}
+.help-card table{border-collapse:collapse;width:100%;font-size:14px}
+.help-card td{padding:7px 12px;border-bottom:1px solid var(--line)}
+.help-card td:first-child{font-family:var(--font-mono);color:var(--red);white-space:nowrap;width:180px}
+.help-card .close{margin-top:18px;font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+
+.print-views{display:none}
+.print-view-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:.8cqw 0 .2cqw}
+.print-views svg{width:100%;height:14cqw;display:block}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition-duration:0s!important;animation:none!important}
+}
+@media print{
+  @page{size:landscape;margin:0}
+  html,body{height:auto;overflow:visible;background:var(--white)}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .deck{width:100%;height:auto;margin:0;overflow:visible;container-type:inline-size}
+  .stage{position:static}
+  .slide{position:relative;inset:auto;min-height:100vh;opacity:1!important;transform:none!important;
+    display:flex;page-break-after:always;break-after:page;border-bottom:1px solid var(--line)}
+  .slide:last-child{page-break-after:auto;break-after:auto;border-bottom:0}
+  .slide::before{display:none}
+  .progress,.toc,.hud,.overview,.ov-hint,.notes-drawer,.help,.chart-tip,.toolbar{display:none!important}
+  .brand{position:fixed;top:10mm;right:10mm;width:24mm;height:14mm}
+  .brand svg{width:17mm;height:8.7mm}
+  .lever-body,.panel-body{display:grid!important}
+  .print-views{display:block}
+  .chart>.chart-svg{display:none}
+  .arch svg,.chart svg{height:16cqw}
+  .agenda-item,.card,.kpi{break-inside:avoid}
+}
+
+/* ---- Pitch layouts ---- */
+.thesis .big-claim{font-size:40px;font-size:2.35cqw;font-weight:700;line-height:1.25;max-width:84%;color:var(--black)}
+.thesis .decision{margin-top:1.4cqw;border-left:3px solid var(--red);padding:.6cqw 0 .6cqw 1.2cqw;font-size:15px;font-size:.85cqw;color:var(--ink)}
+.thirds{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2cqw;margin-top:1.6cqw}
+.third{border-top:2px solid var(--black);padding:1cqw 1.2cqw 1cqw 0}
+.third .n{font-family:var(--font-mono);font-size:.7cqw;color:var(--red);display:block;margin-bottom:.6cqw}
+.third h3{font-size:18px;font-size:1cqw;color:var(--black);margin-bottom:.5cqw}
+.third p{font-size:13px;font-size:.72cqw;line-height:1.6;color:var(--muted)}
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:2cqw;margin-top:1cqw}
+.ps-col{border-top:2px solid var(--black);padding-top:1cqw}
+.ps-col.resp{border-top-color:var(--line)}
+.ps-col h3{font-size:14px;font-size:.76cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1cqw}
+.ps-item{display:block;width:100%;text-align:left;border-bottom:1px solid var(--line);padding:.85cqw .6cqw;transition:background .15s ease-out}
+.ps-item:hover,.ps-item[aria-pressed="true"]{background:var(--grey)}
+.ps-item[aria-pressed="true"]{border-left:3px solid var(--red)}
+.ps-item .t{font-size:16px;font-size:.9cqw;font-weight:600;color:var(--black);display:block}
+.ps-item .d{font-size:13px;font-size:.7cqw;color:var(--muted);line-height:1.5;display:block;margin-top:.3cqw}
+.ps-detail{margin-top:1.2cqw;border-left:2px solid var(--red);padding:.4cqw 0 .4cqw 1.2cqw;min-height:3.4cqw}
+.ps-detail h4{font-size:17px;font-size:.95cqw;color:var(--black);margin-bottom:.4cqw}
+.ps-detail p{font-size:13px;font-size:.72cqw;line-height:1.6;color:var(--ink)}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2cqw;margin-top:1.4cqw;border-top:1px solid var(--line);padding-top:1.4cqw}
+.why-item{border-left:1px solid var(--line);padding-left:1.2cqw}
+.why-item .when{font-family:var(--font-mono);font-size:.72cqw;color:var(--red);display:block;margin-bottom:.7cqw}
+.why-item h3{font-size:18px;font-size:1cqw;color:var(--black);margin-bottom:.5cqw}
+.why-item p{font-size:13px;font-size:.72cqw;line-height:1.6;color:var(--muted)}
+.comp-wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:1.6cqw;align-items:start}
+.comp-wrap .chart svg{height:22cqw}
+.comp-detail{border-top:2px solid var(--black);padding-top:1cqw;min-height:12cqw}
+.comp-detail .tag{font-family:var(--font-mono);font-size:.65cqw;letter-spacing:.1em;color:var(--red);text-transform:uppercase}
+.comp-detail h3{font-size:21px;font-size:1.15cqw;color:var(--black);margin:.6cqw 0}
+.comp-detail p{font-size:13px;font-size:.72cqw;line-height:1.7;margin-bottom:1cqw}
+.comp-detail dl{display:grid;grid-template-columns:auto 1fr;gap:.35cqw 1cqw;font-size:13px;font-size:.7cqw;border-top:1px solid var(--line);padding-top:.8cqw}
+.comp-detail dt{color:var(--muted)}
+.comp-detail dd{margin:0;color:var(--black);text-align:left}
+.comp-legend{display:flex;gap:.6cqw;flex-wrap:wrap;margin-top:.8cqw}
+.comp-legend button{font-family:var(--font-mono);font-size:.65cqw;border:1px solid var(--line);padding:.35cqw .7cqw;color:var(--muted)}
+.comp-legend button[aria-pressed="true"]{border-color:var(--red);color:var(--red)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2cqw;margin-top:1.2cqw}
+.tier{border:1px solid var(--line);padding:1.2cqw;min-height:8cqw}
+.tier.focus{border-top:3px solid var(--red)}
+.tier h3{font-size:18px;font-size:1cqw;color:var(--black);margin-bottom:.6cqw}
+.tier .p{font-size:24px;font-size:1.5cqw;font-weight:700;color:var(--black)}
+.tier p{font-size:13px;font-size:.72cqw;color:var(--muted);line-height:1.6;margin-top:.6cqw}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2cqw;margin-top:1.4cqw}
+.team-card{border-top:2px solid var(--black);padding-top:1cqw}
+.team-card .av{width:4cqw;height:4cqw;background:var(--grey);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:1cqw;color:var(--muted);margin-bottom:1cqw}
+.team-card h3{font-size:17px;font-size:.95cqw;color:var(--black)}
+.team-card .role{font-size:12px;font-size:.68cqw;color:var(--red);margin:.3cqw 0 .6cqw}
+.team-card p{font-size:13px;font-size:.72cqw;line-height:1.6;color:var(--muted)}
+.ask-grid{display:grid;grid-template-columns:1fr 2fr;gap:2cqw;align-items:center;margin-top:1cqw}
+.ask-amount{font-size:60px;font-size:4.2cqw;font-weight:700;line-height:1;color:var(--black)}
+.ask-amount .unit{font-size:18px;font-size:1cqw;font-weight:500;color:var(--muted)}
+.ask-bar svg{width:100%;height:8cqw;display:block}
+.ask-legend{display:flex;gap:1.2cqw;flex-wrap:wrap;font-size:12px;font-size:.66cqw;color:var(--muted);margin-top:.6cqw}
+.ask-legend i{display:inline-block;width:.8cqw;height:.5cqw;margin-right:.3cqw;vertical-align:middle}
+.scr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2cqw;margin-top:1.2cqw}
+.scr-col{text-align:left;border-top:3px solid var(--line);padding:1cqw 1cqw 1cqw 0;transition:border-color .15s ease-out}
+.scr-col:hover{border-top-color:var(--black)}
+.scr-col[aria-pressed="true"]{border-top-color:var(--red)}
+.scr-col h3{font-size:18px;font-size:1cqw;color:var(--black);margin-bottom:.6cqw}
+.scr-col p{font-size:13px;font-size:.72cqw;line-height:1.6;color:var(--muted)}
+.scr-detail{margin-top:1.2cqw;border-left:2px solid var(--red);padding:.4cqw 0 .4cqw 1.2cqw;min-height:3.4cqw}
+.scr-detail h4{font-size:17px;font-size:.95cqw;color:var(--black);margin-bottom:.4cqw}
+.scr-detail p{font-size:13px;font-size:.72cqw;line-height:1.6}
+.unit-formula{font-family:var(--font-mono);font-size:.8cqw;color:var(--black);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:.8cqw 0;margin-top:1cqw}
+.unit-formula b{color:var(--red);font-weight:600}
+.tbd{color:var(--muted);font-family:var(--font-mono)}
+@media print{
+  .comp-wrap .chart svg{height:16cqw}
+  .ask-bar svg{height:6cqw}
+  .ps-item,.scr-col,.comp-legend{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<!-- Brand mark: a redraw of the HSBC Hexagon (non-official asset); geometry and sources in assets/brand-mark.svg.
+     The HSBC name and mark belong to HSBC Holdings plc; this file is not published by HSBC.
+     For formal or external material, sign in to https://create.hsbc/ and use the official logo.
+     To swap in the official asset: change only the path inside <symbol id="brand-hex"> below.
+     To remove the mark: change <html> from data-brand="show" to "hide".
+     All company names and figures in this file are fictional samples. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="brand-hex" viewBox="0 5.9 24 12.2">
+      <path fill="#DB0011" d="m24 12.007-5.996 5.997V5.996L24 12.007zm-5.996-6.01H6.01l5.996 6.01 5.997-6.01zM0 12.006l6.01 5.997V5.996L0 12.007zm6.01 5.997h11.994l-5.997-5.997-5.996 5.997z"/>
+    </symbol>
+  </defs>
+</svg>
+<div class="deck" id="deck" tabindex="-1">
+  <div class="brand">
+    <svg viewBox="0 5.9 24 12.2" role="img" aria-label="HSBC"><use href="#brand-hex"/></svg>
+  </div>
+  <div class="chart-tip" id="tip" role="status" aria-live="polite"></div>
+  <div class="stage" id="stage">
+
+    <section class="slide cover" data-title="Cover" data-chapter="Start">
+      <p class="eyebrow">Commercial pitch · sample deck</p><h1 class="title big">Northwind Ledger gives mid-size treasury teams a shared reconciliation layer so the close no longer waits on manual matching.</h1><p class="sub">A working pitch shell: every layout in the pitch library, with fictional sample data in every figure.</p><div class="byline"><span>Northwind Ledger · fictional company</span><span>·</span><span>20 min</span><span>·</span><span class="num">sample data</span></div><p class="note">Pitch deck shell · all names and figures are fictional samples · N opens speaker notes</p>
+      <template class="notes"><b>Key point.</b> Open with the one-sentence purpose and the decision being asked for. Do not read the sample figures aloud; they exist to show the layout.</template>
+    </section>
+
+    <section class="slide" data-title="Problem and paired response" data-chapter="Problem">
+      <div class="head-row"><div><p class="eyebrow">Problem · paired response</p><h2 class="title">Three manual steps add days to the close, and each one has a direct answer</h2></div><span class="sec-tag">Problem / Solution</span></div><div class="toolbar"><span class="hint">Select a pain on the left to see why the paired response holds</span></div><div class="ps-grid" data-no-paging data-choice="pain"><div class="ps-col"><h3>What hurts today</h3><button type="button" class="ps-item" data-view="0" aria-pressed="true"><span class="t">Closing takes three extra days</span><span class="d">Treasury teams match ledger exports by hand at month end.</span></button><button type="button" class="ps-item" data-view="1" aria-pressed="false"><span class="t">Exceptions have no owner</span><span class="d">Unmatched items sit in a shared mailbox with no audit trail.</span></button><button type="button" class="ps-item" data-view="2" aria-pressed="false"><span class="t">Audit evidence is assembled late</span><span class="d">Evidence is reconstructed from screenshots after the close.</span></button></div><div class="ps-col resp"><h3>What answers it, in the same order</h3><div class="ps-item"><span class="t">A shared reconciliation layer matches records at ingest.</span><span class="d">The delay is in matching, not in approvals.</span></div><div class="ps-item"><span class="t">Every exception gets an owner and a timestamped resolution path.</span><span class="d">Ownership is assigned by rule before a human looks at it.</span></div><div class="ps-item"><span class="t">Evidence is written as a by-product of the match itself.</span><span class="d">The record exists at the moment the decision is made.</span></div></div></div><div class="ps-detail" id="painDetail"></div><p class="note">Sample pains · replace with the user's own problem statement</p>
+      <template class="notes"><b>Key point.</b> Keep the two columns in the same order. The response column is not a feature list; it says why the pain goes away.</template>
+    </section>
+
+    <section class="slide" data-title="Why this is possible now" data-chapter="Timing">
+      <div class="head-row"><div><p class="eyebrow">Timing · why now</p><h2 class="title">Three dated changes make a shared reconciliation layer practical now</h2></div><span class="sec-tag">Why now</span></div><div class="why"><div class="why-item"><span class="when num">01 / 2024</span><h3>Ledger exports standardised</h3><p>Sample signal: a common export schema removed the per-vendor parser work (TBD: dated source).</p></div><div class="why-item"><span class="when num">02 / 2025</span><h3>Audit evidence rules tightened</h3><p>Sample signal: evidence must exist at decision time, not be reconstructed later (TBD: dated source).</p></div><div class="why-item"><span class="when num">03 / 2026</span><h3>Integration cost fell</h3><p>Sample signal: connector build effort dropped enough for a three-segment launch (TBD: dated source).</p></div></div><p class="note">Three signals · sample content · TBD: the dated source for each change</p>
+      <template class="notes"><b>Key point.</b> Timing is the slide investors press hardest. Name the change, its date and why it could not have happened earlier.</template>
+    </section>
+
+    <section class="slide" data-title="Market sized bottom-up" data-chapter="Market">
+      <div class="head-row"><div><p class="eyebrow">Market · bottom-up sizing</p><h2 class="title">8,400 served teams at a stated annual contract value define a 420 USD m serviceable market</h2></div><span class="sec-tag">Market</span></div><div class="toolbar"><div class="seg" role="group" aria-label="Sizing basis" data-seg="tam" data-no-paging><button type="button" data-view="bottom" aria-pressed="true">Bottom-up</button><button type="button" data-view="top" aria-pressed="false">Top-down</button></div><span class="hint">Hover or focus a band for the derivation</span></div><div class="chart" id="tamChart" data-chart="tam"></div><div class="chart-legend"><span><i style="background:#F4F4F4"></i>TAM</span><span><i style="background:#D7D8D6"></i>SAM</span><span><i style="background:#141414"></i>SOM</span><span class="cap num" id="tamCaption">Bottom-up · sample</span></div><p class="note" id="tamDerivation">Denominator: sample</p><div class="print-views" data-print-views="tam"></div>
+      <template class="notes"><b>Key point.</b> Always show the denominator. A top-down total without units and price is a placeholder, not a market size.</template>
+    </section>
+
+    <section class="slide" data-title="Traction proves the direction" data-chapter="Traction">
+      <div class="head-row"><div><p class="eyebrow">Traction · trailing 12 months</p><h2 class="title">Active teams grew from 42 to 331 in twelve months, with the target crossed in December</h2></div><span class="sec-tag">Traction</span></div><div class="kpi-row" id="tractionKpi"></div><div class="toolbar"><div class="seg" role="group" aria-label="Traction series" data-seg="traction" data-no-paging><button type="button" data-view="users" aria-pressed="true">Active teams</button><button type="button" data-view="revenue" aria-pressed="false">ARR</button><button type="button" data-view="retention" aria-pressed="false">Retention</button></div><span class="hint">Hover or focus a point for the monthly value</span><button type="button" class="toggle" data-toggle="target" aria-pressed="true" data-no-paging><span class="box" aria-hidden="true">✓</span> Show target</button></div><div class="chart" id="tractionChart" data-chart="traction"></div><div class="chart-legend"><span><i style="background:#141414"></i>Actual</span><span><i style="background:#DB0011"></i>Latest month</span><span class="cap num" id="tractionCaption">Jan – Dec · sample</span></div><p class="note">Figure 1 · Monthly series with target (sample data; replace with verified measurements) · <span id="tractionTitle"></span></p><div class="print-views" data-print-views="traction"></div>
+      <template class="notes"><b>Key point.</b> Let the line carry the proof. Switch series to answer the room's question rather than forcing your own order.</template>
+    </section>
+
+    <section class="slide" data-title="Unit economics in four numbers" data-chapter="Unit economics">
+      <div class="head-row"><div><p class="eyebrow">Unit economics · four numbers</p><h2 class="title">A 4.8× lifetime-value-to-acquisition ratio supports a nine-month payback</h2></div><span class="sec-tag">Unit economics</span></div><div class="kpi-row" id="unitsKpi"></div><p class="unit-formula">LTV <b>148k</b> ÷ CAC <b>31k</b> = <b>4.8×</b> · payback <b>9 months</b> · sample figures, TBD measurement basis</p><p class="note">All four figures are fictional samples · TBD: measurement period and margin basis</p>
+      <template class="notes"><b>Key point.</b> Four numbers, one formula, no adjectives. If a figure is missing, say what is needed rather than filling it in.</template>
+    </section>
+
+    <section class="slide" data-title="Competition and the alternatives" data-chapter="Competition">
+      <div class="head-row"><div><p class="eyebrow">Competition · including doing nothing</p><h2 class="title">The strongest alternative is doing nothing, and integration depth is our weakest point</h2></div><span class="sec-tag">Competition</span></div><div class="toolbar"><div class="seg" role="group" aria-label="Select an alternative" data-choice="rival" data-no-paging><button type="button" data-view="0" aria-pressed="true">01</button><button type="button" data-view="1" aria-pressed="false">02</button><button type="button" data-view="2" aria-pressed="false">03</button><button type="button" data-view="3" aria-pressed="false">04</button><button type="button" data-view="4" aria-pressed="false">05</button></div><span class="hint">Click a plotted square for its positioning detail</span></div><div class="comp-wrap" data-no-paging><div class="chart" id="compChart" data-chart="comp"></div><div class="comp-detail" id="compDetail"></div></div><p class="note">Sample positioning · replace with a verified competitive assessment</p>
+      <template class="notes"><b>Key point.</b> Name 'do nothing' first. The weakest point in this case is integration depth; address it before the room does.</template>
+    </section>
+
+    <section class="slide" data-title="Who pays, how much, how often" data-chapter="Business model">
+      <div class="head-row"><div><p class="eyebrow">Business model · who pays</p><h2 class="title">Treasury operations pays an annual contract, with a usage-based alternative for smaller teams</h2></div><span class="sec-tag">Business model</span></div><div class="toolbar"><div class="seg" role="group" aria-label="Pricing basis" data-seg="pricing" data-no-paging><button type="button" data-view="subscription" aria-pressed="true">Subscription</button><button type="button" data-view="usage" aria-pressed="false">Usage-based</button></div><span class="hint">Switch to compare the two pricing bases</span></div><div class="tiers" id="pricingTiers"></div><p class="note" id="pricingLine">Sample</p>
+      <template class="notes"><b>Key point.</b> One line states who pays, how much and how often. Do not bury the pricing basis in the tier cards.</template>
+    </section>
+
+    <section class="slide" data-title="The benefit bridge holds in the base case" data-chapter="Financials">
+      <div class="head-row"><div><p class="eyebrow">Financials · benefit bridge</p><h2 class="title">Even the conservative case returns a positive net benefit in the sample model</h2></div><span class="sec-tag">Financials</span></div><div class="toolbar"><div class="seg" role="group" aria-label="Scenario" data-seg="scenario" data-no-paging><button type="button" data-view="conservative" aria-pressed="false">Conservative</button><button type="button" data-view="base" aria-pressed="true">Base</button><button type="button" data-view="upside" aria-pressed="false">Upside</button></div><span class="hint">Hover or focus a step for its running total</span></div><div class="chart" id="waterfallChart" data-chart="waterfall"></div><div class="chart-legend"><span><i style="background:#141414"></i>Cost</span><span><i style="background:#D7D8D6"></i>Benefit</span><span><i style="background:#DB0011"></i>Net total</span><span class="cap num" id="waterfallCaption">base · sample</span></div><p class="note" id="waterfallNote">Sample</p><div class="print-views" data-print-views="scenario"></div>
+      <template class="notes"><b>Key point.</b> Only the final total is red. Never use green / red to signal good or bad on individual steps.</template>
+    </section>
+
+    <section class="slide" data-title="One driver moves the case most" data-chapter="Sensitivity">
+      <div class="head-row"><div><p class="eyebrow">Sensitivity · what moves the outcome</p><h2 class="title">Pilot conversion moves the case more than any other single assumption</h2></div><span class="sec-tag">Sensitivity</span></div><div class="toolbar"><div class="seg" role="group" aria-label="Sensitivity driver" data-seg="driver" data-no-paging><button type="button" data-view="0" aria-pressed="true">Driver 01</button><button type="button" data-view="1" aria-pressed="false">Driver 02</button><button type="button" data-view="2" aria-pressed="false">Driver 03</button><button type="button" data-view="3" aria-pressed="false">Driver 04</button><button type="button" data-view="4" aria-pressed="false">Driver 05</button></div><span class="hint">Select the driver under discussion</span></div><div class="chart" id="tornadoChart" data-chart="tornado"></div><div class="chart-legend"><span><i style="background:#D7D8D6"></i>Downside</span><span><i style="background:#767676"></i>Upside</span><span><i style="background:#DB0011"></i>Selected driver</span><span class="cap num" id="tornadoCaption">Driver 1 of 5 · sample</span></div><p class="note">USD m change vs base case · sample data · TBD: verified ranges for each driver</p><div class="print-views" data-print-views="driver"></div>
+      <template class="notes"><b>Key point.</b> Use this slide to pre-empt the hardest question: which assumption would break the case.</template>
+    </section>
+
+    <section class="slide" data-title="The founders who will execute" data-chapter="Team">
+      <div class="head-row"><div><p class="eyebrow">Team · founders only</p><h2 class="title">Three founders cover the ledger, the matching engine and the go-to-market motion</h2></div><span class="sec-tag">Team</span></div><div class="team-grid"><div class="team-card"><div class="av">A.</div><h3>A. Vale</h3><p class="role">Co-founder · ledger integrations</p><p>Sample proof line: shipped connectors for four ledger formats.</p></div><div class="team-card"><div class="av">R.</div><h3>R. Osei</h3><p class="role">Co-founder · matching engine</p><p>Sample proof line: built the exception-routing prototype.</p></div><div class="team-card"><div class="av">M.</div><h3>M. Chen</h3><p class="role">Co-founder · commercial</p><p>Sample proof line: closed the first three pilot letters of intent.</p></div><div class="team-card"><div class="av">S.</div><h3>S. Patel</h3><p class="role">Founding engineer</p><p>Sample proof line: owns the audit-evidence pipeline.</p></div></div><p class="note">Fictional names and proof lines · no advisors listed in the body</p>
+      <template class="notes"><b>Key point.</b> One proof line per person. Advisors belong in the appendix, not on this slide.</template>
+    </section>
+
+    <section class="slide closing" data-title="The ask and the milestones" data-chapter="Close">
+      <div class="head-row"><div><p class="eyebrow">The ask · amount, use, milestone</p><h2 class="title">An 8.0 USD m ask funds one pilot and buys a signed result by month six</h2></div><span class="sec-tag">The ask</span></div><div class="ask-grid" data-no-paging><div><p class="eyebrow">Requested</p><p class="ask-amount num"><span id="askAmount">8.0</span> <span class="unit">USD m</span></p><p class="note">Sample amount · replace with the user's figure</p></div><div><div class="ask-bar" id="askBar" data-chart="ask"></div><div class="ask-legend" id="askLegend"></div></div></div><div class="levers" data-no-paging><div class="lever"><button class="lever-head" type="button" data-expand="ask1" aria-expanded="false" aria-controls="ask1"><span class="lh-n num">01</span><span class="lh-t">M1 · Signed pilot result</span><span class="lh-v num">6 mo</span><span class="lh-i" aria-hidden="true">+</span></button><div class="lever-body" id="ask1" hidden><p>One production ledger, measured close delay before and after, signed by the customer's treasury lead (sample).</p><dl><dt>Owner</dt><dd>TBD (sample)</dd><dt>Evidence</dt><dd>Signed result (sample)</dd></dl></div></div><div class="lever"><button class="lever-head" type="button" data-expand="ask2" aria-expanded="false" aria-controls="ask2"><span class="lh-n num">02</span><span class="lh-t">M2 · Repeatable integration</span><span class="lh-v num">12 mo</span><span class="lh-i" aria-hidden="true">+</span></button><div class="lever-body" id="ask2" hidden><p>Three ledger connectors installed without bespoke code, documented runbook accepted by operations (sample).</p><dl><dt>Owner</dt><dd>TBD (sample)</dd><dt>Evidence</dt><dd>Signed result (sample)</dd></dl></div></div><div class="lever"><button class="lever-head" type="button" data-expand="ask3" aria-expanded="false" aria-controls="ask3"><span class="lh-n num">03</span><span class="lh-t">M3 · Second segment</span><span class="lh-v num">18 mo</span><span class="lh-i" aria-hidden="true">+</span></button><div class="lever-body" id="ask3" hidden><p>First expansion segment live with the same unit economics as the pilot (sample).</p><dl><dt>Owner</dt><dd>TBD (sample)</dd><dt>Evidence</dt><dd>Signed result (sample)</dd></dl></div></div></div><p class="kicker" style="margin-top:1.2cqw;font-size:20px;font-size:1.15cqw">If this works, the close stops being a project and becomes a background service.</p><p class="note">Three milestones · expand a row for the exit evidence · TBD: decision date and named owner</p>
+      <template class="notes"><b>Key point.</b> Close on amount, use and dated milestone. Then stop talking and leave the rest of the time for questions.</template>
+    </section>
+
+  </div>
+</div>
+<div class="progress" id="progress" role="slider" aria-label="Presentation progress" aria-valuemin="1" aria-valuemax="1" aria-valuenow="1" tabindex="0"><div class="bar" id="bar"></div></div>
+<div class="toc" id="toc" aria-label="Section navigation"></div>
+<div class="hud" id="hud"></div>
+<div class="overview" id="overview" tabindex="-1" aria-label="Slide overview">
+  <h2>Slide overview</h2>
+  <div class="ov-grid" id="ovGrid"></div>
+  <p class="ov-hint">Esc to return · click a card to jump</p>
+</div>
+<div class="notes-drawer" id="notesDrawer" aria-label="Speaker notes"><span class="nt">Speaker notes</span><div class="nb" id="notesBody"></div></div>
+<div class="help" id="help" aria-label="Keyboard shortcuts">
+  <div class="help-card chamfer">
+    <h2>Keyboard shortcuts</h2>
+    <table>
+      <tr><td>→ / Space / PgDn</td><td>Next slide</td></tr>
+      <tr><td>← / PgUp</td><td>Previous slide</td></tr>
+      <tr><td>Home / End</td><td>First / last slide</td></tr>
+      <tr><td>Esc</td><td>Overview · close panel</td></tr>
+      <tr><td>N</td><td>Speaker notes for this slide</td></tr>
+      <tr><td>F</td><td>Full screen on / off</td></tr>
+      <tr><td>?</td><td>This shortcut list</td></tr>
+      <tr><td>Tab / Enter</td><td>Reach every on-slide control</td></tr>
+    </table>
+    <p class="close">Esc or ? to close · all controls work offline with zero network requests</p>
+  </div>
+</div>
+<script>
+
+(function(){
+  'use strict';
+  var DATA = {"PAINS":[{"t":"Closing takes three extra days","d":"Treasury teams match ledger exports by hand at month end.","r":"A shared reconciliation layer matches records at ingest.","why":"The delay is in matching, not in approvals."},{"t":"Exceptions have no owner","d":"Unmatched items sit in a shared mailbox with no audit trail.","r":"Every exception gets an owner and a timestamped resolution path.","why":"Ownership is assigned by rule before a human looks at it."},{"t":"Audit evidence is assembled late","d":"Evidence is reconstructed from screenshots after the close.","r":"Evidence is written as a by-product of the match itself.","why":"The record exists at the moment the decision is made."}],"MARKET":{"bottom":{"basis":"Bottom-up \u00b7 units \u00d7 annual contract value","bands":[{"k":"TAM","v":100,"t":"1,200 USD m","note":"24,000 teams \u00d7 50k USD (sample)"},{"k":"SAM","v":48,"t":"420 USD m","note":"8,400 teams in served regions (sample)"},{"k":"SOM","v":12,"t":"34 USD m","note":"680 teams reachable in 3 years (sample)"}],"derivation":"Denominator: 24,000 teams in scope \u00d7 50k USD annual contract value (sample). SAM excludes regions without a local ledger connector; SOM is limited to the three launch segments."},"top":{"basis":"Top-down \u00b7 published segment total, for comparison only","bands":[{"k":"TAM","v":100,"t":"1,400 USD m","note":"Third-party segment total (sample)"},{"k":"SAM","v":52,"t":"480 USD m","note":"Reported sub-segment (sample)"},{"k":"SOM","v":10,"t":"30 USD m","note":"Illustrative share (sample)"}],"derivation":"Top-down view is shown for comparison only. TBD: source, report year and segment definition. The bottom-up view is the one used in the plan."}},"TRACTION":{"users":{"label":"Active teams","unit":"teams","target":300,"better":"up","dec":0,"values":[42,55,68,84,103,128,152,181,214,247,286,331]},"revenue":{"label":"Annual recurring revenue","unit":"USD k","target":900,"better":"up","dec":0,"values":[110,138,176,214,268,322,398,476,560,668,782,914]},"retention":{"label":"Net revenue retention","unit":"%","target":110,"better":"up","dec":0,"values":[98,99,101,102,104,105,106,108,109,111,113,116]}},"UNITS":[{"k":"Lifetime value","v":"148","u":"k USD","d":"Sample \u00b7 3-year basis"},{"k":"Acquisition cost","v":"31","u":"k USD","d":"Sample \u00b7 blended"},{"k":"LTV / CAC","v":"4.8","u":"\u00d7","d":"Sample \u00b7 derived","hot":true},{"k":"Payback","v":"9","u":"months","d":"Sample \u00b7 gross margin basis"}],"RIVALS":[{"name":"Spreadsheet handoff","x":12,"y":18,"quadrant":"Manual / shallow","kind":"Do nothing","text":"The default alternative. No licence cost, no integration project, and the three-day delay stays.","response":"Measure the close delay in the pilot rather than arguing about it."},{"name":"Ledger add-on","x":34,"y":44,"quadrant":"Manual / moderate","kind":"Indirect","text":"Ships with the ledger but only reconciles within one vendor's own modules.","response":"Support multi-ledger ingest from the first release."},{"name":"In-house script","x":58,"y":36,"quadrant":"Automated / shallow","kind":"Internal workaround","text":"A team-built matcher with no owner, no audit trail and no upgrade path.","response":"Offer an export path that keeps their rules but adds evidence."},{"name":"Enterprise suite","x":76,"y":78,"quadrant":"Automated / deep","kind":"Direct","text":"Broad suite with deep integration, sold as part of a much larger replacement programme.","response":"Compete on time to first matched record, not on feature count."},{"name":"Sample product","x":70,"y":66,"quadrant":"Automated / deep","kind":"This proposal (sample)","text":"Fictional position for this sample deck. Replace with a verified competitive assessment.","response":"TBD: verified positioning and source."}],"PRICING":{"subscription":{"tiers":[{"k":"Team","v":"24k","d":"One ledger, up to 10 seats, annual term (sample)"},{"k":"Business","v":"50k","d":"Multi-ledger, exception rules, audit export (sample)"},{"k":"Enterprise","v":"TBD","d":"Regional deployment and residency terms (sample)"}],"line":"Who pays: treasury operations \u00b7 How much: annual contract \u00b7 How often: annually in advance (sample)"},"usage":{"tiers":[{"k":"Base","v":"12k","d":"Platform fee plus a matched-record allowance (sample)"},{"k":"Growth","v":"0.18","d":"USD per matched record above the allowance (sample)"},{"k":"Cap","v":"TBD","d":"Annual cap to be confirmed with the user (sample)"}],"line":"Who pays: the cost centre owning the close \u00b7 How much: per matched record \u00b7 How often: monthly (sample)"}},"SCENARIOS":{"conservative":{"note":"Conservative case: slower adoption, no expansion revenue (sample).","steps":[{"k":"Baseline cost","v":-12.0},{"k":"Match automation","v":7.4},{"k":"Exception handling","v":4.2},{"k":"Audit effort","v":2.8},{"k":"Run cost","v":-0.8},{"k":"Net","v":0.0}]},"base":{"note":"Base case: pilot conversion holds, two expansion segments (sample).","steps":[{"k":"Baseline cost","v":-12.0},{"k":"Match automation","v":8.8},{"k":"Exception handling","v":5.6},{"k":"Audit effort","v":4.0},{"k":"Run cost","v":-1.6},{"k":"Net","v":0.0}]},"upside":{"note":"Upside case: three segments and an earlier audit saving (sample).","steps":[{"k":"Baseline cost","v":-12.0},{"k":"Match automation","v":11.2},{"k":"Exception handling","v":7.2},{"k":"Audit effort","v":5.4},{"k":"Run cost","v":-2.6},{"k":"Net","v":0.0}]}},"DRIVERS":[{"k":"Pilot conversion","low":-4.8,"high":6.2},{"k":"Integration lead time","low":-3.6,"high":3.1},{"k":"Annual contract value","low":-2.9,"high":3.8},{"k":"Run cost per tenant","low":-2.1,"high":2.4},{"k":"Audit effort saved","low":-1.4,"high":1.9}],"ASK":{"amount":"8.0","unit":"USD m","uses":[["Engineering",45],["Integration",25],["Go-to-market",20],["Reserve",10]],"milestones":[{"t":"M1 \u00b7 Signed pilot result","d":"One production ledger, measured close delay before and after, signed by the customer's treasury lead (sample).","when":"6 mo"},{"t":"M2 \u00b7 Repeatable integration","d":"Three ledger connectors installed without bespoke code, documented runbook accepted by operations (sample).","when":"12 mo"},{"t":"M3 \u00b7 Second segment","d":"First expansion segment live with the same unit economics as the pilot (sample).","when":"18 mo"}]},"SCR":{"situation":{"k":"Situation","d":"Month-end reconciliation is handled by hand across several ledger exports. The current process completes the close, and the measurement basis is the elapsed time from export to sign-off (sample)."},"complication":{"k":"Complication","d":"Three extra days are spent matching, exceptions have no named owner, and audit evidence is rebuilt after the fact. Volume growth makes the manual step the binding constraint (sample)."},"resolution":{"k":"Resolution","d":"Approve a bounded pilot of a shared reconciliation layer, with a signed measurement of close delay as the exit condition (sample)."}},"OPTIONS":{"A":{"name":"Reuse the existing platform","tag":"Option A \u00b7 reuse","scores":[5,4,3,3,5],"text":"Extends the platform already in place. Fastest to value, inherits the current residency posture, less control over the roadmap (sample).","facts":[["Time to value","2 quarters (sample)"],["Run cost","Lowest (sample)"],["Main trade-off","Roadmap dependency"]]},"B":{"name":"Managed service","tag":"Option B \u00b7 managed","scores":[3,3,2,2,4],"text":"Buys an external service. Removes a class of operational work, adds contract and exit questions (sample).","facts":[["Time to value","3 quarters (sample)"],["Run cost","Medium (sample)"],["Main trade-off","Exit and residency"]]},"C":{"name":"Build in-house","tag":"Option C \u00b7 build","scores":[1,2,5,4,5],"text":"Maximum control and portability, longest lead time and the highest permanent engineering cost (sample).","facts":[["Time to value","5 quarters (sample)"],["Run cost","Highest (sample)"],["Main trade-off","Permanent headcount"]]}},"PHASES":[{"t":"Q1 \u00b7 Baseline","h":"Measure before promising","p":"Reconcile the cost and delay baseline to the ledger, confirm ownership for every tier. No migration starts until it is signed off (sample).","chips":["Exit: signed baseline (sample)","Owner: platform lead (sample)"]},{"t":"Q2 \u00b7 Pilot","h":"One domain, one measurement","p":"Run a single domain through the target shape and hold the measured close delay for two consecutive cycles (sample).","chips":["Exit: 2-cycle hold (sample)","Owner: domain team (sample)"]},{"t":"Q3 \u00b7 Scale","h":"Waves, not a big bang","p":"Migrate in waves with a gate between each; apply the FinOps guardrails as each wave lands (sample).","chips":["Exit: wave gate passed (sample)","Owner: delivery lead (sample)"]},{"t":"Q4 \u00b7 Settle","h":"Decommission and hand over","p":"Retire the duplicated paths and hand the runbook to operations with named deputies (sample).","chips":["Exit: runbook accepted (sample)","Owner: operations (sample)"]}]};
+  var state = {"tam":"bottom","traction":"users","target":true,"pricing":"subscription","scenario":"base","driver":"0","pain":"0","rival":"0","scr":"resolution","option":"A","phase":0};
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var bar = document.getElementById('bar');
+  var hud = document.getElementById('hud');
+  var toc = document.getElementById('toc');
+  var progress = document.getElementById('progress');
+  var ov = document.getElementById('overview');
+  var ovGrid = document.getElementById('ovGrid');
+  var tip = document.getElementById('tip');
+  var notesDrawer = document.getElementById('notesDrawer');
+  var notesBody = document.getElementById('notesBody');
+  var help = document.getElementById('help');
+  var DECK_NAME = document.title;
+  var cur = 0, ovOpen = false, notesOpen = false, helpOpen = false;
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function fmt(n,d){ return Number(n).toFixed(d); }
+  function el(id){ return document.getElementById(id); }
+  function set(id, v){ var n = el(id); if (n) n.innerHTML = v; }
+  function txt(id, v){ var n = el(id); if (n) n.textContent = v; }
+  function svg(vb, inner, label){
+    return '<svg class="chart-svg" viewBox="'+vb+'" role="img" aria-label="'+esc(label)+'" preserveAspectRatio="xMidYMid meet">'+inner+'</svg>';
+  }
+  function tipAttrs(k,v){ return ' class="pt" tabindex="0" role="img" data-tip="'+esc(k)+'" data-tip-v="'+esc(v)+'" aria-label="'+esc(k+': '+v)+'"'; }
+  function sparkline(values){
+    var min=Math.min.apply(null,values), max=Math.max.apply(null,values), span=(max-min)||1;
+    var pts=values.map(function(v,i){return (i/(values.length-1)*100).toFixed(1)+','+(24-((v-min)/span)*20).toFixed(1);}).join(' ');
+    return '<svg class="spark" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><polyline points="'+pts+'" fill="none" stroke="#141414" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>';
+  }
+  function kpi(cells){
+    return cells.map(function(c){
+      return '<div class="kpi"><span class="k">'+esc(c.k)+'</span>'+
+        '<span class="v'+((c.hot)?' hot':'')+' num">'+esc(c.v)+((c.u)?'<span class="u">'+esc(c.u)+'</span>':'')+'</span>'+
+        '<span class="d">'+esc(c.d)+'</span>'+((c.spark)?sparkline(c.spark):'')+'</div>';
+    }).join('');
+  }
+
+  /* ---- TAM / SAM / SOM ---- */
+  function tamSvg(view){
+    var m = DATA.MARKET[view], bands = m.bands, W=1200,H=320,left=60,right=30,top=24,rowH=76,gap=20;
+    var max = Math.max.apply(null,bands.map(function(b){return b.v;}));
+    var fills=['#F4F4F4','#D7D8D6','#141414'], s='';
+    bands.forEach(function(b,i){
+      var y=top+i*(rowH+gap), w=(W-left-right)*(b.v/max);
+      s+='<rect'+tipAttrs(b.k,b.t+' · '+b.note)+' x="'+left+'" y="'+y+'" width="'+w.toFixed(1)+'" height="'+rowH+'" fill="'+fills[i]+'" stroke="#141414" stroke-width="1"/>';
+      var ink=(i===2)?'#FFFFFF':'#000000';
+      s+='<text x="'+(left+14)+'" y="'+(y+30)+'" font-size="17" font-weight="700" fill="'+ink+'">'+esc(b.k)+'</text>';
+      s+='<text class="mono" x="'+(left+14)+'" y="'+(y+56)+'" font-size="14" fill="'+ink+'">'+esc(b.t)+'</text>';
+      s+='<text x="'+(W-right)+'" y="'+(y+20)+'" font-size="12" fill="#767676" text-anchor="end">'+esc(b.note)+'</text>';
+    });
+    s+='<text x="'+left+'" y="'+(H-8)+'" font-size="11" fill="#767676">'+esc(m.basis)+' · sample data</text>';
+    return svg('0 0 '+W+' '+H,s,'Market sizing, '+view+' basis, sample data');
+  }
+  function renderTam(){
+    if(!el('tamChart')) return;
+    set('tamChart',tamSvg(state.tam));
+    txt('tamDerivation',DATA.MARKET[state.tam].derivation);
+    txt('tamCaption',(state.tam==='bottom'?'Bottom-up':'Top-down')+' · sample');
+  }
+
+  /* ---- Traction ---- */
+  function tractionSvg(key,showTarget){
+    var m=DATA.TRACTION[key],v=m.values,W=1200,H=320,left=66,right=30,top=24,base=258;
+    var lo=Math.min.apply(null,v.concat(showTarget?[m.target]:[]));
+    var hi=Math.max.apply(null,v.concat(showTarget?[m.target]:[]));
+    var p=(hi-lo)*.18||1; lo-=p; hi+=p;
+    var X=function(i){return left+i*(W-left-right)/(v.length-1);};
+    var Y=function(n){return base-(n-lo)/(hi-lo)*(base-top);};
+    var s='';
+    for(var g=0;g<=4;g++){
+      var y=top+(base-top)*g/4, val=hi-(hi-lo)*g/4;
+      s+='<line x1="'+left+'" y1="'+y+'" x2="'+(W-right)+'" y2="'+y+'" stroke="#D7D8D6" stroke-width="1"/>';
+      s+='<text class="mono" x="'+(left-10)+'" y="'+(y+4)+'" font-size="11" fill="#767676" text-anchor="end">'+fmt(val,m.dec)+'</text>';
+    }
+    if(showTarget){
+      var ty=Y(m.target);
+      s+='<line x1="'+left+'" y1="'+ty+'" x2="'+(W-right)+'" y2="'+ty+'" stroke="#DB0011" stroke-width="1.5" stroke-dasharray="7 5"/>';
+      s+='<text x="'+(W-right-4)+'" y="'+(ty-7)+'" font-size="11" fill="#DB0011" text-anchor="end">Target '+fmt(m.target,m.dec)+' '+esc(m.unit)+'</text>';
+    }
+    var pts=v.map(function(n,i){return X(i).toFixed(1)+','+Y(n).toFixed(1);});
+    s+='<polygon points="'+left+','+base+' '+pts.join(' ')+' '+(W-right)+','+base+'" fill="#F4F4F4"/>';
+    s+='<polyline points="'+pts.join(' ')+'" fill="none" stroke="#141414" stroke-width="2.5"/>';
+    v.forEach(function(n,i){
+      var x=X(i),y=Y(n),last=i===v.length-1;
+      s+='<circle'+tipAttrs(MONTHS[i]+' · '+m.label,fmt(n,m.dec)+' '+m.unit)+' cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(last?6:4)+'" fill="'+(last?'#DB0011':'#FFFFFF')+'" stroke="'+(last?'#DB0011':'#141414')+'" stroke-width="2"/>';
+      s+='<text x="'+x.toFixed(1)+'" y="'+(base+20)+'" font-size="11" fill="#767676" text-anchor="middle">'+MONTHS[i]+'</text>';
+    });
+    s+='<line x1="'+left+'" y1="'+base+'" x2="'+(W-right)+'" y2="'+base+'" stroke="#000000" stroke-width="1"/>';
+    s+='<text x="'+left+'" y="'+(H-8)+'" font-size="11" fill="#767676">'+esc(m.unit)+' · sample data · trailing 12 months</text>';
+    return svg('0 0 '+W+' '+H,s,m.label+' monthly trend, sample data');
+  }
+  function renderTraction(){
+    if(!el('tractionChart')) return;
+    var m=DATA.TRACTION[state.traction],v=m.values,first=v[0],last=v[v.length-1];
+    var change=(last-first)/Math.abs(first)*100;
+    var breaches=v.filter(function(n){return (m.better==='down')?n>m.target:n<m.target;}).length;
+    var improved=(m.better==='down')?change<0:change>0;
+    txt('tractionTitle',m.label);
+    set('tractionKpi',kpi([
+      {k:'Latest · Dec',v:fmt(last,m.dec),u:m.unit,d:'Latest month (sample)',hot:true,spark:v},
+      {k:'12-month change',v:((change>0)?'+':'')+fmt(change,1),u:'%',d:(improved?'Improved':'Worsened')+' vs Jan'},
+      {k:'Target',v:fmt(m.target,m.dec),u:m.unit,d:m.better==='down'?'Upper bound':'Lower bound'},
+      {k:'Months outside target',v:String(breaches),u:'/ 12',d:'Trailing 12 months'}
+    ]));
+    set('tractionChart',tractionSvg(state.traction,state.target));
+    txt('tractionCaption','Jan – Dec · sample');
+  }
+
+  /* ---- Unit economics ---- */
+  function renderUnits(){
+    if(!el('unitsKpi')) return;
+    set('unitsKpi',kpi(DATA.UNITS));
+  }
+
+  /* ---- Competition 2x2 ---- */
+  function compSvg(sel){
+    var W=700,H=380,l=64,r=30,t=28,b=330,cx=(l+W-r)/2,cy=(t+b)/2;
+    var s='<rect x="'+l+'" y="'+t+'" width="'+(W-l-r)+'" height="'+(b-t)+'" fill="none" stroke="#D7D8D6" stroke-width="1"/>';
+    s+='<line x1="'+cx+'" y1="'+t+'" x2="'+cx+'" y2="'+b+'" stroke="#D7D8D6" stroke-width="1"/>';
+    s+='<line x1="'+l+'" y1="'+cy+'" x2="'+(W-r)+'" y2="'+cy+'" stroke="#D7D8D6" stroke-width="1"/>';
+    s+='<text x="'+(l+8)+'" y="'+(t+18)+'" font-size="11" fill="#767676" letter-spacing="1">BROAD / MANUAL</text>';
+    s+='<text x="'+(W-r-8)+'" y="'+(t+18)+'" font-size="11" fill="#767676" text-anchor="end" letter-spacing="1">FOCUSED / AUTOMATED</text>';
+    s+='<text x="'+(l+8)+'" y="'+(b-8)+'" font-size="11" fill="#767676" letter-spacing="1">LOW INTEGRATION DEPTH</text>';
+    s+='<text x="'+(W-r-8)+'" y="'+(b-8)+'" font-size="11" fill="#767676" text-anchor="end" letter-spacing="1">HIGH INTEGRATION DEPTH</text>';
+    DATA.RIVALS.forEach(function(v,i){
+      var x=l+18+(v.x/100)*(W-l-r-36), y=b-18-(v.y/100)*(b-t-36);
+      var on=(String(i)===String(sel));
+      s+='<rect'+tipAttrs(v.name,v.quadrant)+' data-rival="'+i+'" x="'+(x-8)+'" y="'+(y-8)+'" width="16" height="16" fill="'+(on?'#DB0011':'#141414')+'" style="cursor:pointer"/>';
+      s+='<text x="'+(x+14)+'" y="'+(y+4)+'" font-size="12" fill="'+(on?'#DB0011':'#333333')+'">'+esc(v.name)+'</text>';
+    });
+    return svg('0 0 '+W+' '+H,s,'Competitive positioning matrix, sample data');
+  }
+  function renderComp(){
+    if(!el('compChart')) return;
+    set('compChart',compSvg(state.rival));
+    var v=DATA.RIVALS[parseInt(state.rival,10)]||DATA.RIVALS[0];
+    set('compDetail','<span class="tag">'+esc(v.quadrant)+'</span><h3>'+esc(v.name)+'</h3><p>'+esc(v.text)+'</p><dl>'+
+      '<dt>Alternative type</dt><dd>'+esc(v.kind)+'</dd><dt>Our response</dt><dd>'+esc(v.response)+'</dd></dl>');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-choice="rival"] button'),function(b){
+      b.setAttribute('aria-pressed',b.getAttribute('data-view')===String(state.rival)?'true':'false');
+    });
+  }
+
+  /* ---- Pricing ---- */
+  function renderPricing(){
+    if(!el('pricingTiers')) return;
+    var p=DATA.PRICING[state.pricing];
+    set('pricingTiers',p.tiers.map(function(t,i){
+      return '<div class="tier'+((i===1)?' focus':'')+'"><h3>'+esc(t.k)+'</h3><p class="p num">'+esc(t.v)+'</p><p>'+esc(t.d)+'</p></div>';
+    }).join(''));
+    txt('pricingLine',p.line);
+  }
+
+  /* ---- Waterfall / benefit bridge ---- */
+  function waterfallSvg(scenario){
+    var steps=DATA.SCENARIOS[scenario].steps,W=1200,H=320,left=70,right=30,top=24,base=262;
+    var cum=0,vals=[];
+    steps.forEach(function(st,i){
+      var o={k:st.k,v:st.v,start:cum};cum+=st.v;o.end=cum;
+      if(i===steps.length-1){o.start=0;o.end=cum;o.total=true;}
+      vals.push(o);
+    });
+    var all=[0].concat(vals.map(function(o){return o.start;}),vals.map(function(o){return o.end;}));
+    var lo=Math.min.apply(null,all),hi=Math.max.apply(null,all),p=(hi-lo)*.15||1;lo-=p;hi+=p;
+    var Y=function(n){return base-(n-lo)/(hi-lo)*(base-top);};
+    var group=(W-left-right)/vals.length,bw=Math.min(96,group*.52);
+    var s='';
+    for(var g=0;g<=4;g++){
+      var y=top+(base-top)*g/4,val=hi-(hi-lo)*g/4;
+      s+='<line x1="'+left+'" y1="'+y+'" x2="'+(W-right)+'" y2="'+y+'" stroke="#D7D8D6" stroke-width="1"/>';
+      s+='<text class="mono" x="'+(left-10)+'" y="'+(y+4)+'" font-size="11" fill="#767676" text-anchor="end">'+fmt(val,0)+'</text>';
+    }
+    vals.forEach(function(o,i){
+      var cx=left+group*i+group/2,y1=Y(o.start),y2=Y(o.end),topY=Math.min(y1,y2),h=Math.max(3,Math.abs(y2-y1));
+      var last=i===vals.length-1;
+      var colour=last?'#DB0011':(o.v>=0?'#D7D8D6':'#141414');
+      var lab=o.total?fmt(o.end,1):((o.v>0?'+':'')+fmt(o.v,1));
+      var tv=o.total?('Net total '+fmt(o.end,1)+' USD m'):((o.v>0?'+':'')+fmt(o.v,1)+' USD m · running '+fmt(o.end,1));
+      s+='<rect'+tipAttrs(o.k,tv)+' x="'+(cx-bw/2)+'" y="'+topY+'" width="'+bw+'" height="'+h+'" fill="'+colour+'"/>';
+      s+='<text class="mono" x="'+cx+'" y="'+(topY-8)+'" font-size="12" fill="#333333" text-anchor="middle">'+lab+'</text>';
+      s+='<text x="'+cx+'" y="'+(base+20)+'" font-size="11" fill="#333333" text-anchor="middle">'+esc(o.k)+'</text>';
+      if(i<vals.length-1){
+        s+='<line x1="'+(cx+bw/2)+'" y1="'+Y(o.end)+'" x2="'+(left+group*(i+1)+group/2-bw/2)+'" y2="'+Y(o.end)+'" stroke="#D7D8D6" stroke-width="1" stroke-dasharray="4 3"/>';
+      }
+    });
+    s+='<line x1="'+left+'" y1="'+Y(0)+'" x2="'+(W-right)+'" y2="'+Y(0)+'" stroke="#000000" stroke-width="1"/>';
+    s+='<text x="'+left+'" y="'+(H-8)+'" font-size="11" fill="#767676">USD m · '+esc(scenario)+' scenario · sample data</text>';
+    return svg('0 0 '+W+' '+H,s,'Benefit bridge, '+scenario+' scenario, sample data');
+  }
+  function renderWaterfall(){
+    if(!el('waterfallChart')) return;
+    set('waterfallChart',waterfallSvg(state.scenario));
+    txt('waterfallCaption',state.scenario+' · sample');
+    txt('waterfallNote',DATA.SCENARIOS[state.scenario].note);
+  }
+
+  /* ---- Tornado / sensitivity ---- */
+  function tornadoSvg(sel){
+    var ds=DATA.DRIVERS,W=1200,H=320,left=250,right=60,top=24,rowH=52;
+    var max=Math.max.apply(null,ds.map(function(d){return Math.max(Math.abs(d.low),Math.abs(d.high));}))||1;
+    var cx=left+(W-left-right)/2,half=(W-left-right)/2;
+    var s='';
+    s+='<line x1="'+cx+'" y1="'+top+'" x2="'+cx+'" y2="'+(top+rowH*ds.length)+'" stroke="#000000" stroke-width="2"/>';
+    s+='<text x="'+cx+'" y="'+(top+rowH*ds.length+20)+'" font-size="11" fill="#767676" text-anchor="middle">Base case</text>';
+    ds.forEach(function(d,i){
+      var y=top+i*rowH+10,on=(String(i)===String(sel));
+      var lw=Math.abs(d.low)/max*half,hw=Math.abs(d.high)/max*half;
+      s+='<text x="'+(left-14)+'" y="'+(y+22)+'" font-size="13" fill="#333333" text-anchor="end">'+esc(d.k)+'</text>';
+      s+='<rect'+tipAttrs(d.k,'Downside '+fmt(d.low,1)+' USD m')+' x="'+(cx-lw)+'" y="'+y+'" width="'+lw+'" height="26" fill="'+(on?'#DB0011':'#D7D8D6')+'"/>';
+      s+='<rect'+tipAttrs(d.k,'Upside +'+fmt(d.high,1)+' USD m')+' x="'+cx+'" y="'+y+'" width="'+hw+'" height="26" fill="'+(on?'#DB0011':'#767676')+'"/>';
+      s+='<text class="mono" x="'+(cx-lw-8)+'" y="'+(y+18)+'" font-size="11" fill="#767676" text-anchor="end">'+fmt(d.low,1)+'</text>';
+      s+='<text class="mono" x="'+(cx+hw+8)+'" y="'+(y+18)+'" font-size="11" fill="#767676">+'+fmt(d.high,1)+'</text>';
+    });
+    s+='<text x="20" y="'+(H-8)+'" font-size="11" fill="#767676">Base case = 0 · sample data</text>';
+    return svg('0 0 '+W+' '+H,s,'Sensitivity drivers, sample data');
+  }
+  function renderTornado(){
+    if(!el('tornadoChart')) return;
+    set('tornadoChart',tornadoSvg(state.driver));
+    txt('tornadoCaption','Driver '+String(parseInt(state.driver,10)+1)+' of '+DATA.DRIVERS.length+' · sample');
+  }
+
+  /* ---- The ask ---- */
+  function askSvg(){
+    var u=DATA.ASK.uses,W=1200,H=140,left=20,top=28,bh=64;
+    var total=u.reduce(function(a,x){return a+x[1];},0),x=left,s='';
+    var greys=['#141414','#767676','#B9BAB8','#D7D8D6'];
+    u.forEach(function(item,i){
+      var w=(W-2*left)*(item[1]/total);
+      s+='<rect'+tipAttrs(item[0],item[1]+'% of the ask')+' x="'+x+'" y="'+top+'" width="'+w+'" height="'+bh+'" fill="'+greys[i%4]+'"/>';
+      if(w>110){
+        s+='<text class="mono" x="'+(x+w/2)+'" y="'+(top+bh/2+5)+'" font-size="14" fill="'+((i===0||i===1)?'#FFFFFF':'#000000')+'" text-anchor="middle">'+item[1]+'%</text>';
+      }
+      x+=w;
+    });
+    s+='<text x="'+left+'" y="'+(H-8)+'" font-size="11" fill="#767676">Use of funds · sample data</text>';
+    return svg('0 0 '+W+' '+H,s,'Use of funds, sample data');
+  }
+  function renderAsk(){
+    if(!el('askBar')) return;
+    set('askBar',askSvg());
+    txt('askAmount',DATA.ASK.amount);
+    set('askLegend',DATA.ASK.uses.map(function(u,i){
+      return '<span><i style="background:'+['#141414','#767676','#B9BAB8','#D7D8D6'][i%4]+'"></i>'+esc(u[0])+' '+u[1]+'%</span>';
+    }).join(''));
+  }
+
+  /* ---- Selectable detail panels ---- */
+  function renderProblem(){
+    if(!el('painDetail')) return;
+    var p=DATA.PAINS[parseInt(state.pain,10)]||DATA.PAINS[0];
+    set('painDetail','<h4>'+esc(p.t)+'</h4><p><b>Response.</b> '+esc(p.r)+' <b>Why it holds.</b> '+esc(p.why)+'</p>');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-choice="pain"] button'),function(b){
+      b.setAttribute('aria-pressed',b.getAttribute('data-view')===String(state.pain)?'true':'false');
+    });
+  }
+  function renderScr(){
+    if(!el('scrDetail')) return;
+    var c=DATA.SCR[state.scr]||DATA.SCR.resolution;
+    set('scrDetail','<h4>'+esc(c.k)+'</h4><p>'+esc(c.d)+'</p>');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-choice="scr"] button'),function(b){
+      b.setAttribute('aria-pressed',b.getAttribute('data-view')===String(state.scr)?'true':'false');
+    });
+  }
+  function renderDots(){
+    Array.prototype.forEach.call(document.querySelectorAll('#optionMatrix td[data-score]'),function(td){
+      var n=parseInt(td.getAttribute('data-score'),10),s='<span class="dots" aria-label="'+n+' out of 5">';
+      for(var i=0;i<5;i++)s+='<i class="'+((i<n)?'on':'')+'"></i>';
+      td.innerHTML=s+'</span>';
+    });
+  }
+  function renderOption(){
+    if(!el('optDetail')) return;
+    var o=DATA.OPTIONS[state.option];
+    Array.prototype.forEach.call(document.querySelectorAll('#optionMatrix [data-col]'),function(c){
+      c.classList.toggle('focus-col',c.getAttribute('data-col')===state.option);
+    });
+    set('optDetail','<span class="tag">'+esc(o.tag)+'</span><h3>'+esc(o.name)+'</h3><p>'+esc(o.text)+'</p><dl>'+
+      o.facts.map(function(f){return '<dt>'+esc(f[0])+'</dt><dd class="num">'+esc(f[1])+'</dd>';}).join('')+
+      '<dt>Score total</dt><dd class="num">'+o.scores.reduce(function(a,b){return a+b;},0)+' / 25</dd></dl>');
+  }
+  function renderPhase(){
+    if(!el('roadDetail')) return;
+    var p=DATA.PHASES[parseInt(state.phase,10)]||DATA.PHASES[0];
+    Array.prototype.forEach.call(document.querySelectorAll('#road .road-item'),function(b){
+      b.setAttribute('aria-pressed',b.getAttribute('data-phase')===String(state.phase)?'true':'false');
+    });
+    set('roadDetail','<h4>'+esc(p.t)+' · '+esc(p.h)+'</h4><p>'+esc(p.p)+'</p><div class="chips">'+
+      p.chips.map(function(c){return '<span class="chip">'+esc(c)+'</span>';}).join('')+'</div>');
+  }
+
+  var RENDER={tam:renderTam,traction:renderTraction,pricing:renderPricing,scenario:renderWaterfall,
+    driver:renderTornado,option:renderOption,phase:renderPhase};
+  var CHOICE={pain:renderProblem,rival:renderComp,scr:renderScr};
+
+  /* ---- Tooltip ---- */
+  function showTip(node){
+    tip.innerHTML='<span class="k">'+esc(node.getAttribute('data-tip'))+'</span><span class="v num">'+esc(node.getAttribute('data-tip-v'))+'</span>';
+    var r=node.getBoundingClientRect(),d=deck.getBoundingClientRect();
+    var x=Math.max(80,Math.min(d.width-80,r.left-d.left+r.width/2));
+    var y=Math.max(60,r.top-d.top);
+    tip.style.left=x+'px';tip.style.top=y+'px';tip.classList.add('show');
+  }
+  function hideTip(){tip.classList.remove('show');}
+  document.addEventListener('mouseover',function(e){var t=e.target.closest&&e.target.closest('[data-tip]');if(t)showTip(t);});
+  document.addEventListener('focusin',function(e){var t=e.target.closest&&e.target.closest('[data-tip]');if(t)showTip(t);});
+  document.addEventListener('mouseout',function(e){if(e.target.closest&&e.target.closest('[data-tip]'))hideTip();});
+  document.addEventListener('focusout',function(e){if(e.target.closest&&e.target.closest('[data-tip]'))hideTip();});
+
+  /* ---- On-slide controls ---- */
+  function wireGroup(sel,keyOf,dispatcher){
+    Array.prototype.forEach.call(document.querySelectorAll(sel),function(group){
+      var key=group.getAttribute(keyOf);
+      group.addEventListener('click',function(e){
+        var b=e.target.closest&&e.target.closest('button[data-view]');if(!b)return;
+        state[key]=b.getAttribute('data-view');
+        Array.prototype.forEach.call(group.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+        if(dispatcher[key])dispatcher[key]();
+        hideTip();
+      });
+      group.addEventListener('keydown',function(e){
+        if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+        var bs=Array.prototype.slice.call(group.querySelectorAll('button'));
+        var i=bs.indexOf(document.activeElement);if(i<0)return;
+        e.preventDefault();e.stopPropagation();
+        var n=(i+(e.key==='ArrowRight'?1:-1)+bs.length)%bs.length;
+        bs[n].focus();bs[n].click();
+      });
+    });
+  }
+  wireGroup('[data-seg]','data-seg',RENDER);
+  wireGroup('[data-choice]','data-choice',CHOICE);
+  Array.prototype.forEach.call(document.querySelectorAll('[data-toggle]'),function(b){
+    b.addEventListener('click',function(){
+      var on=b.getAttribute('aria-pressed')!=='true';
+      b.setAttribute('aria-pressed',on?'true':'false');
+      state[b.getAttribute('data-toggle')]=on;
+      if(b.getAttribute('data-toggle')==='target')renderTraction();
+      hideTip();
+    });
+  });
+  document.addEventListener('click',function(e){
+    var exp=e.target.closest&&e.target.closest('[data-expand]');
+    if(exp){
+      var body=el(exp.getAttribute('data-expand'));
+      var on=exp.getAttribute('aria-expanded')!=='true';
+      exp.setAttribute('aria-expanded',on?'true':'false');
+      body.hidden=!on;
+      exp.querySelector('.lh-i').textContent=on?'−':'+';
+      return;
+    }
+    var go=e.target.closest&&e.target.closest('[data-goto]');
+    if(go){navigate(parseInt(go.getAttribute('data-goto'),10)-1);return;}
+    var ph=e.target.closest&&e.target.closest('[data-phase]');
+    if(ph){state.phase=ph.getAttribute('data-phase');renderPhase();return;}
+    var rv=e.target.closest&&e.target.closest('[data-rival]');
+    if(rv){state.rival=rv.getAttribute('data-rival');renderComp();return;}
+    var sort=e.target.closest&&e.target.closest('[data-sort]');
+    if(sort){sortTable(sort);return;}
+  });
+  function sortTable(btn){
+    var th=btn.closest('th'),table=btn.closest('table'),tbody=table.tBodies[0];
+    var col=parseInt(btn.getAttribute('data-sort'),10);
+    var asc=th.getAttribute('aria-sort')!=='ascending';
+    Array.prototype.forEach.call(table.querySelectorAll('thead th'),function(h){h.removeAttribute('aria-sort');});
+    th.setAttribute('aria-sort',asc?'ascending':'descending');
+    var rows=Array.prototype.slice.call(tbody.rows);
+    rows.sort(function(a,b){
+      var x=a.cells[col].textContent.trim(),y=b.cells[col].textContent.trim();
+      var nx=parseFloat(x.replace(/[^0-9.\-]/g,'')),ny=parseFloat(y.replace(/[^0-9.\-]/g,''));
+      var cmp=(!isNaN(nx)&&!isNaN(ny))?nx-ny:x.localeCompare(y);
+      return asc?cmp:-cmp;
+    });
+    rows.forEach(function(r){tbody.appendChild(r);});
+    Array.prototype.forEach.call(table.querySelectorAll('thead .arrow'),function(a){a.textContent='↕';});
+    btn.querySelector('.arrow').textContent=asc?'↑':'↓';
+  }
+
+  /* ---- Deck state machine ---- */
+  function updateNotes(){
+    var t=slides[cur].querySelector('template.notes');
+    notesBody.innerHTML=t?t.innerHTML:'<b>No notes for this slide.</b>';
+  }
+  slides.forEach(function(s,i){
+    var title=s.getAttribute('data-title')||('Slide '+(i+1));
+    var chapter=s.getAttribute('data-chapter')||'';
+    var dot=document.createElement('button');
+    dot.type='button';dot.className='dot'+(s.classList.contains('divider')?' chapter':'');
+    dot.title=title;dot.setAttribute('aria-label','Go to slide '+(i+1)+': '+title);
+    dot.addEventListener('click',function(){navigate(i);});
+    toc.appendChild(dot);
+    var card=document.createElement('button');
+    card.type='button';card.className='ov-card';
+    var no=document.createElement('span');no.className='ov-no';no.textContent=pad(i+1);
+    var label=document.createElement('span');label.textContent=title+(chapter?'  ·  '+chapter:'');
+    card.appendChild(no);card.appendChild(label);
+    card.addEventListener('click',function(){closeOverview();navigate(i);});
+    ovGrid.appendChild(card);
+  });
+  function render(){
+    slides.forEach(function(s,i){s.classList.toggle('active',i===cur&&!ovOpen);});
+    bar.style.width=((cur+1)/slides.length*100)+'%';
+    hud.innerHTML=pad(cur+1)+' / '+pad(slides.length)+' <span class="keys">· N notes · F full · ? keys</span>';
+    Array.prototype.forEach.call(toc.children,function(b,i){b.classList.toggle('active',i===cur);});
+    Array.prototype.forEach.call(ovGrid.children,function(b,i){b.classList.toggle('cur',i===cur);});
+    progress.setAttribute('aria-valuemax',String(slides.length));
+    progress.setAttribute('aria-valuenow',String(cur+1));
+    var isDark=slides[cur].classList.contains('cover')||slides[cur].classList.contains('divider');
+    document.documentElement.setAttribute('data-dark',isDark?'true':'false');
+    document.documentElement.setAttribute('data-divider',slides[cur].classList.contains('divider')?'true':'false');
+    document.title=(slides[cur].getAttribute('data-title')||'Deck')+' · '+DECK_NAME;
+    updateNotes();hideTip();
+    try{history.replaceState(null,'','#'+(cur+1));}catch(e){}
+  }
+  function navigate(i){cur=Math.max(0,Math.min(slides.length-1,i));render();deck.focus({preventScroll:true});}
+  function openOverview(){ovOpen=true;ov.classList.add('open');render();ov.focus({preventScroll:true});}
+  function closeOverview(){ovOpen=false;ov.classList.remove('open');render();deck.focus({preventScroll:true});}
+  function toggleNotes(){notesOpen=!notesOpen;notesDrawer.classList.toggle('open',notesOpen);}
+  function toggleHelp(){helpOpen=!helpOpen;help.classList.toggle('open',helpOpen);}
+  function toggleFullscreen(){
+    try{
+      if(document.fullscreenElement)document.exitFullscreen();
+      else if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();
+    }catch(e){}
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.key==='?'){e.preventDefault();toggleHelp();return;}
+    if(e.key==='Escape'){
+      e.preventDefault();
+      if(helpOpen){toggleHelp();return;}
+      if(ovOpen){closeOverview();return;}
+      if(notesOpen){toggleNotes();return;}
+      openOverview();return;
+    }
+    if(helpOpen||ovOpen)return;
+    var k=e.key.toLowerCase();
+    if(k==='n'&&!e.metaKey&&!e.ctrlKey&&!e.altKey){e.preventDefault();toggleNotes();return;}
+    if(k==='f'&&!e.metaKey&&!e.ctrlKey&&!e.altKey){e.preventDefault();toggleFullscreen();return;}
+    if((e.key===' '||e.key==='Enter')&&e.target.closest&&e.target.closest('[data-rival]')){
+      e.preventDefault();e.target.closest('[data-rival]').dispatchEvent(new MouseEvent('click',{bubbles:true}));return;
+    }
+    if(e.target.closest&&e.target.closest('[data-no-paging]')){
+      if(e.key===' '||e.key==='Enter'||e.key==='ArrowRight'||e.key==='ArrowLeft')return;
+    }
+    if((e.key===' '||e.key==='Enter')&&e.target.closest&&e.target.closest('button'))return;
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '||e.key==='Spacebar'){e.preventDefault();navigate(cur+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();navigate(cur-1);}
+    else if(e.key==='Home'){e.preventDefault();navigate(0);}
+    else if(e.key==='End'){e.preventDefault();navigate(slides.length-1);}
+  });
+  progress.addEventListener('click',function(e){
+    var r=progress.getBoundingClientRect();
+    navigate(Math.floor((e.clientX-r.left)/r.width*slides.length));
+  });
+  progress.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'){e.preventDefault();navigate(cur+1);}
+    if(e.key==='ArrowLeft'){e.preventDefault();navigate(cur-1);}
+  });
+
+  /* ---- Print: pre-render every selectable view ---- */
+  function chartSvgFor(kind,view){
+    if(kind==='tam')return tamSvg(view);
+    if(kind==='traction')return tractionSvg(view,true);
+    if(kind==='scenario')return waterfallSvg(view);
+    if(kind==='driver')return tornadoSvg(view);
+    return '';
+  }
+  function renderPrintCharts(){
+    var specs={
+      tam:{views:['bottom','top'],label:'Market sizing'},
+      traction:{views:Object.keys(DATA.TRACTION),label:'Traction'},
+      scenario:{views:Object.keys(DATA.SCENARIOS),label:'Benefit bridge'},
+      driver:{views:DATA.DRIVERS.map(function(d,i){return i;}),label:'Sensitivity'}
+    };
+    Object.keys(specs).forEach(function(kind){
+      var host=document.querySelector('[data-print-views="'+kind+'"]');
+      if(!host)return;
+      var h='';
+      specs[kind].views.forEach(function(v){
+        var name=(kind==='traction')?DATA.TRACTION[v].label:String(v);
+        h+='<div class="print-view-title">'+esc(specs[kind].label+' · '+name)+'</div>'+chartSvgFor(kind,v);
+      });
+      host.innerHTML=h;
+    });
+  }
+  var savedExpand=[];
+  function expandForPrint(){
+    savedExpand=[];
+    Array.prototype.forEach.call(document.querySelectorAll('[data-expand]'),function(b){
+      var body=el(b.getAttribute('data-expand'));
+      savedExpand.push([b,body,b.getAttribute('aria-expanded'),body.hidden]);
+      b.setAttribute('aria-expanded','true');body.hidden=false;
+      b.querySelector('.lh-i').textContent='−';
+    });
+  }
+  function restoreAfterPrint(){
+    savedExpand.forEach(function(r){
+      r[0].setAttribute('aria-expanded',r[2]);r[1].hidden=r[3];
+      r[0].querySelector('.lh-i').textContent=r[2]==='true'?'−':'+';
+    });
+    savedExpand=[];
+  }
+  window.addEventListener('beforeprint',expandForPrint);
+  window.addEventListener('afterprint',restoreAfterPrint);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    if(mq.addEventListener)mq.addEventListener('change',function(e){e.matches?expandForPrint():restoreAfterPrint();});
+  }
+  window.addEventListener('hashchange',function(){
+    var n=parseInt((location.hash||'').slice(1),10);
+    if(isFinite(n)&&n>=1&&n<=slides.length)navigate(n-1);
+  });
+
+  /* ---- Init ---- */
+  renderProblem();renderTam();renderTraction();renderUnits();renderComp();renderPricing();
+  renderWaterfall();renderTornado();renderAsk();renderScr();renderDots();renderOption();renderPhase();
+  renderPrintCharts();
+  var start=parseInt((location.hash||'').slice(1),10);
+  cur=(isFinite(start)&&start>=1&&start<=slides.length)?start-1:0;
+  render();
+})();
+
+</script>
+</body>
+</html>
