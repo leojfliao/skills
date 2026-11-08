@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-label="示例：四层系统架构骨架，含外部、接入、服务、数据四层与一条红色焦点链路">
+<title>系统分层架构骨架（示例）</title>
+<defs>
+  <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#767676"/></marker>
+  <marker id="arrow-focus" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#DB0011"/></marker>
+
+  <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M4.5 21c0-4 3-6.5 7.5-6.5s7.5 2.5 7.5 6.5"/></symbol>
+  <symbol id="icon-partner" viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="12" r="3"/><path d="M9 12h6M12 9.5 14 12l-2 2.5"/></symbol>
+  <symbol id="icon-external" viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-9 9"/><path d="M19 14v6H4V5h6"/></symbol>
+  <symbol id="icon-gateway" viewBox="0 0 24 24"><path d="M12 3 21 12l-9 9L3 12Z"/><path d="M8 12h8M13 9l3 3-3 3"/></symbol>
+  <symbol id="icon-loadbalancer" viewBox="0 0 24 24"><path d="M12 3v5M12 8H5v5M12 8h7v5M5 13v3M12 13v3M19 13v3"/><rect x="2" y="16" width="6" height="4" rx="1"/><rect x="9" y="16" width="6" height="4" rx="1"/><rect x="16" y="16" width="6" height="4" rx="1"/></symbol>
+  <symbol id="icon-api" viewBox="0 0 24 24"><path d="M9 4c-2 0-2 3-2 4s0 2-2 2c2 0 2 1 2 2s0 4 2 4M15 4c2 0 2 3 2 4s0 2 2 2c-2 0-2 1-2 2s0 4-2 4"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="icon-service" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 12h8M8 15h5"/></symbol>
+  <symbol id="icon-microservice" viewBox="0 0 24 24"><rect x="2.5" y="9" width="5" height="5" rx="1"/><rect x="16.5" y="3" width="5" height="5" rx="1"/><rect x="16.5" y="16" width="5" height="5" rx="1"/><path d="M7.5 11.5H12V5.5h4.5M12 11.5v7h4.5"/></symbol>
+  <symbol id="icon-scheduler" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6.5V12l3.5 2"/></symbol>
+  <symbol id="icon-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+  <symbol id="icon-cache" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M13 6 9 13h4l-1 5 4-7h-4Z"/></symbol>
+  <symbol id="icon-queue" viewBox="0 0 24 24"><rect x="2.5" y="8" width="5" height="8" rx="1"/><rect x="9.5" y="8" width="5" height="8" rx="1"/><rect x="16.5" y="8" width="5" height="8" rx="1"/><path d="M7.5 12h2M14.5 12h2"/></symbol>
+</defs>
+
+<rect x="0" y="0" width="1200" height="720" fill="#FFFFFF"/>
+<text x="48" y="56" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="600" fill="#000000">系统分层架构（示例骨架）</text>
+<text x="48" y="80" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#767676">图 1 · 这张图回答：一次请求从外部到数据层经过哪些组件；示例内容，非真实系统，请替换全部组件名</text>
+
+<g stroke="#D7D8D6" stroke-width="1">
+  <path d="M40 212H1160M40 324H1160M40 436H1160M40 548H1160M40 560H1160"/>
+</g>
+<g font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#767676">
+  <text x="48" y="162">外部</text><text x="48" y="274">接入</text><text x="48" y="386">服务</text><text x="48" y="498">数据</text>
+</g>
+
+<g id="boundaries" font-family="Arial,Helvetica,sans-serif">
+  <rect x="180" y="332" width="840" height="96" rx="2" fill="none" stroke="#D7D8D6" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="1028" y="348" font-size="11" fill="#767676">信任域 A（示例）</text>
+</g>
+
+<g id="flows" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#767676">
+  <g stroke="#DB0011" stroke-width="2" fill="none" marker-end="url(#arrow-focus)">
+    <path d="M300 192V228"/><path d="M300 304V340"/><path d="M300 416V452"/>
+  </g>
+  <g stroke="#767676" stroke-width="1.5" fill="none" marker-end="url(#arrow-gray)">
+    <path d="M600 192V228"/><path d="M900 192V228"/>
+    <path d="M600 304V340"/><path d="M900 304V340"/>
+    <path d="M900 416V452"/>
+  </g>
+  <g stroke="#767676" stroke-width="1.5" fill="none" stroke-dasharray="6 4" marker-end="url(#arrow-gray)">
+    <path d="M860 416V440H600V452"/>
+  </g>
+  <g fill="#FFFFFF">
+    <rect x="306" y="202" width="40" height="16"/><rect x="306" y="314" width="40" height="16"/><rect x="306" y="426" width="40" height="16"/>
+    <rect x="606" y="202" width="40" height="16"/><rect x="906" y="202" width="40" height="16"/>
+    <rect x="606" y="314" width="40" height="16"/><rect x="906" y="314" width="40" height="16"/>
+    <rect x="906" y="426" width="40" height="16"/><rect x="724" y="430" width="40" height="16"/>
+  </g>
+  <g fill="#333333">
+    <text x="310" y="214">鉴权</text><text x="310" y="326">处理</text><text x="310" y="438">写入</text>
+    <text x="610" y="214">接入</text><text x="910" y="214">调用</text>
+    <text x="610" y="326">转发</text><text x="910" y="326">触发</text>
+    <text x="910" y="438">推送</text><text x="728" y="442">读取</text>
+  </g>
+</g>
+
+<g id="components" fill="none" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" font-family="Arial,Helvetica,sans-serif">
+  <g id="C01"><title>C01 示例用户端</title><rect x="200" y="120" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-user" x="216" y="144" width="24" height="24"/><text x="252" y="154" font-size="14" fill="#333333" stroke="none">示例用户端</text><text x="252" y="173" font-size="11" fill="#767676" stroke="none">外部参与方</text><text x="388" y="136" font-size="10" fill="#767676" stroke="none" text-anchor="end">C01</text></g>
+  <g id="C02"><title>C02 示例合作方</title><rect x="500" y="120" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-partner" x="516" y="144" width="24" height="24"/><text x="552" y="154" font-size="14" fill="#333333" stroke="none">示例合作方</text><text x="552" y="173" font-size="11" fill="#767676" stroke="none">外部系统</text><text x="688" y="136" font-size="10" fill="#767676" stroke="none" text-anchor="end">C02</text></g>
+  <g id="C03"><title>C03 示例外部依赖</title><rect x="800" y="120" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-external" x="816" y="144" width="24" height="24"/><text x="852" y="154" font-size="14" fill="#333333" stroke="none">示例外部依赖</text><text x="852" y="173" font-size="11" fill="#767676" stroke="none">第三方服务</text><text x="988" y="136" font-size="10" fill="#767676" stroke="none" text-anchor="end">C03</text></g>
+
+  <g id="C04"><title>C04 示例网关</title><rect x="200" y="232" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-gateway" x="216" y="256" width="24" height="24"/><text x="252" y="266" font-size="14" fill="#333333" stroke="none">示例网关</text><text x="252" y="285" font-size="11" fill="#767676" stroke="none">统一入口</text><text x="388" y="248" font-size="10" fill="#767676" stroke="none" text-anchor="end">C04</text></g>
+  <g id="C05"><title>C05 示例负载均衡</title><rect x="500" y="232" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-loadbalancer" x="516" y="256" width="24" height="24"/><text x="552" y="266" font-size="14" fill="#333333" stroke="none">示例负载均衡</text><text x="552" y="285" font-size="11" fill="#767676" stroke="none">流量分发</text><text x="688" y="248" font-size="10" fill="#767676" stroke="none" text-anchor="end">C05</text></g>
+  <g id="C06"><title>C06 示例 API 层</title><rect x="800" y="232" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-api" x="816" y="256" width="24" height="24"/><text x="852" y="266" font-size="14" fill="#333333" stroke="none">示例 API 层</text><text x="852" y="285" font-size="11" fill="#767676" stroke="none">契约层</text><text x="988" y="248" font-size="10" fill="#767676" stroke="none" text-anchor="end">C06</text></g>
+
+  <g id="C07"><title>C07 示例服务 A</title><rect x="200" y="344" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-service" x="216" y="368" width="24" height="24"/><text x="252" y="378" font-size="14" fill="#333333" stroke="none">示例服务 A</text><text x="252" y="397" font-size="11" fill="#767676" stroke="none">核心处理</text><text x="388" y="360" font-size="10" fill="#767676" stroke="none" text-anchor="end">C07</text></g>
+  <g id="C08"><title>C08 示例服务 B</title><rect x="500" y="344" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-microservice" x="516" y="368" width="24" height="24"/><text x="552" y="378" font-size="14" fill="#333333" stroke="none">示例服务 B</text><text x="552" y="397" font-size="11" fill="#767676" stroke="none">服务集群</text><text x="688" y="360" font-size="10" fill="#767676" stroke="none" text-anchor="end">C08</text></g>
+  <g id="C09"><title>C09 示例调度器</title><rect x="800" y="344" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-scheduler" x="816" y="368" width="24" height="24"/><text x="852" y="378" font-size="14" fill="#333333" stroke="none">示例调度器</text><text x="852" y="397" font-size="11" fill="#767676" stroke="none">任务编排</text><text x="988" y="360" font-size="10" fill="#767676" stroke="none" text-anchor="end">C09</text></g>
+
+  <g id="C10"><title>C10 示例主库</title><rect x="200" y="456" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-database" x="216" y="480" width="24" height="24"/><text x="252" y="490" font-size="14" fill="#333333" stroke="none">示例主库</text><text x="252" y="509" font-size="11" fill="#767676" stroke="none">关系型存储</text><text x="388" y="472" font-size="10" fill="#767676" stroke="none" text-anchor="end">C10</text></g>
+  <g id="C11"><title>C11 示例缓存</title><rect x="500" y="456" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-cache" x="516" y="480" width="24" height="24"/><text x="552" y="490" font-size="14" fill="#333333" stroke="none">示例缓存</text><text x="552" y="509" font-size="11" fill="#767676" stroke="none">热点加速</text><text x="688" y="472" font-size="10" fill="#767676" stroke="none" text-anchor="end">C11</text></g>
+  <g id="C12"><title>C12 示例消息队列</title><rect x="800" y="456" width="200" height="72" rx="2" fill="#FFFFFF"/><use href="#icon-queue" x="816" y="480" width="24" height="24"/><text x="852" y="490" font-size="14" fill="#333333" stroke="none">示例消息队列</text><text x="852" y="509" font-size="11" fill="#767676" stroke="none">异步解耦</text><text x="988" y="472" font-size="10" fill="#767676" stroke="none" text-anchor="end">C12</text></g>
+</g>
+
+<g id="legend" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#767676">
+  <text x="48" y="588" font-size="12" font-weight="600" fill="#333333">图标含义</text>
+  <g fill="none" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#icon-user" x="48" y="602" width="20" height="20"/><use href="#icon-gateway" x="48" y="628" width="20" height="20"/>
+    <use href="#icon-service" x="200" y="602" width="20" height="20"/><use href="#icon-database" x="200" y="628" width="20" height="20"/>
+  </g>
+  <text x="76" y="617">用户 / 端</text><text x="76" y="643">网关 / 接入</text>
+  <text x="228" y="617">服务 / 计算</text><text x="228" y="643">数据库 / 存储</text>
+
+  <text x="420" y="588" font-size="12" font-weight="600" fill="#333333">线型含义</text>
+  <g stroke-width="1.5" fill="none">
+    <path d="M420 612h32" stroke="#767676" marker-end="url(#arrow-gray)"/>
+    <path d="M420 638h32" stroke="#767676" stroke-dasharray="6 4" marker-end="url(#arrow-gray)"/>
+    <path d="M420 664h32" stroke="#DB0011" stroke-width="2" marker-end="url(#arrow-focus)"/>
+  </g>
+  <text x="462" y="616">同步调用</text><text x="462" y="642">异步消息</text><text x="462" y="668">焦点链路</text>
+
+  <text x="800" y="588" font-size="12" font-weight="600" fill="#333333">颜色含义</text>
+  <g stroke="#D7D8D6" stroke-width="1">
+    <rect x="800" y="602" width="20" height="16" fill="#333333" stroke="none"/><rect x="800" y="628" width="20" height="16" fill="#DB0011" stroke="none"/><rect x="800" y="654" width="20" height="16" fill="#FFFFFF"/>
+  </g>
+  <text x="830" y="615">组件与常规连线</text><text x="830" y="641">本次焦点路径</text><text x="830" y="667">页面与标签底</text>
+  <text x="800" y="696" font-size="10">示例骨架 · 组件数 12 · 连线数 10 · 全图仅一条焦点路径</text>
+</g>
+</svg>

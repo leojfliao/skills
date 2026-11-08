@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>演示页骨架</title>
+<style>
+:root{
+  --red:#DB0011; --white:#FFFFFF; --black:#000000; --ink:#333333;
+  --muted:#767676; --grey:#F4F4F4; --line:#D7D8D6; --dark:#141414;
+  --ok:#008580; --err:#A8000B;
+  --font-sans:'Univers Next','Nimbus Sans',Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,Helvetica,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--grey);font-family:var(--font-sans);color:var(--ink)}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+
+.deck{
+  position:relative;width:min(100vw,177.78vh);height:min(100vh,56.25vw);
+  margin:auto;background:var(--white);overflow:hidden;container-type:inline-size;
+}
+.stage{position:absolute;inset:0}
+.slide{
+  position:absolute;inset:0;padding:4cqw 5cqw;
+  display:flex;flex-direction:column;justify-content:center;
+  background:var(--white);opacity:0;transform:translateY(8px);pointer-events:none;
+  transition:opacity .18s ease-out,transform .18s ease-out;
+}
+.slide.active{opacity:1;transform:none;pointer-events:auto}
+.slide::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(215,216,214,.30) 0 1px,transparent 1px 64px),
+    repeating-linear-gradient(90deg,rgba(215,216,214,.30) 0 1px,transparent 1px 64px);
+}
+.slide>*{position:relative;z-index:1}
+.slide.cover{background:var(--dark);color:var(--white)}
+.slide.cover::before{opacity:.16;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.14) 0 1px,transparent 1px 64px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.14) 0 1px,transparent 1px 64px);
+}
+.slide.cover::after{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--red)}
+.slide.closing{border-top:6px solid var(--red)}
+
+.eyebrow{font-size:13px;font-size:.78cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+.cover .eyebrow{color:#D7D8D6}
+.title{font-size:40px;font-size:2.9cqw;line-height:1.15;font-weight:700;color:var(--black);letter-spacing:-.02em}
+h2.title{font-size:28px;font-size:1.85cqw;margin-bottom:2.4cqw}
+.cover .title{color:var(--white);max-width:78%}
+.sub{font-size:18px;font-size:1.05cqw;color:var(--muted);margin-top:1.6cqw;max-width:64%}
+.cover .sub{color:#D7D8D6}
+.note{font-size:13px;font-size:.72cqw;color:var(--muted);margin-top:3.2cqw}
+.cover .note{color:#D7D8D6}
+
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw}
+.card{border-top:2px solid var(--black);background:var(--grey);padding:1.6cqw;min-height:11cqw}
+.card .idx{display:block;font-size:.85cqw;color:var(--red);margin-bottom:1cqw}
+.card h3{font-size:20px;font-size:1.1cqw;color:var(--black);margin-bottom:.6cqw}
+.card p,.card li{font-size:16px;font-size:.88cqw;line-height:1.6}
+
+.metric{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:2.4cqw}
+.metric .value{font-size:64px;font-size:5cqw;font-weight:700;line-height:1;color:var(--red)}
+.metric .unit{font-size:24px;font-size:1.5cqw;margin-left:.3cqw;font-weight:500}
+.metric .label{font-size:18px;font-size:1cqw;color:var(--ink);margin-top:.6cqw}
+.metric .delta{font-size:14px;font-size:.8cqw;color:var(--muted);margin-top:.4cqw}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.metric-row>div{padding:1.2cqw 0;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:.4cqw}
+.metric-row>div:last-child{border-right:0}
+.metric-row .num{font-size:22px;font-size:1.3cqw;color:var(--black)}
+.metric-row .label{font-size:13px;font-size:.75cqw;color:var(--muted)}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2cqw}
+.split .col{border-left:1px solid var(--line);padding-left:1.6cqw}
+.split .col.accent{border-left:2px solid var(--red)}
+.split h3{font-size:20px;font-size:1.1cqw;color:var(--black);margin-bottom:1cqw}
+.split .col.accent h3{color:var(--red)}
+.split li{font-size:16px;font-size:.88cqw;line-height:1.9;margin-left:1.2em}
+
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2cqw;border-top:1px solid var(--line);padding-top:1.6cqw}
+.tl-item{border-right:1px solid var(--line);padding-right:1cqw}
+.tl-item:last-child{border-right:0}
+.tl-item .when{display:block;font-size:.85cqw;color:var(--red);margin-bottom:.8cqw}
+.tl-item h3{font-size:18px;font-size:1cqw;color:var(--black);margin-bottom:.5cqw}
+.tl-item p{font-size:14px;font-size:.78cqw;color:var(--muted);line-height:1.6}
+
+.figure{margin-top:1cqw}
+.figure svg{width:100%;max-height:26cqw;display:block}
+.figure figcaption{font-size:13px;font-size:.72cqw;color:var(--muted);margin-top:.8cqw}
+table.data{width:100%;border-collapse:collapse;font-size:16px;font-size:.88cqw}
+table.data th,table.data td{text-align:left;padding:.8cqw 1cqw;border-bottom:1px solid var(--line)}
+table.data th{font-weight:600;color:var(--black);border-bottom:2px solid var(--black)}
+table.data td.num,table.data th.num{text-align:right}
+.kicker{font-size:34px;font-size:2.2cqw;font-weight:700;color:var(--black);line-height:1.3;max-width:80%}
+.actions{margin-top:2.4cqw;list-style:none;display:flex;gap:2cqw}
+.actions li{border-top:1px solid var(--line);padding-top:.8cqw;font-size:15px;font-size:.85cqw;flex:1}
+
+.progress{position:fixed;top:0;left:0;right:0;height:3px;background:var(--line);z-index:40;cursor:pointer}
+.progress .bar{height:100%;width:0;background:var(--red);transition:width .18s ease-out}
+.hud{position:fixed;bottom:14px;left:18px;z-index:40;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.toc{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:10px}
+.toc .dot{width:10px;height:10px;padding:0;border:1px solid var(--muted);border-radius:0;background:transparent;cursor:pointer;transition:background .15s ease-out,border-color .15s ease-out,height .15s ease-out}
+.toc .dot:hover{border-color:var(--red)}
+.toc .dot.active{background:var(--red);border-color:var(--red);height:20px}
+.overview{position:fixed;inset:0;z-index:60;background:var(--white);display:none;overflow:auto;padding:48px}
+.overview.open{display:block}
+.overview h2{font-size:22px;color:var(--black);margin-bottom:24px;font-weight:600}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.ov-card{display:flex;gap:14px;align-items:flex-start;text-align:left;padding:20px;border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:var(--font-sans);font-size:15px;cursor:pointer;transition:border-color .15s ease-out}
+.ov-card:hover{border-color:var(--red)}
+.ov-no{font-family:var(--font-mono);color:var(--red);font-size:13px;padding-top:2px}
+.ov-hint{position:fixed;bottom:18px;right:20px;font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition-duration:0s!important;animation:none!important}
+}
+@media print{
+  @page{size:landscape;margin:0}
+  html,body{height:auto;overflow:visible;background:var(--white)}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .deck{width:100%;height:auto;margin:0;overflow:visible;container-type:inline-size}
+  .stage{position:static}
+  .slide{position:relative;inset:auto;min-height:100vh;opacity:1!important;transform:none!important;
+    display:flex;page-break-after:always;break-after:page;border-bottom:1px solid var(--line)}
+  .slide:last-child{page-break-after:auto;break-after:auto;border-bottom:0}
+  .slide::before{display:none}
+  .progress,.toc,.hud,.overview,.ov-hint{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck" tabindex="-1">
+  <div class="stage" id="stage">
+
+    <section class="slide cover" data-title="封面">
+      <p class="eyebrow">内部分享 · 示例内容</p>
+      <h1 class="title">把复杂系统，讲成一条清楚的线</h1>
+      <p class="sub">一份关于分层、边界与信息密度的示例演示页</p>
+      <p class="note">示例骨架 · 请替换全部文字与数值 · 时长 30 分钟</p>
+    </section>
+
+    <section class="slide" data-title="三个原则">
+      <h2 class="title">这版骨架守住三件事</h2>
+      <div class="grid-3">
+        <div class="card"><span class="idx num">01</span><h3>克制</h3><p>红色只标焦点，层级靠留白和字重建立，不靠特效。</p></div>
+        <div class="card"><span class="idx num">02</span><h3>精确</h3><p>数字等宽对齐，基线统一，1px 网格提供技术感。</p></div>
+        <div class="card"><span class="idx num">03</span><h3>可点</h3><p>键盘、目录、进度条、总览全部可用，离线零请求。</p></div>
+      </div>
+      <p class="note">示例内容 · 请替换</p>
+    </section>
+
+    <section class="slide" data-title="关键数字">
+      <h2 class="title">一个数字撑起一页</h2>
+      <div class="metric">
+        <span class="value num">128<span class="unit">ms</span></span>
+        <span class="label">端到端处理时延（示例数据）</span>
+        <span class="delta">较改造前下降 <b class="num">37%</b>（示例数据）</span>
+      </div>
+      <div class="metric-row">
+        <div><span class="num">3</span><span class="label">接入系统数（示例）</span></div>
+        <div><span class="num">99.9%</span><span class="label">可用性（示例）</span></div>
+        <div><span class="num">0</span><span class="label">人工干预（示例）</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="系统分层">
+      <h2 class="title">整体分层</h2>
+      <figure class="figure">
+        <svg viewBox="0 0 1200 300" role="img" aria-label="示例：四层系统分层与调用方向" font-family="Arial,Helvetica,sans-serif">
+          <g fill="none" stroke="#D7D8D6" stroke-width="1">
+            <rect x="20" y="20" width="1160" height="52"/>
+            <rect x="20" y="90" width="1160" height="52"/>
+            <rect x="20" y="160" width="1160" height="52"/>
+            <rect x="20" y="230" width="1160" height="52"/>
+          </g>
+          <g fill="#767676" font-size="12">
+            <text x="36" y="14">外部</text><text x="36" y="84">接入</text>
+            <text x="36" y="154">服务</text><text x="36" y="224">数据</text>
+          </g>
+          <g fill="#333333" font-size="15">
+            <text x="140" y="52">示例客户端</text>
+            <text x="140" y="122">示例网关</text>
+            <text x="140" y="192">示例服务 A / B</text>
+            <text x="140" y="262">示例数据库 / 缓存 / 消息队列</text>
+          </g>
+          <g stroke="#DB0011" stroke-width="2" fill="none">
+            <path d="M600 72 L600 90"/><path d="M600 142 L600 160"/><path d="M600 212 L600 230"/>
+          </g>
+        </svg>
+        <figcaption>图 1 · 系统分层与调用方向（示例，请替换为真实设计）</figcaption>
+      </figure>
+    </section>
+
+    <section class="slide closing" data-title="小结">
+      <p class="kicker">先讲清楚边界，再谈实现。</p>
+      <ul class="actions"><li>下一步一（示例）</li><li>下一步二（示例）</li><li>下一步三（示例）</li></ul>
+      <p class="note">Q&amp;A · ← → 翻页 · Esc 总览 · 目录可点击</p>
+    </section>
+
+  </div>
+</div>
+
+<div class="progress" id="progress" role="slider" aria-label="演示进度" aria-valuemin="1" aria-valuemax="1" aria-valuenow="1" tabindex="0"><div class="bar" id="bar"></div></div>
+<div class="toc" id="toc" aria-label="章节目录"></div>
+<div class="hud" id="hud"></div>
+<div class="overview" id="overview" tabindex="-1" aria-label="页面总览">
+  <h2>页面总览</h2>
+  <div class="ov-grid" id="ovGrid"></div>
+  <p class="ov-hint">Esc 返回 · 点击卡片跳转</p>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var bar = document.getElementById('bar');
+  var hud = document.getElementById('hud');
+  var toc = document.getElementById('toc');
+  var progress = document.getElementById('progress');
+  var ov = document.getElementById('overview');
+  var ovGrid = document.getElementById('ovGrid');
+  var cur = 0, ovOpen = false;
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  slides.forEach(function(s, i){
+    var title = s.getAttribute('data-title') || ('第 ' + (i+1) + ' 页');
+    var dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'dot';
+    dot.title = title;
+    dot.setAttribute('aria-label', '跳到第 ' + (i+1) + ' 页：' + title);
+    dot.addEventListener('click', function(){ go(i); });
+    toc.appendChild(dot);
+
+    var card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'ov-card';
+    var no = document.createElement('span');
+    no.className = 'ov-no';
+    no.textContent = pad(i+1);
+    var label = document.createElement('span');
+    label.textContent = title;
+    card.appendChild(no);
+    card.appendChild(label);
+    card.addEventListener('click', function(){ closeOverview(); go(i); });
+    ovGrid.appendChild(card);
+  });
+
+  function render(){
+    slides.forEach(function(s, i){
+      s.classList.toggle('active', i === cur && !ovOpen);
+    });
+    bar.style.width = ((cur + 1) / slides.length * 100) + '%';
+    hud.textContent = pad(cur + 1) + ' / ' + pad(slides.length);
+    Array.prototype.forEach.call(toc.children, function(b, i){
+      b.classList.toggle('active', i === cur);
+    });
+    progress.setAttribute('aria-valuemax', String(slides.length));
+    progress.setAttribute('aria-valuenow', String(cur + 1));
+    document.title = (slides[cur].getAttribute('data-title') || '演示页') + ' · 演示';
+    try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { /* file:// 下忽略 */ }
+  }
+
+  function go(i){
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    render();
+    deck.focus({preventScroll:true});
+  }
+  function openOverview(){ ovOpen = true; ov.classList.add('open'); render(); ov.focus({preventScroll:true}); }
+  function closeOverview(){ ovOpen = false; ov.classList.remove('open'); render(); deck.focus({preventScroll:true}); }
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){ e.preventDefault(); ovOpen ? closeOverview() : openOverview(); return; }
+    if (ovOpen) return;
+    if ((e.key === ' ' || e.key === 'Enter') && e.target.closest && e.target.closest('button')) return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ' || e.key === 'Spacebar'){
+      e.preventDefault(); go(cur + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){
+      e.preventDefault(); go(cur - 1);
+    } else if (e.key === 'Home'){
+      e.preventDefault(); go(0);
+    } else if (e.key === 'End'){
+      e.preventDefault(); go(slides.length - 1);
+    }
+  });
+
+  progress.addEventListener('click', function(e){
+    var r = progress.getBoundingClientRect();
+    go(Math.floor((e.clientX - r.left) / r.width * slides.length));
+  });
+  progress.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight'){ e.preventDefault(); go(cur + 1); }
+    if (e.key === 'ArrowLeft'){ e.preventDefault(); go(cur - 1); }
+  });
+
+  var start = parseInt((location.hash || '').slice(1), 10);
+  cur = (isFinite(start) && start >= 1 && start <= slides.length) ? start - 1 : 0;
+  render();
+})();
+</script>
+</body>
+</html>

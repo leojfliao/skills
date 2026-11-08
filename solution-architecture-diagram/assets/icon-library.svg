@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 690" width="720" height="690" role="img" aria-label="自绘架构图标集，47 个，统一 24 网格与 1.5 线宽">
+<title>自绘架构图标集</title>
+<defs>
+  <symbol id="icon-cloud" viewBox="0 0 24 24"><path d="M7 18h10.5a3.5 3.5 0 0 0 .2-7A5.5 5.5 0 0 0 6.8 9.4 4.3 4.3 0 0 0 7 18Z"/></symbol>
+  <symbol id="icon-region" viewBox="0 0 24 24"><path d="M12 2.6 20.5 7v10L12 21.4 3.5 17V7Z"/><path d="M12 8.5 16 10.7v4.6L12 17.5 8 15.3v-4.6Z"/></symbol>
+  <symbol id="icon-vpc" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1" stroke-dasharray="3 2"/><rect x="8" y="9" width="8" height="6" rx="1"/></symbol>
+  <symbol id="icon-onprem" viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-5 7 5v12M9.5 21v-6h5v6M9 12h1.5M13.5 12H15"/></symbol>
+  <symbol id="icon-edge" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8" stroke-dasharray="2 3"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></symbol>
+  <symbol id="icon-availability" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="1.6"/><circle cx="16" cy="12" r="1.6"/><circle cx="10" cy="18" r="1.6"/></symbol>
+  <symbol id="icon-compute" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="1"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 3v3.5M15 3v3.5M9 17.5V21M15 17.5V21M3 9h3.5M3 15h3.5M17.5 9H21M17.5 15H21"/></symbol>
+  <symbol id="icon-container" viewBox="0 0 24 24"><path d="M12 2.8 21 7.4v9.2L12 21.2 3 16.6V7.4Z"/><path d="M3 7.4 12 12l9-4.6M12 12v9.2"/></symbol>
+  <symbol id="icon-serverless" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M7 16c3 0 3-8 6-8s3 5 5 5"/><circle cx="18" cy="13" r="1"/></symbol>
+  <symbol id="icon-kubernetes" viewBox="0 0 24 24"><path d="M12 2.6 20.5 7v10L12 21.4 3.5 17V7Z"/><circle cx="12" cy="12" r="3.2"/><path d="M12 8.8V5M12 15.2v3.5M8.8 12h-4M15.2 12h4M9.7 9.7 7.2 7.2M14.3 14.3l2.5 2.5M14.3 9.7l2.5-2.5M9.7 14.3l-2.5 2.5"/></symbol>
+  <symbol id="icon-batch" viewBox="0 0 24 24"><rect x="3" y="5" width="14" height="4" rx="1"/><rect x="6" y="10" width="14" height="4" rx="1"/><rect x="3" y="15" width="14" height="4" rx="1"/></symbol>
+  <symbol id="icon-gateway" viewBox="0 0 24 24"><path d="M12 3 21 12l-9 9L3 12Z"/><path d="M8 12h8M13 9l3 3-3 3"/></symbol>
+  <symbol id="icon-loadbalancer" viewBox="0 0 24 24"><path d="M12 3v5M12 8H5v5M12 8h7v5M5 13v3M12 13v3M19 13v3"/><rect x="2" y="16" width="6" height="4" rx="1"/><rect x="9" y="16" width="6" height="4" rx="1"/><rect x="16" y="16" width="6" height="4" rx="1"/></symbol>
+  <symbol id="icon-api" viewBox="0 0 24 24"><path d="M9 4c-2 0-2 3-2 4s0 2-2 2c2 0 2 1 2 2s0 4 2 4M15 4c2 0 2 3 2 4s0 2 2 2c-2 0-2 1-2 2s0 4-2 4"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="icon-firewall" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 10h18M3 15h18M9 5v5M15 5v5M6 10v5M12 10v5M18 10v5M9 15v4M15 15v4"/></symbol>
+  <symbol id="icon-dns" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></symbol>
+  <symbol id="icon-service" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 12h8M8 15h5"/></symbol>
+  <symbol id="icon-microservice" viewBox="0 0 24 24"><rect x="2.5" y="9" width="5" height="5" rx="1"/><rect x="16.5" y="3" width="5" height="5" rx="1"/><rect x="16.5" y="16" width="5" height="5" rx="1"/><path d="M7.5 11.5H12V5.5h4.5M12 11.5v7h4.5"/></symbol>
+  <symbol id="icon-agent" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12h7M13 9.5l2.5 2.5-2.5 2.5"/></symbol>
+  <symbol id="icon-scheduler" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6.5V12l3.5 2"/></symbol>
+  <symbol id="icon-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+  <symbol id="icon-sql" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M7.5 11h9M7.5 15h9"/></symbol>
+  <symbol id="icon-nosql" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><circle cx="5" cy="5" r="1.8"/><circle cx="19" cy="5" r="1.8"/><circle cx="5" cy="19" r="1.8"/><circle cx="19" cy="19" r="1.8"/><path d="m6.4 6.4 4.2 4.2m7-4.2-4.2 4.2m-7 7 4.2-4.2m7 7-4.2-4.2"/></symbol>
+  <symbol id="icon-warehouse" viewBox="0 0 24 24"><path d="M3 8 12 3l9 5-9 5Z"/><path d="M3 12 12 17l9-5M3 16l9 5 9-5"/></symbol>
+  <symbol id="icon-lake" viewBox="0 0 24 24"><path d="M2 8c2.5-2 4.5 2 7 0s4.5 2 7 0 4.5 2 6 0M2 13c2.5-2 4.5 2 7 0s4.5 2 7 0 4.5 2 6 0M2 18c2.5-2 4.5 2 7 0s4.5 2 7 0 4.5 2 6 0"/></symbol>
+  <symbol id="icon-objectstore" viewBox="0 0 24 24"><path d="M4 6h16l-1.5 14h-13Z"/><path d="M3 6h18M9 3h6v3H9z"/></symbol>
+  <symbol id="icon-cache" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M13 6 9 13h4l-1 5 4-7h-4Z"/></symbol>
+  <symbol id="icon-queue" viewBox="0 0 24 24"><rect x="2.5" y="8" width="5" height="8" rx="1"/><rect x="9.5" y="8" width="5" height="8" rx="1"/><rect x="16.5" y="8" width="5" height="8" rx="1"/><path d="M7.5 12h2M14.5 12h2"/></symbol>
+  <symbol id="icon-topic" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 12h4M11 12 17 5M11 12h6M11 12l6 7"/></symbol>
+  <symbol id="icon-event" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M13 7 9 13h4l-1 4 4-6h-4Z"/></symbol>
+  <symbol id="icon-stream" viewBox="0 0 24 24"><path d="M2 8h14l-3-3m3 3-3 3M2 16h14l-3-3m3 3-3 3"/></symbol>
+  <symbol id="icon-iam" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><path d="M17 11l3 1.2v3.3c0 2-1.2 3.4-3 4-1.8-.6-3-2-3-4v-3.3Z"/></symbol>
+  <symbol id="icon-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M17 12v4M20 12v3"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 2.5 20 6v5.5c0 5-3.2 8.3-8 10-4.8-1.7-8-5-8-10V6Z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="11" rx="1.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14.5v2.5"/></symbol>
+  <symbol id="icon-monitor" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><path d="M9 21h6M12 17v4M5 13l3.5-3.5 3 2.5L16 8l3 3"/></symbol>
+  <symbol id="icon-log" viewBox="0 0 24 24"><path d="M6 2.5h8l4 4V21H6Z"/><path d="M14 2.5v4h4M9 11h6M9 14.5h6M9 18h4"/></symbol>
+  <symbol id="icon-trace" viewBox="0 0 24 24"><circle cx="4" cy="12" r="1.8"/><circle cx="12" cy="6" r="1.8"/><circle cx="12" cy="18" r="1.8"/><circle cx="20" cy="12" r="1.8"/><path d="m5.6 10.9 4.9-3.6m-4.9 5.8 4.9 3.6m3-7.2 4.9 3.6m-4.9 7.2 4.9-3.6"/></symbol>
+  <symbol id="icon-alert" viewBox="0 0 24 24"><path d="M12 3 22 20H2Z"/><path d="M12 9v5M12 17h.01"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M4.5 21c0-4 3-6.5 7.5-6.5s7.5 2.5 7.5 6.5"/></symbol>
+  <symbol id="icon-web" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="1.5"/><path d="M2.5 8.5h19M6 6.2h.01M8.5 6.2h.01"/></symbol>
+  <symbol id="icon-mobile" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M10.5 5.5h3M11 18.5h2"/></symbol>
+  <symbol id="icon-partner" viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="12" r="3"/><path d="M9 12h6M12 9.5 14 12l-2 2.5"/></symbol>
+  <symbol id="icon-external" viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-9 9"/><path d="M19 14v6H4V5h6"/></symbol>
+  <symbol id="icon-network" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><path d="m10.8 5.7-5.6 10.6m7.6-10.6 5.6 10.6M6 18h12"/></symbol>
+  <symbol id="icon-boundary" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1" stroke-dasharray="3 2"/><path d="M7 8h4"/></symbol>
+  <symbol id="icon-note" viewBox="0 0 24 24"><path d="M5 3h14v13l-5 5H5Z"/><path d="M19 16h-5v5M8 8h8M8 12h6"/></symbol>
+</defs>
+
+<rect x="0" y="0" width="720" height="690" fill="#FFFFFF"/>
+<text x="24" y="32" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="600" fill="#141414">自绘架构图标集 · 47 个</text>
+<text x="24" y="50" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#767676">统一 24×24 网格 · 线宽 1.5 · 无填充 · 描边继承 currentColor · 示例素材</text>
+
+<g fill="none" stroke="#141414" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10">
+<use href="#icon-cloud" x="8" y="64" width="24" height="24"/><text x="8" y="100" fill="#767676" stroke="none">cloud</text>
+<use href="#icon-region" x="128" y="64" width="24" height="24"/><text x="128" y="100" fill="#767676" stroke="none">region</text>
+<use href="#icon-vpc" x="248" y="64" width="24" height="24"/><text x="248" y="100" fill="#767676" stroke="none">vpc</text>
+<use href="#icon-onprem" x="368" y="64" width="24" height="24"/><text x="368" y="100" fill="#767676" stroke="none">onprem</text>
+<use href="#icon-edge" x="488" y="64" width="24" height="24"/><text x="488" y="100" fill="#767676" stroke="none">edge</text>
+<use href="#icon-availability" x="608" y="64" width="24" height="24"/><text x="608" y="100" fill="#767676" stroke="none">availability</text>
+
+<use href="#icon-compute" x="8" y="140" width="24" height="24"/><text x="8" y="176" fill="#767676" stroke="none">compute</text>
+<use href="#icon-container" x="128" y="140" width="24" height="24"/><text x="128" y="176" fill="#767676" stroke="none">container</text>
+<use href="#icon-serverless" x="248" y="140" width="24" height="24"/><text x="248" y="176" fill="#767676" stroke="none">serverless</text>
+<use href="#icon-kubernetes" x="368" y="140" width="24" height="24"/><text x="368" y="176" fill="#767676" stroke="none">kubernetes</text>
+<use href="#icon-batch" x="488" y="140" width="24" height="24"/><text x="488" y="176" fill="#767676" stroke="none">batch</text>
+<use href="#icon-gateway" x="608" y="140" width="24" height="24"/><text x="608" y="176" fill="#767676" stroke="none">gateway</text>
+
+<use href="#icon-loadbalancer" x="8" y="216" width="24" height="24"/><text x="8" y="252" fill="#767676" stroke="none">loadbalancer</text>
+<use href="#icon-api" x="128" y="216" width="24" height="24"/><text x="128" y="252" fill="#767676" stroke="none">api</text>
+<use href="#icon-firewall" x="248" y="216" width="24" height="24"/><text x="248" y="252" fill="#767676" stroke="none">firewall</text>
+<use href="#icon-dns" x="368" y="216" width="24" height="24"/><text x="368" y="252" fill="#767676" stroke="none">dns</text>
+<use href="#icon-service" x="488" y="216" width="24" height="24"/><text x="488" y="252" fill="#767676" stroke="none">service</text>
+<use href="#icon-microservice" x="608" y="216" width="24" height="24"/><text x="608" y="252" fill="#767676" stroke="none">microservice</text>
+
+<use href="#icon-agent" x="8" y="292" width="24" height="24"/><text x="8" y="328" fill="#767676" stroke="none">agent</text>
+<use href="#icon-scheduler" x="128" y="292" width="24" height="24"/><text x="128" y="328" fill="#767676" stroke="none">scheduler</text>
+<use href="#icon-database" x="248" y="292" width="24" height="24"/><text x="248" y="328" fill="#767676" stroke="none">database</text>
+<use href="#icon-sql" x="368" y="292" width="24" height="24"/><text x="368" y="328" fill="#767676" stroke="none">sql</text>
+<use href="#icon-nosql" x="488" y="292" width="24" height="24"/><text x="488" y="328" fill="#767676" stroke="none">nosql</text>
+<use href="#icon-warehouse" x="608" y="292" width="24" height="24"/><text x="608" y="328" fill="#767676" stroke="none">warehouse</text>
+
+<use href="#icon-lake" x="8" y="368" width="24" height="24"/><text x="8" y="404" fill="#767676" stroke="none">lake</text>
+<use href="#icon-objectstore" x="128" y="368" width="24" height="24"/><text x="128" y="404" fill="#767676" stroke="none">objectstore</text>
+<use href="#icon-cache" x="248" y="368" width="24" height="24"/><text x="248" y="404" fill="#767676" stroke="none">cache</text>
+<use href="#icon-queue" x="368" y="368" width="24" height="24"/><text x="368" y="404" fill="#767676" stroke="none">queue</text>
+<use href="#icon-topic" x="488" y="368" width="24" height="24"/><text x="488" y="404" fill="#767676" stroke="none">topic</text>
+<use href="#icon-event" x="608" y="368" width="24" height="24"/><text x="608" y="404" fill="#767676" stroke="none">event</text>
+
+<use href="#icon-stream" x="8" y="444" width="24" height="24"/><text x="8" y="480" fill="#767676" stroke="none">stream</text>
+<use href="#icon-iam" x="128" y="444" width="24" height="24"/><text x="128" y="480" fill="#767676" stroke="none">iam</text>
+<use href="#icon-key" x="248" y="444" width="24" height="24"/><text x="248" y="480" fill="#767676" stroke="none">key</text>
+<use href="#icon-shield" x="368" y="444" width="24" height="24"/><text x="368" y="480" fill="#767676" stroke="none">shield</text>
+<use href="#icon-lock" x="488" y="444" width="24" height="24"/><text x="488" y="480" fill="#767676" stroke="none">lock</text>
+<use href="#icon-monitor" x="608" y="444" width="24" height="24"/><text x="608" y="480" fill="#767676" stroke="none">monitor</text>
+
+<use href="#icon-log" x="8" y="520" width="24" height="24"/><text x="8" y="556" fill="#767676" stroke="none">log</text>
+<use href="#icon-trace" x="128" y="520" width="24" height="24"/><text x="128" y="556" fill="#767676" stroke="none">trace</text>
+<use href="#icon-alert" x="248" y="520" width="24" height="24"/><text x="248" y="556" fill="#767676" stroke="none">alert</text>
+<use href="#icon-user" x="368" y="520" width="24" height="24"/><text x="368" y="556" fill="#767676" stroke="none">user</text>
+<use href="#icon-web" x="488" y="520" width="24" height="24"/><text x="488" y="556" fill="#767676" stroke="none">web</text>
+<use href="#icon-mobile" x="608" y="520" width="24" height="24"/><text x="608" y="556" fill="#767676" stroke="none">mobile</text>
+
+<use href="#icon-partner" x="8" y="596" width="24" height="24"/><text x="8" y="632" fill="#767676" stroke="none">partner</text>
+<use href="#icon-external" x="128" y="596" width="24" height="24"/><text x="128" y="632" fill="#767676" stroke="none">external</text>
+<use href="#icon-network" x="248" y="596" width="24" height="24"/><text x="248" y="632" fill="#767676" stroke="none">network</text>
+<use href="#icon-boundary" x="368" y="596" width="24" height="24"/><text x="368" y="632" fill="#767676" stroke="none">boundary</text>
+<use href="#icon-note" x="488" y="596" width="24" height="24"/><text x="488" y="632" fill="#767676" stroke="none">note</text>
+</g>
+<text x="24" y="668" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#767676">用法：把需要的 symbol 整段复制进输出图的 defs，再以 use href="#id" 同文件引用；不要跨文件引用。</text>
+</svg>
