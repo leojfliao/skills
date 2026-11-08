@@ -1,114 +1,116 @@
 ---
 name: solution-architecture-diagram
-description: 把组件清单、调用关系和部署环境画成单个自包含的 SVG 系统架构图或解决方案设计图，内置云、计算、网关、数据库、缓存、消息队列、存储、安全、可观测等自绘图标，按分层与信任域组织，带图例和连线标注。当用户说「画一下这个方案的系统架构图」「出一张系统上下文图」「把云、库、中间件画清楚」「做个解决方案设计图」「部署拓扑画一下」时使用。只画技术架构图：不做 UI 界面设计、不画流程时序、不生成 PPTX、不臆造组件、不输出位图。
-version: 1.0.0
+description: Turns a component list, call relationships and deployment environment into a single self-contained SVG system architecture or solution design diagram, with hand-drawn icons for cloud, compute, gateway, database, cache, message queue, storage, security and observability, organised by layer and trust zone with a legend and labelled connectors. Use when the user asks to "draw the architecture diagram for this solution", "produce a system context diagram", "show the cloud, databases and middleware", "make a solution design diagram", or "sketch the deployment topology". Technical architecture diagrams only: no UI mockups, no flowcharts or sequence diagrams, no PPTX, no invented components, no raster output.
+version: 1.2.0
 agent_created: true
 ---
 
-# 系统架构与解决方案设计图
+# System Architecture & Solution Design Diagram
 
-产出**一个** `.svg` 文件：矢量、可缩放、可编辑、离线打开不缺图标。画的是系统怎么搭，不是内容怎么讲。
+Produce **one** `.svg` file: vector, scalable, editable, and complete when opened offline. It shows how the system is built, not how the story is told. All labels and copy are in English.
 
-## 1. 先判断该不该由本 Skill 接
+## 1. Decide whether this Skill should take the job
 
-| 用户真实想要 | 去向 |
+| What the user actually wants | Route to |
 |---|---|
-| 架构图、系统上下文图、部署图、方案设计图、分层拓扑 | 本 Skill |
-| 分享大纲、讲稿、复盘故事 | `internal-share-narrative` |
-| 可点击切换的演示页 | `fintech-presentation` |
-| 业务流程图、BPMN、时序图、状态机 | 不接管，说明超出范围 |
-| UI 界面稿、网页视觉设计 | 不接管，说明超出范围 |
+| Architecture diagram, system context, deployment topology, solution design, layered diagram | This Skill |
+| Talk outline, speaker script, retrospective story | `internal-share-narrative` |
+| A clickable single-file presentation deck | `fintech-presentation` |
+| Business process, BPMN, sequence diagram, state machine | Decline; state that it is out of scope |
+| UI mockups, web visual design | Decline; state that it is out of scope |
 
-用户说「画个图」但描述里全是步骤先后、审批流转时，先确认一句是架构关系还是流程顺序，不硬画。
+If the user says "draw a diagram" but describes steps, approvals, or time order, confirm once whether they mean architectural relationships or process sequence. Do not guess.
 
-## 2. 输入
+## 2. Input
 
-一次问完，缺什么问什么：
+Ask for all of the following at once, only for what is missing:
 
-1. **组件清单**：有哪些系统、服务、存储、外部方，叫什么名字。
-2. **调用关系**：谁调谁，同步还是异步，关键数据流向。
-3. **部署环境**：公有云 / 私有云 / 本地机房 / 混合，是否分区域。
-4. **边界**：信任域、网络分区、团队归属，哪些属于外部。
-5. **图类型**：上下文 / 容器 / 部署 / 数据流，不给就按组件数量推荐一种。
+1. **Component list**: systems, services, stores, external parties, and their names.
+2. **Call relationships**: who calls whom, synchronous or asynchronous, key data-flow directions.
+3. **Deployment environment**: public cloud / private cloud / on-premises / hybrid, and whether it is split by region.
+4. **Boundaries**: trust zones, network segments, team ownership, what is external.
+5. **Diagram type**: context / container / deployment / data flow; if not given, recommend one based on component count.
 
-组件没列全时按已知的画，把未知部分放进「待确认」图例框，**不自己补一个看起来合理的组件**。用户给的是草图或文字描述时，先复述成一张「组件 / 类型 / 所属边界 / 连接」表让他确认，再动笔。
+With an incomplete list, draw only what is known and put unknowns in a "To be confirmed" legend box — **never add a plausible-looking component**. For a sketch or a prose description, restate it as a "component / type / boundary / connection" table for confirmation before drawing.
 
-## 3. 加载资源
+## 3. Load resources
 
-- 视觉约定读 `@references/visual-system.md`：颜色、线宽、字号、留白一律照它，不自创配色。
-- 分层、连线、图例、尺寸与自包含规则读 `@references/diagram-rules.md`。
-- 图标清单与用法读 `@references/icon-catalog.md`；图标本体在 `@assets/icon-library.svg`。
-- 分层骨架从 `@assets/diagram-shell.svg` 起步，保留它的网格、图例区和 `<defs>` 结构，只替换组件与连线。
+- Read `@references/visual-system.md` for colour, stroke width, type size, and whitespace. Follow it exactly; invent no new palette.
+- Read `@references/diagram-rules.md` for layering, connectors, legends, dimensions, and self-containment.
+- Read `@references/icon-catalog.md` for icon semantics; the icon bodies are in `@assets/icon-library.svg`.
+- Start from `@assets/diagram-shell.svg`, keeping its grid, legend area, and `<defs>` structure; replace only the components and connectors.
 
-## 4. 图类型
+## 4. Diagram types
 
-| 类型 | 画到什么粒度 | 上限 |
+| Type | Granularity | Ceiling |
 |---|---|---|
-| 系统上下文 | 本系统 + 外部参与方 + 主要数据流向 | 8 个框 |
-| 容器 / 分层 | 接入层、服务层、数据层，含每层的组件 | 20 个组件 |
-| 部署拓扑 | 区域、可用区、实例、网络边界 | 3 个区域 × 8 个节点 |
-| 数据流 | 数据从产生到消费的路径与中间环节 | 10 个环节 |
+| System context | The system, external actors, main data-flow directions | 8 boxes |
+| Container / layered | Ingress, service, and data tiers with their components | 20 components |
+| Deployment topology | Regions, availability zones, instances, network boundaries | 3 regions × 8 nodes |
+| Data flow | Path from producer to consumer with intermediate stages | 10 stages |
 
-超过上限就拆成两张图，不靠缩字号硬塞。一张图只回答一个问题。
+Above the ceiling, split into two diagrams rather than shrinking type. One diagram answers one question.
 
-## 5. 制作步骤
+## 5. Steps
 
-1. 把输入整理成「组件 / 类型 / 所属边界 / 连接」表，先给用户过目。
-2. 复制 `diagram-shell.svg`，确定画布尺寸与分层带，按图类型选纵向分层或分区布局。
-3. 从 `@assets/icon-library.svg` 里挑需要的图标，**把对应的 `<symbol>` 定义整段复制进输出文件的 `<defs>`**，用 `<use href="#icon-xxx">` 引用。不要写跨文件引用。
-4. 按分层放组件：外部在最上或最左，接入层其次，服务层居中，数据层在下；请求方向统一从上到下或从左到右，一张图里不混用。
-5. 画连线：同步调用实线，异步消息虚线，每条线带一个动词短语标签；返回路径不重复画，除非它是重点。
-6. 加边界框（虚线）标信任域或网络分区，框右上角写域名。
-7. 加图例：图标含义、线型含义、颜色含义，缺一类就补一类。
-8. 加标题、一句话图注、组件编号；编号和正文引用对得上。
-9. 按第 8 节自查逐项验证，再输出。
+1. Turn the input into a "component / type / boundary / connection" table and show it to the user first.
+2. Copy `diagram-shell.svg`, fix the canvas size and tier bands, and choose vertical tiers or partitioned layout according to the diagram type.
+3. Pick the needed icons from `@assets/icon-library.svg` and **copy each complete `<symbol>` block into the output file's `<defs>`**, then reference it with `<use href="#icon-xxx">`. Never write cross-file references.
+4. Place components by tier: external at top or left, then ingress, services in the middle, data at the bottom. Request direction is uniformly top-to-bottom or left-to-right; never mix the two in one diagram.
+5. Draw connectors: solid for synchronous calls, dashed for asynchronous messages, each with a short verb label. Do not duplicate return paths unless the return is the point of the diagram.
+6. Add dashed boundary boxes for trust zones or network segments, with the zone name in the top-right corner.
+7. Add a legend covering icon meaning, line-style meaning, and colour meaning. Supply any missing block.
+8. Add a title, a one-line caption, and component IDs that match references in the body text.
+9. Run the section 9 checklist before delivering.
 
-## 6. 输出契约
+## 6. Output contract
 
-- **唯一产物**：一个 `.svg` 文件，UTF-8，带 `viewBox`、`role="img"` 和 `aria-label`。
-- **自包含**：所有 `<symbol>` 内联在 `<defs>`；不出现外部 `href`、`xlink:href` 指向文件、`<image>` 外链、外部字体、CSS `@import`。
-- **可编辑**：组件、连线、文字都是独立元素并分组（`id` / `class` 命名可读），不把整图转成一条路径，不栅格化。
-- **可缩放**：只用 `viewBox` 缩放，文字最小 10px，线宽统一 1.5，缩放后仍可读。
-- **无外部依赖**：离线打开图标不空白，不请求任何网络资源。
-- **不含**：真实客户名、内部系统代号、真实容量与交易量、任何厂商 logo 图形。示例一律标「示例」。
+- **Single deliverable**: one `.svg` file, UTF-8, with `viewBox`, `role="img"`, and `aria-label`.
+- **Self-contained**: all `<symbol>` definitions inlined in `<defs>`; no external `href` / `xlink:href`, no `<image>` links, no external fonts, no CSS `@import`.
+- **Editable**: components, connectors, and text remain separate grouped elements with readable `id` / `class` names. Never flatten the whole diagram into one path; never rasterise.
+- **Scalable**: scale only via `viewBox`; minimum text 10px, uniform stroke width 1.5, still readable after zoom.
+- **No external dependencies**: icons render offline and no network resource is requested.
+- **Excludes**: real customer names, internal system codenames, real capacity or transaction volumes, and any vendor logo. All samples are labelled "sample". All copy is in English.
 
-## 7. 图标规则
+## 7. Icon rules
 
-- 只用 `@assets/icon-library.svg` 里的图标，按 `@references/icon-catalog.md` 的语义选，不临时画风格不一致的新图标。
-- 清单里没有对应语义时，用最接近的通用图标加文字标签说明，不硬凑。
-- 所有图标继承 `stroke="currentColor"`、`fill="none"`、`stroke-width="1.5"`，不单独改某一个的颜色或线宽；只有焦点组件允许把描边换成红色。
-- 图标尺寸统一 24×24（画布单位），与文字基线对齐，不随手放大缩小。
+- Use only icons from `@assets/icon-library.svg`, chosen by the semantics in `@references/icon-catalog.md`; never sketch a new off-style icon on the fly.
+- When no exact semantic match exists, use the closest generic icon plus an explanatory text label. Do not force a fit.
+- Every icon inherits `stroke="currentColor"`, `fill="none"`, `stroke-width="1.5"`. Do not change colour or width for an individual icon; only the focal component may switch its stroke to red.
+- Icons are uniformly 24×24 canvas units and align to the text baseline. Never resize them ad hoc.
 
-## 8. 降级与停止条件
+## 8. Fallbacks and stop conditions
 
-| 情况 | 行为 |
+| Situation | Behaviour |
 |---|---|
-| 无法写 SVG 文件 | 输出「组件 / 类型 / 边界 / 连接」Markdown 表 + 分层文字说明，标注「未绘图」，给恢复方式 |
-| 组件清单不足，主线无法成立 | 停在组件确认表，不补造组件 |
-| 组件数量超过所图类型上限 | 拆图或建议换一种图类型，不缩字号硬塞 |
-| 用户要求用某云厂商官方图标包 | 说明打包分发有授权问题，给自绘图标 + 文字标签的替代 |
-| 用户要求导出 PNG / 位图 | 说明本 Skill 只出矢量，给「用浏览器打开 SVG 另存」的做法 |
-| 用户材料含疑似未公开信息 | 停下并列出条目，提示脱敏后再画 |
-| 真实意图是流程图 / 时序图 / UI 稿 | 按第 1 节说明范围，不接管 |
+| Cannot write an SVG file | Output a "component / type / boundary / connection" Markdown table plus a layered text description, marked "not drawn", with recovery steps |
+| Component list too thin for a coherent thread | Stop at the confirmation table; do not invent components |
+| Component count exceeds the type ceiling | Split the diagram or suggest a different type; never shrink type to fit |
+| User asks for a vendor's official icon pack | Explain the redistribution licensing issue; offer hand-drawn icons plus text labels |
+| User asks for PNG / raster export | Explain this Skill is vector-only; suggest "open the SVG in a browser and save as" |
+| Material appears to contain non-public information | Stop, list the items, and ask for redaction before drawing |
+| Real intent is a flowchart / sequence diagram / UI mockup | State the scope per section 1; do not take the job |
 
-## 9. 交付前自查
+## 9. Pre-delivery checklist
 
-- [ ] 浏览器离线打开，图标全部显示，网络面板零请求
-- [ ] 所有 `<use>` 的 `href` 都能在本文 `<defs>` 里找到对应 `id`
-- [ ] 组件与「组件 / 类型 / 边界 / 连接」表逐条对应，无多余无缺失
-- [ ] 分层方向一致，未混用上下与左右
-- [ ] 每条连线有动词短语标签，实线 / 虚线语义符合图例
-- [ ] 边界框、图例、标题、图注齐全
-- [ ] 红色只标一个焦点，其余走黑白灰
-- [ ] 文字不小于 10px，线宽统一 1.5
-- [ ] 无真实业务数据、无厂商 logo、无外部引用
-- [ ] 放大到 200% 与缩小到 50% 各看一次，文字不糊、不重叠
+- [ ] Opens offline in a browser with every icon visible and zero network requests
+- [ ] Every `<use>` `href` resolves to an `id` in this file's `<defs>`
+- [ ] Components match the confirmation table one-for-one, with nothing extra or missing
+- [ ] Layering direction is consistent; vertical and horizontal are not mixed
+- [ ] Every connector has a verb label; solid / dashed semantics match the legend
+- [ ] Boundary boxes, legend, title, and caption are present
+- [ ] Red marks exactly one focal path; everything else is black / white / grey
+- [ ] Text is at least 10px, stroke width uniformly 1.5
+- [ ] No real business data, no vendor logos, no external references
+- [ ] Checked at 200% and 50% zoom: no blurring, no overlap
+- [ ] All labels and captions are in English
 
-任一项不通过就修完重查，不带着已知问题交付。
+Fix anything that fails before delivering; never ship a known issue.
 
-## 10. 交付话术
+## 10. Handover
 
-给出文件路径、图类型、组件数、连线数，附一句图例说明和一句提示：
-「SVG 可直接内联进 `fintech-presentation` 的图示页」。
+Give the file path, diagram type, component count, connector count, one line of legend explanation, and one hint:
 
-不在 SVG 里写制作说明、状态标注或模板注释。
+"The SVG can be inlined directly into a `fintech-presentation` figure slide."
+
+Do not put production notes, status labels, or template comments inside the SVG.

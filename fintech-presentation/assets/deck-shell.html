@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="zh-CN" data-brand="show">
+<html lang="en" data-brand="show">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>演示页骨架</title>
+<title>Deck Shell</title>
 <style>
 :root{
   --red:#DB0011; --white:#FFFFFF; --black:#000000; --ink:#333333;
@@ -97,8 +97,8 @@ table.data td.num,table.data th.num{text-align:right}
 .actions{margin-top:2.4cqw;list-style:none;display:flex;gap:2cqw}
 .actions li{border-top:1px solid var(--line);padding-top:.8cqw;font-size:15px;font-size:.85cqw;flex:1}
 
-/* 品牌标志：白底托住红色 Hexagon，深色封面与浅色内容页表现一致。
-   标志固定色 #DB0011，不随主题反白；关闭标志把 <html> 的 data-brand 改成 hide。 */
+/* Brand mark: a white badge holds the red Hexagon so dark covers and light
+   content pages behave alike. Fixed #DB0011, never reversed; set data-brand to hide to switch it off. */
 .brand{
   position:absolute;top:2.2cqw;right:2.4cqw;z-index:30;
   display:flex;align-items:center;justify-content:center;
@@ -143,11 +143,11 @@ html[data-brand="hide"] .brand{display:none}
 </head>
 <body>
 
-<!-- 品牌标志：HSBC Hexagon 的示意重绘（非官方资产），几何与来源见 assets/brand-mark.svg。
-     商标权归 HSBC Holdings plc，本文件不由汇丰发布。
-     正式或对外物料请登录 https://create.hsbc/ 下载官方 logo 后使用。
-     替换官方资产：只改下面 <symbol id="brand-hex"> 内的路径，全页引用自动生效。
-     移除标志：把 <html> 上的 data-brand="show" 改为 "hide"。 -->
+<!-- Brand mark: a redraw of the HSBC Hexagon (non-official asset); geometry and sources in assets/brand-mark.svg.
+     The HSBC name and mark belong to HSBC Holdings plc; this file is not published by HSBC.
+     For formal or external material, sign in to https://create.hsbc/ and use the official logo.
+     To swap in the official asset: change only the path inside <symbol id="brand-hex"> below; every reference updates.
+     To remove the mark: change <html> from data-brand="show" to "hide". -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <symbol id="brand-hex" viewBox="0 5.9 24 12.2">
@@ -162,41 +162,41 @@ html[data-brand="hide"] .brand{display:none}
   </div>
   <div class="stage" id="stage">
 
-    <section class="slide cover" data-title="封面">
-      <p class="eyebrow">内部分享 · 示例内容</p>
-      <h1 class="title">把复杂系统，讲成一条清楚的线</h1>
-      <p class="sub">一份关于分层、边界与信息密度的示例演示页</p>
-      <p class="note">示例骨架 · 请替换全部文字与数值 · 时长 30 分钟</p>
+    <section class="slide cover" data-title="Cover">
+      <p class="eyebrow">Internal talk · sample content</p>
+      <h1 class="title">Turn a complex system into one clear line</h1>
+      <p class="sub">A sample deck about tiers, boundaries and information density</p>
+      <p class="note">Sample shell · replace all copy and figures · 30 minutes</p>
     </section>
 
-    <section class="slide" data-title="三个原则">
-      <h2 class="title">这版骨架守住三件事</h2>
+    <section class="slide" data-title="Three principles">
+      <h2 class="title">This shell holds three things</h2>
       <div class="grid-3">
-        <div class="card"><span class="idx num">01</span><h3>克制</h3><p>红色只标焦点，层级靠留白和字重建立，不靠特效。</p></div>
-        <div class="card"><span class="idx num">02</span><h3>精确</h3><p>数字等宽对齐，基线统一，1px 网格提供技术感。</p></div>
-        <div class="card"><span class="idx num">03</span><h3>可点</h3><p>键盘、目录、进度条、总览全部可用，离线零请求。</p></div>
+        <div class="card"><span class="idx num">01</span><h3>Restraint</h3><p>Red marks only the focal point; hierarchy comes from whitespace and weight, not effects.</p></div>
+        <div class="card"><span class="idx num">02</span><h3>Precision</h3><p>Tabular numerals, a shared baseline and a 1px grid carry the technical feel.</p></div>
+        <div class="card"><span class="idx num">03</span><h3>Clickable</h3><p>Keyboard, TOC, progress bar and overview all work, with zero offline requests.</p></div>
       </div>
-      <p class="note">示例内容 · 请替换</p>
+      <p class="note">Sample content · replace</p>
     </section>
 
-    <section class="slide" data-title="关键数字">
-      <h2 class="title">一个数字撑起一页</h2>
+    <section class="slide" data-title="Key metric">
+      <h2 class="title">One number carries the slide</h2>
       <div class="metric">
         <span class="value num">128<span class="unit">ms</span></span>
-        <span class="label">端到端处理时延（示例数据）</span>
-        <span class="delta">较改造前下降 <b class="num">37%</b>（示例数据）</span>
+        <span class="label">End-to-end latency (sample data)</span>
+        <span class="delta">Down <b class="num">37%</b> vs. before (sample data)</span>
       </div>
       <div class="metric-row">
-        <div><span class="num">3</span><span class="label">接入系统数（示例）</span></div>
-        <div><span class="num">99.9%</span><span class="label">可用性（示例）</span></div>
-        <div><span class="num">0</span><span class="label">人工干预（示例）</span></div>
+        <div><span class="num">3</span><span class="label">Connected systems (sample)</span></div>
+        <div><span class="num">99.9%</span><span class="label">Availability (sample)</span></div>
+        <div><span class="num">0</span><span class="label">Manual interventions (sample)</span></div>
       </div>
     </section>
 
-    <section class="slide" data-title="系统分层">
-      <h2 class="title">整体分层</h2>
+    <section class="slide" data-title="System tiers">
+      <h2 class="title">Overall layering</h2>
       <figure class="figure">
-        <svg viewBox="0 0 1200 300" role="img" aria-label="示例：四层系统分层与调用方向" font-family="Arial,Helvetica,sans-serif">
+        <svg viewBox="0 0 1200 300" role="img" aria-label="Sample: four system tiers and call direction" font-family="Arial,Helvetica,sans-serif">
           <g fill="none" stroke="#D7D8D6" stroke-width="1">
             <rect x="20" y="20" width="1160" height="52"/>
             <rect x="20" y="90" width="1160" height="52"/>
@@ -204,39 +204,39 @@ html[data-brand="hide"] .brand{display:none}
             <rect x="20" y="230" width="1160" height="52"/>
           </g>
           <g fill="#767676" font-size="12">
-            <text x="36" y="14">外部</text><text x="36" y="84">接入</text>
-            <text x="36" y="154">服务</text><text x="36" y="224">数据</text>
+            <text x="36" y="14">EXTERNAL</text><text x="36" y="84">INGRESS</text>
+            <text x="36" y="154">SERVICES</text><text x="36" y="224">DATA</text>
           </g>
           <g fill="#333333" font-size="15">
-            <text x="140" y="52">示例客户端</text>
-            <text x="140" y="122">示例网关</text>
-            <text x="140" y="192">示例服务 A / B</text>
-            <text x="140" y="262">示例数据库 / 缓存 / 消息队列</text>
+            <text x="140" y="52">Sample client</text>
+            <text x="140" y="122">Sample gateway</text>
+            <text x="140" y="192">Sample service A / B</text>
+            <text x="140" y="262">Sample DB / cache / message queue</text>
           </g>
           <g stroke="#DB0011" stroke-width="2" fill="none">
             <path d="M600 72 L600 90"/><path d="M600 142 L600 160"/><path d="M600 212 L600 230"/>
           </g>
         </svg>
-        <figcaption>图 1 · 系统分层与调用方向（示例，请替换为真实设计）</figcaption>
+        <figcaption>Figure 1 · System tiers and call direction (sample; replace with the real design)</figcaption>
       </figure>
     </section>
 
-    <section class="slide closing" data-title="小结">
-      <p class="kicker">先讲清楚边界，再谈实现。</p>
-      <ul class="actions"><li>下一步一（示例）</li><li>下一步二（示例）</li><li>下一步三（示例）</li></ul>
-      <p class="note">Q&amp;A · ← → 翻页 · Esc 总览 · 目录可点击</p>
+    <section class="slide closing" data-title="Summary">
+      <p class="kicker">Settle the boundaries before the implementation.</p>
+      <ul class="actions"><li>Next step one (sample)</li><li>Next step two (sample)</li><li>Next step three (sample)</li></ul>
+      <p class="note">Q&amp;A · ← → navigate · Esc overview · TOC is clickable</p>
     </section>
 
   </div>
 </div>
 
-<div class="progress" id="progress" role="slider" aria-label="演示进度" aria-valuemin="1" aria-valuemax="1" aria-valuenow="1" tabindex="0"><div class="bar" id="bar"></div></div>
-<div class="toc" id="toc" aria-label="章节目录"></div>
+<div class="progress" id="progress" role="slider" aria-label="Presentation progress" aria-valuemin="1" aria-valuemax="1" aria-valuenow="1" tabindex="0"><div class="bar" id="bar"></div></div>
+<div class="toc" id="toc" aria-label="Section navigation"></div>
 <div class="hud" id="hud"></div>
-<div class="overview" id="overview" tabindex="-1" aria-label="页面总览">
-  <h2>页面总览</h2>
+<div class="overview" id="overview" tabindex="-1" aria-label="Slide overview">
+  <h2>Slide overview</h2>
   <div class="ov-grid" id="ovGrid"></div>
-  <p class="ov-hint">Esc 返回 · 点击卡片跳转</p>
+  <p class="ov-hint">Esc to return · click a card to jump</p>
 </div>
 
 <script>
@@ -255,12 +255,12 @@ html[data-brand="hide"] .brand{display:none}
   function pad(n){ return String(n).padStart(2,'0'); }
 
   slides.forEach(function(s, i){
-    var title = s.getAttribute('data-title') || ('第 ' + (i+1) + ' 页');
+    var title = s.getAttribute('data-title') || ('Slide ' + (i+1));
     var dot = document.createElement('button');
     dot.type = 'button';
     dot.className = 'dot';
     dot.title = title;
-    dot.setAttribute('aria-label', '跳到第 ' + (i+1) + ' 页：' + title);
+    dot.setAttribute('aria-label', 'Go to slide ' + (i+1) + ': ' + title);
     dot.addEventListener('click', function(){ go(i); });
     toc.appendChild(dot);
 
@@ -289,8 +289,8 @@ html[data-brand="hide"] .brand{display:none}
     });
     progress.setAttribute('aria-valuemax', String(slides.length));
     progress.setAttribute('aria-valuenow', String(cur + 1));
-    document.title = (slides[cur].getAttribute('data-title') || '演示页') + ' · 演示';
-    try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { /* file:// 下忽略 */ }
+    document.title = (slides[cur].getAttribute('data-title') || 'Deck') + ' · Deck';
+    try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { /* ignore under file:// */ }
   }
 
   function go(i){

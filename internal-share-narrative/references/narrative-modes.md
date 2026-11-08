@@ -1,224 +1,224 @@
-# 三种叙事模式：模板与示例
+# Three Narrative Modes: Templates and Samples
 
-本文件给三套可直接套用的分段模板、时间分配、填好的示例和常见坑。示例均为中性虚构主题，数字只演示格式，不代表任何真实系统或业务。
+This file provides three ready-to-use section templates, a time budget, filled-in samples, and common pitfalls. The samples all use neutral, fictional topics, and the numbers only demonstrate the format; they stand for no real system or business.
 
-## 0. 时间分配
+## 0. Time Budget
 
-| 总时长 | Q&A | 正文 | 分段数 | 每段 |
+| Total Duration | Q&A | Body | Number of Sections | Per Section |
 |---|---|---|---|---|
-| 15 分钟 | 3 分钟 | 12 分钟 | 4 段 | 2–4 分钟 |
-| 30 分钟 | 5 分钟 | 25 分钟 | 6 段 | 3–8 分钟 |
-| 45 分钟 | 10 分钟 | 35 分钟 | 6–7 段 | 4–10 分钟 |
-| 60 分钟 | 15 分钟 | 45 分钟 | 7–8 段 | 5–12 分钟 |
+| 15 min | 3 min | 12 min | 4 sections | 2–4 min |
+| 30 min | 5 min | 25 min | 6 sections | 3–8 min |
+| 45 min | 10 min | 35 min | 6–7 sections | 4–10 min |
+| 60 min | 15 min | 45 min | 7–8 sections | 5–12 min |
 
-正文按 220–260 字/分钟折算字数。开场与收尾各留 1 分钟机动，不排满。超过 60 分钟时拆成两场，不靠加快语速解决。
+The body word count is estimated at 130–150 words per minute. Leave one minute of slack each for the opening and the close; do not fill the slot completely. When the total exceeds 60 minutes, split it into two sessions rather than solving it by speeding up.
 
 ---
 
-## 模式 A · 技术分享叙事骨架
+## Mode A · Technical Talk Narrative Skeleton
 
-适用：只有一个主题或想法，没有成稿材料，要搭一个能讲清楚的结构。
+Use when: you have only one topic or idea, no draft material, and need to build a structure that explains it clearly.
 
-### 分段模板
+### Section Template
 
-| # | 段落 | 作用 | 30 分钟建议 |
+| # | Section | Role | 30-min Suggestion |
 |---|---|---|---|
-| 1 | 背景 | 让不在这个项目里的人也能跟上 | 3 分钟 |
-| 2 | 痛点 | 说清原来为什么撑不住，给出可感知的后果 | 5 分钟 |
-| 3 | 约束 | 有哪些不能动、不能选、不能等 | 4 分钟 |
-| 4 | 方案 | 在这些约束下怎么选、怎么落地 | 8 分钟 |
-| 5 | 效果 | 变化在哪里，口径是什么 | 4 分钟 |
-| 6 | 反思与下一步 | 哪里没做好、还差什么 | 1 分钟 |
+| 1 | Context | Let people outside the project follow along | 3 min |
+| 2 | Pain Points | Explain why the old setup could not hold up, with tangible consequences | 5 min |
+| 3 | Constraints | What cannot be changed, chosen, or waited on | 4 min |
+| 4 | Approach | How to choose and roll out under those constraints | 8 min |
+| 5 | Outcome | Where the change shows up, and the measurement basis | 4 min |
+| 6 | Reflection and Next Steps | What fell short and what is still missing | 1 min |
 
-**约束段最常被漏掉**。没有约束，方案会听起来像「本来就该这么干」，听众无法判断它是否适用于自己的场景。约束至少写三条：技术债务、组织边界、时间或合规限制。
+**The constraints section is the one most often left out.** Without constraints, the approach sounds like "that is just the obvious way to do it," and the audience cannot tell whether it applies to their own setting. Write at least three constraints: technical debt, organizational boundaries, and time or compliance limits.
 
-### 填好的示例（节选）
+### Filled-in Sample (Excerpt)
 
 ```markdown
-# 批处理任务调度改造
-- 模式：A
-- 听众：跨部门同事（含非技术岗）
-- 时长：30 分钟（含 Q&A 5 分钟）
-- 核心主张：把调度从脚本里拿出来，换来的不是性能，是可解释性
+# Batch Job Scheduling Overhaul
+- Mode: A
+- Audience: cross-functional colleagues, including non-technical roles
+- Duration: 30 min (includes 5 min Q&A)
+- Core message: Pulling scheduling out of the scripts buys us explainability, not raw performance.
 
-## 叙事主线
-先交代批处理在整体链路里的位置，再说清楚脚本式调度带来的三类具体麻烦；
-接着说明改造时必须保留的三条约束，才能解释为什么最后选了集中调度而不是重写任务；
-然后按落地顺序讲改动，用同一口径给出前后变化，最后留一段讲没解决的部分。
+## Narrative Thread
+First, place batch processing within the overall pipeline, then spell out three concrete headaches caused by script-based scheduling.
+Next, cover the three constraints we had to preserve, which explains why we chose centralized scheduling rather than rewriting the jobs.
+Then walk through the changes in rollout order, show the before-and-after on one measurement basis, and close with what remains unsolved.
 
-## 分段内容
-### 1. 背景 · 3 分钟
-- 要讲到的点：批处理链路的位置；每天跑多少批；谁依赖结果
-- 口播稿：先说这件事跟在座各位的关系。我们每天有一批定时跑的数据处理任务，
-  下游的报表和几个对账动作都等它的结果。它不出问题的时候没人会注意到它，
-  但一旦延迟，第二天上午好几个团队都要等。今天讲的就是这一层，
-  以及我们为什么把它从脚本里挪了出来。
-- 配合材料：一张链路位置图（待补：由架构图 Skill 产出）
+## Section Content
+### 1. Context · 3 min
+- Points to cover: where the batch pipeline sits; how many batches run per day; who depends on the results
+- Speaker script: Let me start with why this matters to everyone here. Every day we run a set of scheduled data jobs,
+  and the downstream reports and a few reconciliation steps all wait on their output. When everything works, nobody notices it,
+  but a single delay holds up several teams the next morning. That is the layer I want to talk about today,
+  and why we moved it out of the scripts.
+- Supporting material: a pipeline location diagram (to be supplied by the architecture-diagram Skill)
 
-### 3. 约束 · 4 分钟
-- 要讲到的点：不能改任务本身；不能停服；窗口只有夜间两小时
-- 口播稿：这里要先说清楚哪些东西我们动不了。第一，几十个任务的业务逻辑不在
-  这次范围内，重写它们风险太高；第二，链路白天一直在用，没有停服窗口；
-  第三，可用的变更时间只有夜里的两个小时。这三条决定了我们不可能选"推倒重来"，
-  只能找一个能把调度这一层单独摘出来的办法。
-- 配合材料：约束清单（三条）
+### 3. Constraints · 4 min
+- Points to cover: the jobs themselves cannot change; no downtime; only a two-hour nightly window
+- Speaker script: Before anything else, let me be clear about what we could not touch. First, the business logic of dozens of jobs was out of scope;
+  rewriting them carried too much risk. Second, the pipeline is in use all day, so there was no downtime window.
+  Third, we only had a two-hour window at night to make changes. Those three facts ruled out a full rewrite,
+  so the only option was a way to lift out the scheduling layer on its own.
+- Supporting material: the three-item constraints list
 
-### 5. 效果 · 4 分钟
-- 要讲到的点：失败定位时间；重跑次数；口径与统计周期
-- 口播稿：变化最明显的是出问题以后找原因的速度。原来要从几台机器的日志里
-  拼时间线，现在在一个地方就能看到哪个任务、哪一步、等了多久。
-  这里给了三组数，都是同一统计周期、同一口径；具体数值以附表中的实测记录为准。
-- 配合材料：待补：前后对照三项实测数值与统计周期
+### 5. Outcome · 4 min
+- Points to cover: time to locate failures; number of reruns; measurement basis and reporting period
+- Speaker script: The most visible change is how quickly we find the cause when something breaks. We used to stitch together a timeline from logs on several machines;
+  now one place shows which job, which step, and how long it waited. The three figures here are sample numbers, all on the same reporting period and the same measurement basis;
+  the exact values are to be supplied from the measured records in the appendix.
+- Supporting material: to be supplied: three measured before-and-after values and the reporting period
 ```
 
-过渡句示例：
-- 背景 → 痛点：「听起来这套东西一直在跑，那到底哪里不舒服？」
-- 痛点 → 约束：「问题清楚了，但能改的范围比想象中小。」
-- 约束 → 方案：「在这三条限制下，能选的路其实只剩两条。」
-- 方案 → 效果：「改完之后，我们拿同一套口径重新测了一次。」
-- 效果 → 反思：「数字好看，但有几件事到现在也没解决。」
+Sample transition lines:
+- Context → Pain Points: "It sounds like this has been running fine all along, so what actually hurts?"
+- Pain Points → Constraints: "The problem is clear, but the scope we can change is smaller than you would think."
+- Constraints → Approach: "Under those three limits, there were really only two paths left."
+- Approach → Outcome: "After the change, we measured again using the same measurement basis."
+- Outcome → Reflection: "The numbers look good, but a few things are still unresolved today."
 
 ---
 
-## 模式 B · 项目复盘故事
+## Mode B · Project Retrospective Story
 
-适用：讲「我们做了什么、踩了什么坑、回头看」，重点是决策过程而不是成果汇报。
+Use when: you are telling "what we built, where we stumbled, and what we see in hindsight," with the focus on the decision-making process rather than a results report.
 
-### 分段模板
+### Section Template
 
-| # | 段落 | 作用 | 45 分钟建议 |
+| # | Section | Role | 45-min Suggestion |
 |---|---|---|---|
-| 1 | 场景 | 时间、范围、参与方、当时的目标 | 4 分钟 |
-| 2 | 关键角色 | 谁对什么负责，决策权在谁手上 | 4 分钟 |
-| 3 | 转折点 | **只写一个**：哪件事让原计划不成立 | 8 分钟 |
-| 4 | 当时的决定 | 当时掌握什么信息、有哪些选项、为什么选它 | 10 分钟 |
-| 5 | 结果与代价 | 得到什么、付出什么、有没有副作用 | 6 分钟 |
-| 6 | 可复用经验 | 换成别的团队还成立的做法 | 3 分钟 |
+| 1 | Setting | Time, scope, parties involved, and the goal at the time | 4 min |
+| 2 | Key Roles | Who owned what and who held the decision | 4 min |
+| 3 | Turning Point | **Write only one**: the event that invalidated the original plan | 8 min |
+| 4 | The Decision Then | What we knew, what options existed, and why we picked it | 10 min |
+| 5 | Result and Cost | What we gained, what we paid, and any side effects | 6 min |
+| 6 | Reusable Lessons | What would still hold for another team | 3 min |
 
-**复盘写成流水账是最常见的失败**。判断标准：如果去掉具体人名和日期后，整篇读起来像进度周报，就是流水账。必须围绕一个转折点组织，其余信息只在支撑这个转折时才出现。
+**The most common failure is writing a retrospective as a chronological log.** The test: if the whole piece reads like a weekly status report once you strip out the names and dates, it is a chronological log. Organize everything around one turning point, and let the rest of the information appear only when it supports that turn.
 
-### 填好的示例（节选）
+### Filled-in Sample (Excerpt)
 
 ```markdown
-# 一次跨团队接口迁移的复盘
-- 模式：B
-- 听众：同级工程师
-- 时长：45 分钟（含 Q&A 10 分钟）
-- 核心主张：那次联调卡住，不是接口写错了，是两边对「重试」的默认假设不一样
+# A Retrospective on a Cross-Team Interface Migration
+- Mode: B
+- Audience: peer engineers
+- Duration: 45 min (includes 10 min Q&A)
+- Core message: The integration test stalled not because the interface was wrong, but because the two sides had different default assumptions about retries.
 
-## 叙事主线
-不按时间顺序讲。先还原联调卡住的那一天，再倒回去看两边各自为什么这么设计，
-最后把当时能选的三条路摆出来，说清为什么选了代价最大的那条。
+## Narrative Thread
+Do not tell it in chronological order. Start by recreating the day the integration test stalled, then look back at why each side designed things the way it did.
+Finally, lay out the three paths available at the time and explain why we chose the most costly one.
 
-### 3. 转折点 · 8 分钟
-- 要讲到的点：联调现象；排查路径；真正原因
-- 口播稿：第三天联调，同一笔请求在下游出现了两条记录。我们第一反应是上游
-  重复发送，查了一整天的调用日志，上游确实只发了一次。后来把两边的超时配置
-  并排放在一起才看明白：上游认为超时即失败、由它重试；下游认为超时只是没收到
-  响应、请求仍然有效。两边都没写错，只是默认假设从来没被写进接口约定。
-- 配合材料：待补：当时的超时与重试配置对照
+### 3. Turning Point · 8 min
+- Points to cover: what happened in the integration test; the debugging path; the real cause
+- Speaker script: On day three of the integration test, a single request produced two records downstream. Our first thought was that the upstream had sent it twice,
+  but after a full day of digging through call logs we confirmed it had sent only once. Only when we put the two timeout configurations side by side did it click:
+  the upstream treated a timeout as a failure and retried itself, while the downstream treated a timeout as simply no response received, with the request still valid.
+  Neither side had a bug; the default assumption had just never been written into the interface contract.
+- Supporting material: to be supplied: a comparison of the timeout and retry settings at the time
 
-### 4. 当时的决定 · 10 分钟
-- 要讲到的点：三条可选路径；各自代价；决策依据
-- 口播稿：当时有三条路。第一，让上游关掉重试，改动最小，但把失败处理的责任
-  全推给了调用方；第二，下游加去重，两边都不用改约定，但要长期维护一张去重表；
-  第三，重新定义接口语义，把幂等键写进契约，两边都得改。我们选了第三条，
-  因为它让假设变成明面上的约定，而不是继续靠默契。代价是迁移周期多了两周。
-- 配合材料：三条路径的代价对照表
+### 4. The Decision Then · 10 min
+- Points to cover: the three paths; the cost of each; the basis for the decision
+- Speaker script: We had three paths. First, turn off retries on the upstream: smallest change, but it pushed all failure handling onto the caller.
+  Second, add deduplication downstream: neither side has to change the contract, but we maintain a dedup table forever.
+  Third, redefine the interface semantics and write an idempotency key into the contract, with changes on both sides. We chose the third, because it turned the assumption into an explicit agreement instead of leaving it to tacit understanding.
+  The cost was two extra weeks on the migration.
+- Supporting material: a cost comparison table for the three paths
 
-### 5. 结果与代价 · 6 分钟
-- 要讲到的点：后续同类问题是否减少；多付的两周换来了什么；新增的维护成本
-- 口播稿：值得说的是，之后跨团队接口评审里多了一项固定检查：把失败语义和
-  重试归属写清楚。这是那两周真正换来的东西。代价也很实在，契约变复杂了，
-  新接入的团队要多理解一层。
-- 配合材料：待补：迁移后同类问题记录数
+### 5. Result and Cost · 6 min
+- Points to cover: whether similar issues dropped afterward; what the two extra weeks bought; the new maintenance cost
+- Speaker script: What is worth noting is that cross-team interface reviews gained one standing check: spell out the failure semantics and who owns retries.
+  That is what those two weeks really bought. The cost is real too: the contract grew more complex,
+  and new teams have one more layer to understand.
+- Supporting material: to be supplied: the count of similar issues after the migration
 ```
 
 ---
 
-## 模式 C · 材料转讲稿
+## Mode C · Material to Speaker Script
 
-适用：已有 PPT / 文档 / 大纲，要「照着讲」。核心是**不重排、不删减、不改写原意**。
+Use when: you already have a PPT, document, or outline and want to "speak from the material." The core rule is **no reordering, no cutting, and no rewriting of the original meaning**.
 
-### 分段模板
+### Section Template
 
-按原材料的页或节一一对应，每段包含：
+Map one-to-one to the pages or sections of the source material; each section contains:
 
 ```markdown
-### <页码> · <原材料标题> · <建议时长>
-- 原材料要点：<照抄或极简摘取，不改写>
-- 口播稿：<可直接念的完整句子，2–5 句>
-- 需要补的背景：<听众可能听不懂的术语，一句解释；没有写「无」>
-- 配合材料：<图号 / 表号 / 演示动作>
+### <Page Number> · <Source Material Title> · <Suggested Duration>
+- Source material points: <copy verbatim or take a minimal extract; do not reword>
+- Speaker script: <complete sentences you can read aloud, 2–5 sentences>
+- Background to add: <terms the audience may not follow, one-line explanation; write "None" if there are none>
+- Supporting material: <figure number / table number / demo action>
 ```
 
-时间按页数平均分配后再按信息密度微调，单页不少于 40 秒。原材料顺序有问题时，在文末「顺序建议」里单独提一句，**不擅自调整**。
+Distribute time evenly across pages, then fine-tune by information density, with no page under 40 seconds. If the source material has an ordering problem, note it separately in the "Order Suggestions" at the end; **do not adjust it on your own**.
 
-### 填好的示例（节选）
+### Filled-in Sample (Excerpt)
 
 ```markdown
-# 数据平台季度说明 · 讲稿
-- 模式：C
-- 听众：管理层
-- 时长：20 分钟（含 Q&A 5 分钟），共 8 页
-- 核心主张：<沿用原材料结论，不另写>
+# Data Platform Quarterly Briefing · Speaker Script
+- Mode: C
+- Audience: leadership
+- Duration: 20 min (includes 5 min Q&A), 8 pages
+- Core message: <reuse the source material conclusion; do not write a new one>
 
-### P1 · 本季度概览 · 1 分钟
-- 原材料要点：三条主线、两项交付
-- 口播稿：这一页是本季度的整体盘子，三条主线分别是接入、治理和稳定性，
-  其中已经完成交付的是前两项。后面七页会按这个顺序展开，
-  最后一页留给还没收口的部分。
-- 需要补的背景：无
-- 配合材料：P1 概览图
+### P1 · Quarterly Overview · 1 min
+- Source material points: three workstreams, two deliveries
+- Speaker script: This page is the overall picture for the quarter. The three workstreams are onboarding, governance, and reliability,
+  and the first two are already delivered. The next seven pages follow that order,
+  with the last page reserved for what has not been closed out yet.
+- Background to add: None
+- Supporting material: P1 overview chart
 
-### P4 · 治理覆盖率 · 3 分钟
-- 原材料要点：口径说明、三个时间点的数值
-- 口播稿：这一页最需要说清楚的是口径。分母是纳入治理范围的对象总数，
-  每个季度会随接入进度变化，所以三个点之间不是简单的同口径比较。
-  在这个前提下，曲线反映的是覆盖推进节奏，不是质量评分。
-  具体数值请看图下的口径注，我不逐个念了。
-- 需要补的背景：「治理覆盖」在本材料里指元数据与责任人两项都登记完成
-- 配合材料：P4 折线图、口径注
+### P4 · Governance Coverage · 3 min
+- Source material points: measurement basis note, values at three points in time
+- Speaker script: What this page most needs is a clear measurement basis. The denominator is the total number of objects in scope for governance,
+  and it shifts each quarter as onboarding progresses, so the three points are not a simple like-for-like comparison.
+  With that in mind, the curve shows the pace of coverage rollout, not a quality score. The exact values are sample numbers;
+  see the measurement basis note below the chart. I will not read them out one by one.
+- Background to add: "Governance coverage" here means both the metadata and the owner are registered
+- Supporting material: P4 line chart, measurement basis note
 ```
 
 ---
 
-## 问答预案
+## Q&A Prep
 
-固定格式，至少 3 条，其中必须有 1 条「不好回答」的问题。
+Fixed format, at least 3 items, and one of them must be a "hard question."
 
 ```markdown
-| 问题 | 回答要点 | 依据 / 待补 |
+| Question | Answer Points | Basis / To Be Supplied |
 |---|---|---|
-| 这套做法能直接搬到别的团队吗 | 先说清成立的前提，再说哪几条不通用 | 推断：基于约束段的三条限制 |
-| 数字口径是什么 | 统计周期、分母、是否含重试 | 待补：实测记录 |
-| 为什么没选更简单的方案 | 回到当时的约束，不做事后合理化 | 事实：用户材料第 3 节 |
-| 这事没做成的部分打算怎么办（不好回答） | 承认未完成，给时间点与负责人，不给承诺 | 待补：下一步排期与责任人 |
+| Can this approach be copied directly to another team | State the preconditions where it holds, then name the parts that do not generalize | Inference: based on the three limits in the constraints section |
+| What is the measurement basis for the numbers | Reporting period, denominator, whether retries are included | To be supplied: measured records |
+| Why not choose a simpler approach | Go back to the constraints at the time; no after-the-fact rationalization | Fact: section 3 of the user material |
+| What is the plan for the part that did not get done (hard question) | Acknowledge it is unfinished, give a timing and an owner, make no promises | To be supplied: next-step schedule and owner |
 ```
 
-不好回答的问题不要删，也不要替用户编一个漂亮答复，把它连同需要的依据一起列进待补清单。
+Do not delete the hard question, and do not invent a neat answer on the user's behalf; list it in the open items together with the basis it needs.
 
-## 常见坑
+## Common Pitfalls
 
-| 坑 | 表现 | 处理 |
+| Pitfall | Symptom | Fix |
 |---|---|---|
-| 约束段缺失 | 方案听起来理所当然 | 至少写三条不可动条件 |
-| 复盘变周报 | 按日期罗列，没有转折点 | 只保留一个转折点，其余信息围着它组织 |
-| 讲稿写成提纲 | 「这里展开讲一下」 | 每句都要是能直接念出来的完整句 |
-| 过渡句缺失 | 段与段之间硬跳 | 过渡句数量固定为分段数减一 |
-| 数字没出处 | 稿里有数，问起来答不上 | 一律标依据或进待补清单 |
-| 管理层稿塞细节 | 正文出现配置参数和类名 | 细节移到附录，正文只留问题、决策、结果 |
-| 「效果好」当结论 | 没有代价、没有未解决项 | 结果与代价必须成对出现 |
-| 忘扣 Q&A | 稿子念完已超时 | 先扣 Q&A，再按剩余时间分配正文 |
-| 模板字段被念出来 | 口播稿里出现「待补：」「推断：」 | 这些只出现在清单和标注区，不进口播稿 |
-| 中英混排 | 术语一半英文一半中文 | 统一一种，首次出现时给一次全称 |
+| Constraints section missing | The approach sounds obvious | Write at least three non-negotiable conditions |
+| Retrospective turns into a status report | Listed by date, with no turning point | Keep only one turning point and organize everything else around it |
+| Speaker script written as a bullet outline | Phrases like "expand on this here" | Every line must be a complete sentence you can read aloud |
+| Transition lines missing | Hard jumps between sections | The number of transition lines equals the number of sections minus one |
+| Numbers with no source | The script has figures but cannot answer where they came from | Always mark the basis or move them into open items |
+| Leadership script packed with detail | Config parameters and class names show up in the body | Move detail to the appendix; keep only problem, decision, and result in the body |
+| Treating "it worked well" as the conclusion | No cost, no unresolved items | Result and cost must appear together |
+| Forgetting to set aside Q&A | The script already runs over once read through | Set aside Q&A first, then budget the body from the remaining time |
+| Template fields read aloud | "to be supplied:" and "inference:" appear in the speaker script | Those belong only in lists and annotation areas, never in the speaker script |
+| Inconsistent terminology / mixed-language output | Half the terms in one language and half in another | Keep one language throughout and give the full term on first use |
 
-## 验收
+## Acceptance Checklist
 
-- [ ] 分段数与时长表匹配，正文未排满
-- [ ] 每段都有可直接念的口播稿
-- [ ] 过渡句齐全
-- [ ] Q&A 含一条不好回答的问题
-- [ ] 待补清单具体到「找谁要什么」
-- [ ] 事实 / 推断 / 建议已分开
-- [ ] 无示意数字冒充实测数据
+- [ ] Section count matches the time budget table, and the body is not filled to the brim
+- [ ] Every section has a speaker script you can read aloud
+- [ ] Transition lines are complete
+- [ ] Q&A includes one hard question
+- [ ] Open items are specific about "who to ask for what"
+- [ ] Fact / inference / recommendation are kept separate
+- [ ] No illustrative numbers passed off as measured data

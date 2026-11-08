@@ -1,14 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="760" height="380" role="img" aria-label="HSBC Hexagon 示意重绘：标准稿、页眉用法与最小尺寸">
-  <title>HSBC Hexagon · 示意重绘（非官方资产）</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="760" height="380" role="img" aria-label="HSBC Hexagon redraw: standard, deck header and minimum size">
+  <title>HSBC Hexagon - Redraw (non-official asset)</title>
   <desc>
-    汇丰 Hexagon 的几何示意重绘，供 fintech-presentation 的演示页使用。
-    几何依据：公开可见的标志形状；路径数据参考 Simple Icons 的 HSBC 图标（CC0 1.0），已核验渲染结果。
-    商标权归 HSBC Holdings plc 所有。本文件不是汇丰官方品牌资产，不由汇丰发布。
-    正式或对外物料请登录 https://create.hsbc/ 下载官方 logo 后替换 deck-shell.html 中的 #brand-hex 定义。
+    A geometric redraw of the HSBC Hexagon for use in fintech-presentation decks.
+    Geometry follows the publicly visible mark; path data is referenced from the Simple Icons HSBC icon (CC0 1.0) and has been render-verified.
+    The HSBC name and mark belong to HSBC Holdings plc. This file is not an official HSBC brand asset and is not published by HSBC.
+    For formal or external material, sign in to https://create.hsbc/, download the official logo, and replace the #brand-hex definition in deck-shell.html.
   </desc>
 
   <defs>
-    <!-- 唯一的标志定义。替换官方资产时，只改这个 <symbol> 内部的路径，页面无需改动。 -->
+    <!-- The single mark definition. To swap in the official asset, change only the path inside this symbol; the page needs no other edit. -->
     <symbol id="hsbc-hex" viewBox="0 5.9 24 12.2">
       <path fill="#DB0011" d="m24 12.007-5.996 5.997V5.996L24 12.007zm-5.996-6.01H6.01l5.996 6.01 5.997-6.01zM0 12.006l6.01 5.997V5.996L0 12.007zm6.01 5.997h11.994l-5.997-5.997-5.996 5.997z"/>
     </symbol>
@@ -23,28 +23,28 @@
 
   <rect width="760" height="380" fill="#FFFFFF"/>
 
-  <!-- 标准稿 -->
-  <text x="40" y="42" class="cap">01 · 标准稿</text>
-  <text x="40" y="62" class="sub">白底 / 品牌红 #DB0011 / 比例 24 : 12.2</text>
+  <!-- Standard -->
+  <text x="40" y="42" class="cap">01 · Standard</text>
+  <text x="40" y="62" class="sub">White / brand red #DB0011 / ratio 24 : 12.2</text>
   <line x1="40" y1="76" x2="300" y2="76" class="rule"/>
   <rect x="40" y="100" width="260" height="180" fill="#F4F4F4"/>
   <use href="#hsbc-hex" x="70" y="139" width="200" height="102"/>
 
-  <!-- 页眉用法 -->
-  <text x="330" y="42" class="cap">02 · 演示页页眉用法</text>
-  <text x="330" y="62" class="sub">深色封面上以白底托住，标志颜色不变</text>
+  <!-- Deck header -->
+  <text x="330" y="42" class="cap">02 · Deck header</text>
+  <text x="330" y="62" class="sub">Held by a white badge on dark covers; colour unchanged</text>
   <line x1="330" y1="76" x2="720" y2="76" class="rule"/>
   <rect x="330" y="100" width="390" height="180" fill="#141414"/>
   <rect x="646" y="120" width="54" height="34" fill="#FFFFFF" stroke="#D7D8D6" stroke-width="1"/>
   <use href="#hsbc-hex" x="655" y="129" width="36" height="18.3"/>
-  <text x="350" y="162" style="font-size:21px;font-weight:700;fill:#FFFFFF">把复杂系统，讲成一条线</text>
-  <text x="350" y="192" style="font-size:12px;fill:#D7D8D6">内部分享 · 示例内容</text>
+  <text x="350" y="162" style="font-size:21px;font-weight:700;fill:#FFFFFF">Making complexity clear</text>
+  <text x="350" y="192" style="font-size:12px;fill:#D7D8D6">Internal talk · sample content</text>
 
-  <!-- 最小尺寸 -->
-  <text x="40" y="322" class="cap">03 · 最小尺寸</text>
-  <text x="40" y="342" class="sub">宽度不低于 32px；再小会丢失中心负空间</text>
+  <!-- Minimum size -->
+  <text x="40" y="322" class="cap">03 · Minimum size</text>
+  <text x="40" y="342" class="sub">Below 32px the central counterform disappears</text>
   <line x1="40" y1="356" x2="720" y2="356" class="rule"/>
-  <use href="#hsbc-hex" x="330" y="308" width="64" height="32.5"/>
-  <use href="#hsbc-hex" x="430" y="314" width="32" height="16.3"/>
-  <text x="490" y="328" class="sub">← 32px 为下限</text>
+  <use href="#hsbc-hex" x="380" y="306" width="64" height="32.5"/>
+  <use href="#hsbc-hex" x="480" y="312" width="32" height="16.3"/>
+  <text x="540" y="326" class="sub">← 32px minimum</text>
 </svg>

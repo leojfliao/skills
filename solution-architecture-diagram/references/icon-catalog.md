@@ -1,20 +1,20 @@
-# 自绘图标清单
+# Hand-Drawn Icon Catalog
 
-图标本体在 `assets/icon-library.svg`，共 47 个，全部为自绘几何图形，统一 24×24 网格、线宽 1.5、`fill="none"`、描边继承 `currentColor`。直接用浏览器打开该文件可以看到带名称的完整预览网格。
+The icon bodies live in `assets/icon-library.svg`, 47 in total, all hand-drawn geometric shapes, unified on a 24×24 grid, stroke width 1.5, `fill="none"`, with strokes inheriting `currentColor`. Open the file directly in a browser to see the full named preview grid.
 
-## 使用规则
+## Usage Rules
 
-1. 按下面的语义表挑图标，不凭形状相似随手选。
-2. 把对应的 `<symbol>` 整段复制到输出图的 `<defs>` 里，只复制用到的。
-3. 同文件内引用：`<use href="#icon-database" x="..." y="..." width="24" height="24"/>`。
-4. 不写跨文件 `href`（本地打开会被浏览器拦掉），不单独改某个图标的颜色、线宽或填充；只有焦点组件允许把整组描边换成红色。
-5. 图标尺寸统一 24×24，与文字基线对齐，不放大缩小。
-6. 语义缺失时用最接近的通用图标 + 文字标签说明，不临时画风格不一致的新图标。
+1. Pick icons from the meaning table below; do not choose casually by shape similarity.
+2. Copy the entire corresponding `<symbol>` block into the output diagram's `<defs>`, copying only those used.
+3. Reference within the same file: `<use href="#icon-database" x="..." y="..." width="24" height="24"/>`.
+4. Do not write a cross-file `href` (local opening will be blocked by the browser), do not individually change a single icon's color, stroke width, or fill; only the focal component may switch its entire group of strokes to red.
+5. Icon size is uniformly 24×24, aligned to the text baseline, with no scaling up or down.
+6. When no icon matches, use the closest general icon + a text label to explain; do not draw a new icon with an inconsistent style on the fly.
 
-## 用法示例
+## Usage Example
 
 ```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="示例分层架构">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Sample layered architecture">
   <defs>
     <symbol id="icon-database" viewBox="0 0 24 24">
       <ellipse cx="12" cy="5.5" rx="8" ry="3"/>
@@ -27,126 +27,126 @@
 </svg>
 ```
 
-父 `<g>` 上的描边属性会被 `<use>` 继承，symbol 内部路径不要单独设 `stroke`。
+The stroke attributes on the parent `<g>` are inherited by `<use>`; do not set `stroke` separately on the paths inside the symbol.
 
-## 清单
+## Catalog
 
-### 云与区域
+### Cloud & Regions
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-cloud` | 云 / 云服务商（抽象） | 不特指某厂商的云环境 |
-| `icon-region` | 区域 | 地理或逻辑大区 |
-| `icon-vpc` | 虚拟专有网络 | 云内隔离网络边界 |
-| `icon-onprem` | 本地机房 | 自建数据中心 |
-| `icon-edge` | 边缘节点 | CDN 边缘、就近接入点 |
-| `icon-availability` | 可用区 / 多实例分布 | 同区域多可用区部署 |
+| `icon-cloud` | Cloud / cloud provider (abstract) | A cloud environment not tied to a specific vendor |
+| `icon-region` | Region | A geographic or logical large area |
+| `icon-vpc` | Virtual private cloud | Isolated network boundary inside the cloud |
+| `icon-onprem` | On-premises machine room | Self-built data center |
+| `icon-edge` | Edge node | CDN edge, nearest access point |
+| `icon-availability` | Availability zone / multi-instance distribution | Multi-availability-zone deployment in one region |
 
-### 计算
+### Compute
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-compute` | 计算实例 / 虚机 | 通用算力 |
-| `icon-container` | 容器 | 容器化运行单元 |
-| `icon-serverless` | 函数计算 | 事件触发的短任务 |
-| `icon-kubernetes` | 编排平台 | 容器编排与调度 |
-| `icon-batch` | 批作业 | 定时或离线批处理 |
+| `icon-compute` | Compute instance / virtual machine | General-purpose compute power |
+| `icon-container` | Container | Containerized runtime unit |
+| `icon-serverless` | Function compute | Event-triggered short task |
+| `icon-kubernetes` | Orchestration platform | Container orchestration and scheduling |
+| `icon-batch` | Batch job | Scheduled or offline batch processing |
 
-### 接入
+### Ingress
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-gateway` | 网关 | 统一入口、路由 |
-| `icon-loadbalancer` | 负载均衡 | 流量分发 |
-| `icon-api` | API 接口 | 对外契约层 |
-| `icon-firewall` | 防火墙 | 网络访问控制 |
-| `icon-dns` | 域名解析 | 服务发现与解析 |
+| `icon-gateway` | Gateway | Unified entry point, routing |
+| `icon-loadbalancer` | Load balancer | Traffic distribution |
+| `icon-api` | API interface | External contract layer |
+| `icon-firewall` | Firewall | Network access control |
+| `icon-dns` | Domain name resolution | Service discovery and resolution |
 
-### 服务
+### Services
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-service` | 通用服务 | 不想强调实现形态的服务 |
-| `icon-microservice` | 微服务集群 | 多个小服务互调 |
-| `icon-agent` | 代理 / 智能体 | 旁路采集、代理执行 |
-| `icon-scheduler` | 调度器 | 定时触发与编排 |
+| `icon-service` | General service | A service whose implementation form is not emphasized |
+| `icon-microservice` | Microservice cluster | Multiple small services calling each other |
+| `icon-agent` | Agent | Side-channel collection, delegated execution |
+| `icon-scheduler` | Scheduler | Scheduled triggering and orchestration |
 
-### 数据
+### Data
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-database` | 通用数据库 | 不区分类型的库 |
-| `icon-sql` | 关系型数据库 | 结构化查询场景 |
-| `icon-nosql` | 非关系型数据库 | 文档 / KV / 图 |
-| `icon-warehouse` | 数据仓库 | 分析型存储 |
-| `icon-lake` | 数据湖 | 原始多模态沉淀 |
-| `icon-objectstore` | 对象存储 | 文件、归档、备份 |
+| `icon-database` | General database | A store with no type distinction |
+| `icon-sql` | Relational database | Structured query scenarios |
+| `icon-nosql` | Non-relational database | Document / KV / graph |
+| `icon-warehouse` | Data warehouse | Analytical storage |
+| `icon-lake` | Data lake | Raw multimodal accumulation |
+| `icon-objectstore` | Object storage | Files, archiving, backup |
 
-### 中间件
+### Middleware
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-cache` | 缓存 | 热点加速 |
-| `icon-queue` | 消息队列 | 异步解耦、削峰 |
-| `icon-topic` | 发布订阅主题 | 一对多广播 |
-| `icon-event` | 事件 | 事件驱动中的事件体 |
-| `icon-stream` | 流处理 | 连续数据处理链路 |
+| `icon-cache` | Cache | Hotspot acceleration |
+| `icon-queue` | Message queue | Async decoupling, peak shaving |
+| `icon-topic` | Pub/sub topic | One-to-many broadcast |
+| `icon-event` | Event | Event body in event-driven design |
+| `icon-stream` | Stream processing | Continuous data processing pipeline |
 
-### 安全
+### Security
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-iam` | 身份与权限 | 认证、授权、角色 |
-| `icon-key` | 密钥 | 凭据与密钥管理 |
-| `icon-shield` | 安全防护 | 通用安全边界 |
-| `icon-lock` | 加密 / 锁定 | 传输或存储加密 |
+| `icon-iam` | Identity and access | Authentication, authorization, roles |
+| `icon-key` | Key | Credential and key management |
+| `icon-shield` | Security protection | General security boundary |
+| `icon-lock` | Encryption / lock | Encryption in transit or at rest |
 
-### 可观测
+### Observability
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-monitor` | 监控 | 指标看板 |
-| `icon-log` | 日志 | 日志采集与检索 |
-| `icon-trace` | 链路追踪 | 分布式调用链 |
-| `icon-alert` | 告警 | 阈值触发与通知 |
+| `icon-monitor` | Monitoring | Metrics dashboard |
+| `icon-log` | Log | Log collection and search |
+| `icon-trace` | Distributed tracing | Distributed call chain |
+| `icon-alert` | Alert | Threshold triggering and notification |
 
-### 端与外部
+### Clients & External
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-user` | 用户 | 人作为参与方 |
-| `icon-web` | Web 端 | 浏览器客户端 |
-| `icon-mobile` | 移动端 | App 客户端 |
-| `icon-partner` | 合作方系统 | 外部机构对接 |
-| `icon-external` | 外部依赖 | 不属于本系统的任意外部方 |
+| `icon-user` | User | A person as a participant |
+| `icon-web` | Web client | Browser client |
+| `icon-mobile` | Mobile client | App client |
+| `icon-partner` | Partner system | Integration with external institutions |
+| `icon-external` | External dependency | Any external party not part of this system |
 
-### 通用
+### General
 
-| id | 语义 | 何时用 |
+| id | Meaning | When to use |
 |---|---|---|
-| `icon-network` | 网络互联 | 抽象网络拓扑 |
-| `icon-boundary` | 边界框 | 信任域、分区 |
-| `icon-note` | 说明 / 待确认 | 未定组件的占位框 |
+| `icon-network` | Network interconnect | Abstract network topology |
+| `icon-boundary` | Boundary box | Trust domain, partition |
+| `icon-note` | Note / to be confirmed | Placeholder box for an undecided component |
 
-## 语义缺失时
+## When No Icon Matches
 
-清单里没有对应语义时，按这个顺序处理：
+When the catalog has no matching meaning, handle it in this order:
 
-1. 用 `icon-service`（软件组件）或 `icon-external`（外部方）+ 准确的文字标签。
-2. 需要标"还没确认"的组件，用 `icon-note` 并放进「待确认」虚线框，写在图例里。
-3. 仍然说不清时，宁可只画一个纯文字框，也不临时画一个与整套线宽不一致的新图标。
+1. Use `icon-service` (software component) or `icon-external` (external party) + an accurate text label.
+2. For components that need to be marked "not yet confirmed", use `icon-note`, place it in a "to be confirmed" dashed box, and list it in the legend.
+3. When it still cannot be explained clearly, prefer drawing a plain text-only box over drawing a new icon whose stroke width is inconsistent with the rest.
 
-## 禁止
+## Prohibited
 
-- 不引入某云厂商的官方图标包（打包分发有授权问题），用抽象图标 + 文字标签代替。
-- 不把图标转成位图、不嵌入 `<image>`。
-- 不给单个图标填充颜色、渐变或投影。
-- 不修改 `viewBox`、线宽或圆角去「凑好看」。
+- Do not bring in a cloud vendor's official icon pack (bundled distribution raises licensing issues); use an abstract icon + a text label instead.
+- Do not convert icons into a raster image, do not embed `<image>`.
+- Do not fill a single icon with color, gradients, or shadows.
+- Do not modify `viewBox`, stroke width, or corner radius just to "make it look nice".
 
-## 验收
+## Acceptance
 
-- [ ] 用到的每个 `id` 都在清单里
-- [ ] 每个 `<use>` 的 `href` 都能在本文 `<defs>` 找到同名 `id`
-- [ ] 图例列出了本次用到的全部图标含义
-- [ ] 无跨文件引用、无外部图片、无位图
-- [ ] 所有图标尺寸一致，描边继承统一
+- [ ] Every `id` used is in the catalog
+- [ ] Every `<use>` `href` finds a same-named `id` in this file's `<defs>`
+- [ ] The legend lists the meanings of all icons used this time
+- [ ] No cross-file reference, no external images, no raster image
+- [ ] All icon sizes are consistent, stroke inheritance is uniform

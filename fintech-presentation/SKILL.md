@@ -1,112 +1,115 @@
 ---
 name: fintech-presentation
-description: 把已确定的内容大纲做成单个自包含的 HTML 交互演示页，采用克制的企业金融视觉（红黑白、等宽数字、细网格），支持键盘翻页、章节跳转、进度条、Esc 总览和打印展开，零外部依赖。当用户说「做个内部分享的演示页」「把这版大纲做成可点的 slides」「按汇丰风格出一页 HTML」「做一版能点击切换的 deck」「把讲稿排成演示页」时使用。只做可交互演示页：不生成 PPTX、不写滚动长文、不处理一批 PDF、不改写用户内容、不编造数据。
-version: 1.1.0
+description: Turns an approved content outline into a single self-contained interactive HTML presentation deck with restrained enterprise-finance visuals (red / white / black, tabular numerals, fine grid), keyboard navigation, section jumps, a progress bar, an Esc overview, and print expansion, with zero external dependencies. Use when the user asks to "make an internal tech talk deck", "turn this outline into clickable slides", "produce a one-page HTML deck in the HSBC style", "build a deck you can click through", or "lay this speaker script out as slides". Interactive HTML deck only: no PPTX, no scrolling long-read, no batch PDF processing, no rewriting the user's content, no invented data.
+version: 1.2.0
 agent_created: true
 ---
 
-# 交互式企业金融演示页
+# Interactive Enterprise Finance Deck
 
-产出**一个** `.html` 文件：双击即开、离线可用、键盘可走完全程。内容由使用者给，本 Skill 只负责把它装进一套克制、精确、能点的版式里。
+Produce **one** `.html` file: double-click to open, works offline, fully navigable by keyboard. The user supplies the content; this Skill only places it into a restrained, precise, clickable layout. All visible copy is in English.
 
-## 1. 先判断该不该由本 Skill 接
+## 1. Decide whether this Skill should take the job
 
-| 用户真实想要 | 去向 |
+| What the user actually wants | Route to |
 |---|---|
-| 可点击切换的单文件演示页 | 本 Skill |
-| 滚动阅读的长文 HTML + PDF | `html-longread-story` |
-| `.pptx` 文件，或从一批讲义 PDF 生成 PPT | `conference-pdf-to-deck` |
-| 已生成 PPTX 的排版体检 | `pptx-layout-qc` |
-| 叙事大纲、讲稿、复盘故事 | `internal-share-narrative` |
-| 系统架构图、方案设计图 | `solution-architecture-diagram` |
+| A clickable single-file presentation deck | This Skill |
+| A scrolling long-read HTML + PDF | `html-longread-story` |
+| A `.pptx` file, or slides generated from a batch of conference PDFs | `conference-pdf-to-deck` |
+| Layout QA on an existing PPTX | `pptx-layout-qc` |
+| Narrative outline, speaker script, retrospective story | `internal-share-narrative` |
+| A system architecture or solution design diagram | `solution-architecture-diagram` |
 
-用户说「deck」「slides」「演示」但明确要 PPTX 文件时，转介并说明本 Skill 只出 HTML，不硬做。用户给了 `.pptx` 让「改成可点的」，同样转介：本 Skill 不解析 PPTX。
+If the user says "deck", "slides", or "presentation" but explicitly wants a PPTX file, route it and explain that this Skill outputs HTML only. The same applies to "make this `.pptx` clickable": this Skill does not parse PPTX files.
 
-## 2. 输入
+## 2. Input
 
-开始前确认这四项，缺哪项就问哪项，一次问完：
+Confirm all four before starting; ask once for whatever is missing:
 
-1. **内容**：已定稿的大纲、讲稿或分页内容。可以是 Markdown、纯文本或对话里直接给。
-2. **场合与时长**：内部分享 / 评审 / 汇报，多少分钟。决定页数与信息密度。
-3. **听众**：同级工程师 / 跨部门 / 管理层。决定术语密度与注释量。
-4. **已有素材**：是否已有架构图 SVG、图表数据、图例说明需要嵌入。
+1. **Content**: an approved outline, script, or slide-by-slide content. Markdown, plain text, or given directly in chat.
+2. **Occasion and duration**: internal talk / review / reporting, and how many minutes. Sets slide count and information density.
+3. **Audience**: peer engineers / cross-functional / leadership. Sets terminology density and annotation level.
+4. **Existing assets**: architecture SVGs, chart data, or legend notes that need embedding.
 
-内容未定稿时先转 `internal-share-narrative`，不边写内容边排版。时长与页数按每页 1.5–2 分钟估算，宁可少页不挤字。
+When content is not final, route to `internal-share-narrative` first; do not write and lay out at the same time. Estimate 1.5–2 minutes per slide; prefer fewer slides over cramped text.
 
-## 3. 加载资源
+## 3. Load resources
 
-- 视觉约定读 `@references/visual-system.md`，颜色、字体、字号、间距、动效一律照它，不自创配色。
-- 版式与交互实现读 `@references/layout-and-interaction.md`，按内容选版式，不把所有页做成同一个样子。
-- 页面骨架从 `@assets/deck-shell.html` 起步：它的 CSS 变量、状态机、键盘映射、总览、打印样式都已可用，**不要重写骨架，只替换其中的示例内容并增删页面**。
-- 品牌标志读 `@assets/brand-mark.svg`：`<symbol id="brand-hex">` 是全页唯一标志定义，不另画一个、不跨文件引用。用法、官方资产替换与移除开关见 `@references/visual-system.md`「品牌标识」。
+- Read `@references/visual-system.md` for colour, type, spacing, and motion. Follow it exactly; invent no new palette.
+- Read `@references/layout-and-interaction.md` for layouts and interaction. Choose layouts by content; do not make every slide look the same.
+- Start from `@assets/deck-shell.html`: its CSS variables, state machine, key map, overview, and print styles already work. **Do not rewrite the shell — replace its sample content and add or remove slides.**
+- Read `@assets/brand-mark.svg` for the brand mark: `<symbol id="brand-hex">` is the page's only definition of the mark. Do not draw another one and do not use cross-file references. Usage, official-asset replacement, and the on/off switch are in the "Brand Mark" section of `@references/visual-system.md`.
 
-## 4. 制作步骤
+## 4. Steps
 
-1. 把内容拆成页，给每页标注版式类型（见版式表），写成一张「页码 / 标题 / 版式 / 来源段落」对照表，先给用户过目。
-2. 复制 `deck-shell.html`，保留 `<style>`、`<script>` 与 `<symbol id="brand-hex">` 全部逻辑，只改 `<body>` 里的 `<section class="slide">` 内容。
-3. 每页 `<section>` 必须带 `data-title`，目录和总览靠它生成，不留空标题。
-4. 按版式表填充内容。数字用 `<span class="num">` 包住，保证等宽对齐。
-5. 需要嵌入架构图时，把 SVG 源码直接内联进页面，不写 `<img src="...">` 外链。
-6. 图表只用内联 SVG 或纯 CSS 绘制，不引图表库；没有确切数据就不画图表，改用数据表。
-7. 全局检查一遍红色用量、字号层级、对齐基线，然后按下节自查清单逐项验证。
-8. 输出文件路径与页数，附上键盘操作说明。
+1. Split content into slides, assign a layout type to each (see the layout table), and write a "slide / title / layout / source section" mapping table for the user to review first.
+2. Copy `deck-shell.html`, keep the `<style>`, `<script>`, and `<symbol id="brand-hex">` logic intact, and change only the `<section class="slide">` content inside `<body>`.
+3. Every `<section>` must have a `data-title`; the TOC and overview are generated from it. Never leave a title empty.
+4. Fill content according to the layout table. Wrap numbers in `<span class="num">` for tabular alignment.
+5. To embed an architecture diagram, inline the SVG source directly; never write `<img src="...">` pointing to a file.
+6. Draw charts only with inline SVG or pure CSS, with no chart library. With no confirmed data, use a data table instead of a chart.
+7. Check red coverage, type hierarchy, and alignment globally, then run the checklist below item by item.
+8. Output the file path, slide count, and keyboard instructions.
 
-## 5. 输出契约
+## 5. Output contract
 
-- **唯一产物**：一个 `.html` 文件，UTF-8，内联全部 CSS 与 JS。
-- **零外部请求**：不出现 `http://`、`https://`、`//cdn` 开头的资源引用；不出现 `<link>`、`<script src>`、`<img src>` 指向外部。
-- **必须可用的交互**：`→`/`空格`/`PgDn` 下一页，`←`/`PgUp` 上一页，`Home`/`End` 首末页，`Esc` 开合总览，目录点击跳转，进度条点击跳转。
-- **可访问性**：焦点可见、`prefers-reduced-motion` 生效、语义标签正确。
-- **打印**：`@media print` 下全部页面展开、每页一页纸、隐藏进度条与目录。
-- **不含**：真实客户名、账户数据、内部系统名、真实交易量、未经确认的第三方品牌标识。示例数据须标注「示例」。
-- **品牌标志**：右上角至多一枚 HSBC Hexagon 示意重绘，颜色、尺寸、位置照视觉规范「品牌标识」；用户明确不要标志时把 `<html>` 的 `data-brand` 设为 `hide`。
+- **Single deliverable**: one `.html` file, UTF-8, with all CSS and JS inlined.
+- **Zero external requests**: no resource references starting with `http://`, `https://`, or `//cdn`; no `<link>`, `<script src>`, or `<img src>` pointing outward.
+- **Working interactions**: `→` / `Space` / `PgDn` next, `←` / `PgUp` previous, `Home` / `End` first / last, `Esc` toggles overview, TOC click jumps, progress bar click jumps.
+- **Accessibility**: visible focus, `prefers-reduced-motion` honoured, correct semantic tags.
+- **Print**: under `@media print`, all slides expand, one slide per page, progress bar and TOC hidden.
+- **Excludes**: real customer names, account data, internal system names, real transaction volumes, and unconfirmed third-party brand marks. Sample data must be labelled "sample".
+- **Brand mark**: at most one HSBC Hexagon redraw in the top-right corner, following the colour, size, and placement rules in "Brand Mark". When the user explicitly wants no mark, set `<html>`'s `data-brand` to `hide`.
+- **Language**: all visible copy, labels, captions, and sample content are in English.
 
-## 6. 内容纪律
+## 6. Content discipline
 
-- 不改写、不删减、不补充用户的观点与结论。缺主语或措辞不清时问一句，不自行润色成另一个意思。
-- 不编造数字。用户没给的数字，位置留空并标注待补，不用占位假数填图。
-- 不擅自加页。想加「总结」「Q&A」这类页先问。
-- 事实、判断、建议按用户原文呈现，不替用户加「由此可见」「结果表明」之类推断句。
-- 长句只做断行和层级拆分，不改语义；技术术语保持原样，不替换成通俗说法。
+- Do not rewrite, cut, or add to the user's points and conclusions. If a subject is missing or wording is unclear, ask once; do not polish it into a different meaning.
+- Do not invent numbers. Leave the position empty and mark it TBD; never fill a chart with placeholder values.
+- Do not add slides unilaterally. Ask before adding a "Summary" or "Q&A" slide.
+- Present facts, judgements, and recommendations as the user wrote them; never add inferential phrases such as "this shows that" or "the results prove".
+- Break long sentences only by line or hierarchy, never by meaning; keep technical terms as-is rather than simplifying them.
 
-## 7. 视觉与交互要点
+## 7. Visual and interaction notes
 
-- 红色只用在焦点：进度条、当前目录项、关键数字、一个焦点数据系列。一屏红色面积控制在 10% 以内。
-- 靠留白、字重、等宽数字和 1px 细网格建立「Fintech 感」，不用渐变、发光、玻璃拟态、大圆角。
-- 过渡 120–200ms，只有淡入和不超过 8px 的纵向位移；不自动播放、不自动翻页。
-- 每页信息量上限：一个主观点 + 不超过 5 个支撑项。超了就拆页，不缩字号。
-- 骨架里的示例内容必须全部替换，不把「示例」字样留在交付物里，除非那本来就是示例数据。
-- 品牌标志固定在右上角，不加动画、不改色、不放大到抢标题；深色封面由白底块托住。
+- Red is for focal points only: progress bar, current TOC item, key figures, one focal data series. Keep red under 10% of a screen.
+- Build the "Fintech feel" with whitespace, weight, tabular numerals, and a 1px grid — no gradients, glows, glassmorphism, or large radii.
+- Transitions are 120–200ms, fade and vertical displacement under 8px only; nothing autoplays or auto-advances.
+- Per-slide ceiling: one main point plus no more than 5 supporting items. Split the slide rather than shrinking type.
+- Replace every piece of shell sample content; do not leave the word "sample" in the deliverable unless it genuinely labels sample data.
+- Keep the brand mark fixed in the top-right corner: no animation, no recolouring, never enlarged enough to compete with the title. A white badge holds it on dark covers.
 
-## 8. 降级与停止条件
+## 8. Fallbacks and stop conditions
 
-| 情况 | 行为 |
+| Situation | Behaviour |
 |---|---|
-| 无法写 HTML 文件或渲染环境不可用 | 输出结构化 Markdown 分页大纲（页码 / 标题 / 版式 / 内容），标注「未渲染」，说明恢复方式 |
-| 内容里出现疑似未公开数据 | 停下，列出具体条目，提示脱敏后再继续，不把原文写入产物 |
-| 用户要求外链图表库、CDN 字体或在线图片 | 拒绝并说明零外部依赖是硬约束，给内联替代方案 |
-| 用户要求自动播放、背景音乐、鼠标跟随特效 | 拒绝，说明与克制原则冲突，给静态替代 |
-| 内容不足一页却要求做成多页 | 停下，建议先补内容或改用一页纸版式 |
-| 用户真实意图是 PPTX / 长文 / 架构图 | 按第 1 节转介，不接管 |
+| Cannot write an HTML file, or no rendering environment | Output a structured Markdown slide outline (slide / title / layout / content), marked "not rendered", with recovery steps |
+| Content appears to contain non-public data | Stop, list the specific items, and ask for redaction before continuing; do not write the original text into the output |
+| User asks for a hosted chart library, CDN fonts, or online images | Decline, explain that zero external dependencies is a hard constraint, and offer an inline alternative |
+| User asks for autoplay, background music, or cursor effects | Decline, explain the conflict with the restraint principle, and offer a static alternative |
+| Not enough content for one slide but multiple slides requested | Stop and suggest more content or a single-page layout |
+| Real intent is PPTX / long-read / architecture diagram | Route per section 1; do not take the job |
 
-## 9. 交付前自查
+## 9. Pre-delivery checklist
 
-- [ ] 离线打开，网络面板零请求
-- [ ] 所有 `<section>` 都有非空 `data-title`
-- [ ] 键盘走完全部页面，`Esc` 总览可开可关，点击跳转正确
-- [ ] 目录项数量与页数一致，进度条末页到 100%
-- [ ] 数字等宽对齐，红色面积未超 10%
-- [ ] `prefers-reduced-motion` 下无过渡
-- [ ] 打印预览不截断、不丢页、无透明度残留
-- [ ] 骨架示例内容已清除，无真实业务数据；品牌标志未变形、未超量，用户要求移除时已关闭
-- [ ] 标志为示意重绘或已替换为官方资产，无跨文件 SVG 引用
-- [ ] 内容逐条对回原文，无改写、无新增结论
+- [ ] Opens offline with zero requests in the network panel
+- [ ] Every `<section>` has a non-empty `data-title`
+- [ ] Keyboard reaches every slide; `Esc` overview opens and closes; click jumps work
+- [ ] TOC item count matches slide count; progress bar reaches 100% on the last slide
+- [ ] Numbers use tabular alignment; red coverage under 10%
+- [ ] No transitions under `prefers-reduced-motion`
+- [ ] Print preview is not clipped, loses no pages, and has no leftover opacity
+- [ ] Shell sample content cleared, no real business data; brand mark undistorted and within limits, switched off if the user asked
+- [ ] Mark is either the redraw or an official replacement; no cross-file SVG references
+- [ ] Content traces back line by line with no rewriting or new conclusions
+- [ ] All visible copy is in English
 
-任一项不通过就修完重查，不带着已知问题交付。
+Fix anything that fails before delivering; never ship a known issue.
 
-## 10. 交付话术
+## 10. Handover
 
-给出文件路径、总页数、每页版式一句话，再给一行操作提示：
-`← → 翻页 · Esc 总览 · 目录可点击 · 直接打印可导出 PDF`。
+Give the file path, total slide count, and one line per slide describing its layout, then one line of operating instructions:
 
-不附带额外说明文档，不在 HTML 里写制作说明或状态标注。
+`← → to navigate · Esc for overview · TOC is clickable · print directly to export PDF`
+
+No extra documentation, and no production notes or status labels inside the HTML.

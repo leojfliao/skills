@@ -1,133 +1,135 @@
 ---
 name: internal-share-narrative
-description: 为公司内部分享写叙事内容，支持三种模式：把技术主题搭成「背景—痛点—约束—方案—效果—反思」的分享骨架、把做过的事写成有转折的项目复盘故事、把已有 PPT 或文档转成逐段口播稿与问答预案。当用户说「帮我理一下这次分享怎么讲」「写个内部分享大纲」「把项目包装成能讲的稿」「把这份材料转成讲稿」「这次复盘怎么讲」时使用。只产出文字内容：不做视觉排版、不生成 HTML 或 PPTX、不编造数据、不替用户下结论。
-version: 1.0.0
+description: Writes narrative content for internal company tech talks in three modes: a technical-talk skeleton (context, pain points, constraints, approach, outcome, reflection), a project retrospective built around one turning point, and a section-by-section speaker script with Q&A prep from existing slides or docs. Use when the user asks to "help me structure this internal talk", "write a talk outline", "turn this project into a story worth telling", "convert this material into a speaker script", or "how should I frame this retrospective". Text output only: no visual layout, no HTML or PPTX, no invented data, and no conclusions drawn on the user's behalf.
+version: 1.2.0
 agent_created: true
 ---
 
-# 公司内部分享叙事
+# Internal Tech Talk Narrative
 
-把散乱的主题、材料或经历，整理成一份**能直接照着讲**的文字稿。产物是 Markdown，不含任何视觉设计。
+Turn a loose topic, a pile of material, or a project experience into a **script that can be read aloud as-is**. The deliverable is Markdown, with no visual design whatsoever. Write everything in English.
 
-## 1. 先判断该不该由本 Skill 接
+## 1. Decide whether this Skill should take the job
 
-| 用户真实想要 | 去向 |
+| What the user actually wants | Route to |
 |---|---|
-| 分享大纲、讲稿、复盘故事、问答预案 | 本 Skill |
-| 把大量材料压成滚动长文 HTML + PDF | `html-longread-story` |
-| 把一批讲义 PDF 转成 PPTX + HTML deck | `conference-pdf-to-deck` |
-| 可点击切换的演示页 | `fintech-presentation` |
-| 系统架构图、方案设计图 | `solution-architecture-diagram` |
+| Talk outline, speaker script, retrospective story, Q&A prep | This Skill |
+| Compress a large body of material into a scrolling long-read HTML + PDF | `html-longread-story` |
+| Turn a batch of conference PDFs into PPTX + HTML deck | `conference-pdf-to-deck` |
+| A clickable single-file presentation deck | `fintech-presentation` |
+| A system architecture or solution design diagram | `solution-architecture-diagram` |
 
-用户说「写个 story」「来份 story 材料」但语境明显是要 HTML 长文或 PPT 时，先按上表确认一句再动手，不抢活。
+If the user says "write a story" or "story material" but the context clearly points to a long-read HTML page or slides, confirm once against the table above before starting. Do not grab the work.
 
-## 2. 输入
+## 2. Input
 
-一次问完这四项，缺什么问什么：
+Ask for all four at once, and only for what is missing:
 
-1. **主题**：这次到底讲什么，一句话。
-2. **听众**：同级工程师 / 跨部门同事 / 管理层。决定术语密度与背景铺垫。
-3. **时长**：多少分钟，是否含 Q&A。决定结构颗粒度。
-4. **已有材料**：有没有 PPT、文档、数据、会议纪要；没有就按模式 A 从零搭。
+1. **Topic**: what this talk is actually about, in one sentence.
+2. **Audience**: peer engineers / cross-functional colleagues / leadership. Sets terminology density and background.
+3. **Duration**: minutes, and whether Q&A is included. Sets structural granularity.
+4. **Existing material**: slides, docs, data, meeting notes. With none, build from scratch in mode A.
 
-## 3. 判定模式
+## 3. Pick the mode
 
-| 线索 | 模式 |
+| Signal | Mode |
 |---|---|
-| 只有一个主题或想法，没有成稿材料 | A · 技术分享叙事骨架 |
-| 「我们做了什么」「踩了什么坑」「回头看」「复盘」 | B · 项目复盘故事 |
-| 已有 PPT / 文档 / 大纲文件，要「照着讲」 | C · 材料转讲稿 |
-| 多个线索同时出现，或用户只说「帮我准备一下分享」 | 先问一句，不硬猜 |
+| Only a topic or an idea, no draft material | A · Technical talk skeleton |
+| "What we did", "what went wrong", "looking back", "retrospective" | B · Project retrospective story |
+| Existing PPT / doc / outline that needs a script to present from | C · Material-to-script |
+| Several signals at once, or a vague "help me prepare a talk" | Ask one question; do not guess |
 
-问的时候只给一句话：「这次是想要一份讲稿、一份复盘，还是先搭个叙事骨架？」不要连问多个问题。
+Ask exactly one short question: "Would you like a speaker script, a retrospective, or a narrative skeleton first?" Do not fire a list of questions.
 
-判定后明确告诉用户选了哪个模式及其输出形态，再开始。三套模板与填好的示例见 `@references/narrative-modes.md`，按模式加载对应部分。
+Once decided, state the mode and its output shape before starting. All three templates and worked examples are in `@references/narrative-modes.md`; load only the section for the chosen mode.
 
-## 4. 通用规则
+## 4. General rules
 
-- **不编数字**。用户没给的数字、比例、时间，写成 `待补：<需要什么>`，不用示意数填坑。
-- **事实、判断、建议分开**：用户给的事实照写；需要推断的地方前缀标「推断」；给听众的行动建议前缀标「建议」。不把推断混进事实里。
-- **不替用户下结论**。材料里没有「所以应该怎么做」，就不写；可以把它列成开放问题放进 Q&A 预案。
-- **时长换算**：中文口播按每分钟 220–260 字估算；演示页按每页 1.5–2 分钟；Q&A 单列，不占正文时间。
-- **听众校准**：同级工程师保留术语与实现细节；跨部门补一层背景、压缩实现细节；管理层把技术细节移到附录，正文只留问题、决策与结果。
-- **脱敏**：出现真实客户名、金额、内部系统代号、未公开指标时，停下来提示用户确认，不把原文写进产物。
+- **Never invent numbers**. For any figure, ratio, or duration the user has not supplied, write `TBD: <what is needed>`. Do not plug in illustrative values.
+- **Separate fact, inference, and recommendation**: copy supplied facts verbatim; prefix anything inferred with "Inference:"; prefix proposed actions with "Recommendation:". Never blend inference into fact.
+- **Do not draw conclusions for the user**. If the material contains no "so we should", do not write one; it can be listed as an open question in the Q&A prep.
+- **Duration conversion**: English delivery is estimated at **130–150 words per minute**; deck slides at 1.5–2 minutes each; Q&A is budgeted separately and never eats into body time.
+- **Audience calibration**: peer engineers keep terminology and implementation detail; cross-functional audiences get one extra layer of background and compressed implementation detail; leadership decks move technical detail to an appendix, leaving only the problem, the decision, and the result in the body.
+- **Redaction**: on encountering real customer names, amounts, internal system codenames, or unpublished metrics, stop and ask the user to confirm. Do not copy the original text into the output.
 
-## 5. 输出契约
+## 5. Output contract
 
-单一 Markdown 文件（或对话内完整输出），固定顺序如下，缺项写「不适用」而不是删掉章节：
+A single Markdown file (or a complete in-chat response), with this fixed order. Mark missing sections "N/A" rather than deleting them:
 
 ```markdown
-# <主题>
-- 模式：A / B / C
-- 听众：<听众>
-- 时长：<分钟> 分钟（含 / 不含 Q&A <分钟> 分钟）
-- 核心主张：<一句话>
+# <Topic>
+- Mode: A / B / C
+- Audience: <audience>
+- Duration: <n> minutes (Q&A included / excluded, <n> minutes)
+- Core message: <one sentence>
 
-## 叙事主线
-<3–6 句，说明为什么按这个顺序讲>
+## Narrative Thread
+<3-6 sentences explaining why this order works>
 
-## 分段内容
-### 1. <段落名> · <建议时长>
-- 要讲到的点：
-- 口播稿：
-- 配合材料：
+## Sections
+### 1. <section name> · <suggested duration>
+- Points to cover:
+- Speaker script:
+- Supporting material:
 
-（按结构重复）
+(repeat for each section)
 
-## 过渡句
-<每段之间一句话，逐条列出>
+## Transitions
+<one line between each pair of sections, listed individually>
 
-## 可能被问到的问题
-| 问题 | 回答要点 | 依据 / 待补 |
+## Likely Questions
+| Question | Answer points | Source / TBD |
 |---|---|---|
 
-## 待补清单
-- 待补：<具体缺什么，找谁要>
+## Open Items
+- TBD: <what exactly is missing, and who to ask>
 
-## 事实与推断标注
-- 事实：<来自用户材料的条目>
-- 推断：<本 Skill 补的结构性推断>
+## Fact and Inference Log
+- Fact: <items from the user's material>
+- Inference: <structural inferences added by this Skill>
 ```
 
-「分段内容」的段落名随模式变化，见模板文件。口播稿必须是可直接念的完整句子，不写「这里展开讲一下」这类提纲式占位。
+Section names vary by mode; see the template file. Speaker scripts must be complete sentences that can be read aloud — no outline-style placeholders such as "expand on this here".
 
-## 6. 三种模式要点
+## 6. The three modes in brief
 
-**A · 技术分享叙事骨架**：背景 → 痛点 → 约束 → 方案 → 效果 → 反思与下一步。约束段最容易被漏掉，它决定方案是否可信，必须单独成段。
+**A · Technical talk skeleton**: context → pain points → constraints → approach → outcome → reflection and next steps. The constraints section is the one most often dropped, and it is what makes the approach credible; it must stand as its own section.
 
-**B · 项目复盘故事**：场景 → 关键角色 → 转折点 → 当时怎么决定 → 结果与代价 → 可复用经验。转折点只写一个，不写成流水账。
+**B · Project retrospective story**: setting → key roles → turning point → the decision at the time → result and cost → reusable lessons. Write exactly one turning point; do not produce a chronological log.
 
-**C · 材料转讲稿**：逐页 / 逐节对口播稿，标页码与时长，补过渡句与问答预案。不重排原材料的顺序，不删原材料的章节；认为顺序有问题时单独在末尾提一句，不擅自调整。
+**C · Material-to-script**: a speaker script per slide or section, with page numbers and timings, plus transitions and Q&A prep. Do not reorder the source, and do not drop source sections. If the order looks wrong, note it once at the end — never adjust it unilaterally.
 
-完整的分段模板、时间分配表和填好的示例见 `@references/narrative-modes.md`。
+Full section templates, time budgets, and worked examples are in `@references/narrative-modes.md`.
 
-## 7. 降级与停止条件
+## 7. Fallbacks and stop conditions
 
-| 情况 | 行为 |
+| Situation | Behaviour |
 |---|---|
-| 无法输出 Markdown 文件 | 在对话内完整给出同样结构的文字，标注「未落盘」 |
-| 材料是扫描件或图片，文字不可读 | 列出无法读取的部分，请用户提供文字版，不猜内容 |
-| 关键数据缺失，影响主线成立 | 停在「待补清单」，不写出带推断数字的完整稿 |
-| 材料含疑似未公开信息 | 停下并列出具体条目，提示脱敏或降级为抽象表述 |
-| 用户要求顺带做 PPT / 排版 | 只交付文字稿，说明视觉部分交给 `fintech-presentation` |
-| 用户要的是英文稿 | 按同样结构用英文输出，不做中英混排 |
+| Cannot write a Markdown file | Give the same structure in full in-chat, marked "not saved to disk" |
+| Source is a scan or image with unreadable text | List the unreadable parts and ask for a text version; do not guess |
+| Key data missing so the narrative thread breaks | Stop at "Open Items"; do not write a full script with inferred numbers |
+| Material appears to contain non-public information | Stop, list the specific items, and ask for redaction or an abstract restatement |
+| User also wants slides or layout | Deliver text only and point to `fintech-presentation` for the visual layer |
+| User asks for a non-English script | Keep the same structure in the requested language; no mixed-language output |
 
-## 8. 交付前自查
+## 8. Pre-delivery checklist
 
-- [ ] 模式判定有依据，或与用户确认过
-- [ ] 输出章节完整，缺项写「不适用」
-- [ ] 口播稿是完整句子，没有提纲式占位
-- [ ] 总字数与时长匹配（220–260 字/分钟）
-- [ ] 所有数字都有出处，缺的一律进「待补清单」
-- [ ] 事实、推断、建议已分开标注
-- [ ] 没有替用户补结论，没有「由此可见」「结果表明」式推断句
-- [ ] 过渡句数量 = 分段数 − 1
-- [ ] Q&A 至少 3 条，含 1 条不好回答的问题
-- [ ] 无真实客户名、未公开指标、内部系统代号
+- [ ] Mode choice is evidenced or confirmed with the user
+- [ ] All output sections present; missing ones marked "N/A"
+- [ ] Speaker scripts are complete sentences with no outline placeholders
+- [ ] Word count matches the duration (130–150 words/minute)
+- [ ] Every number has a source; missing ones sit in "Open Items"
+- [ ] Facts, inferences, and recommendations are separately labelled
+- [ ] No conclusions supplied on the user's behalf; no "this shows that" / "the results prove" phrasing
+- [ ] Transition count = section count − 1
+- [ ] At least 3 Q&A items, including 1 hard question
+- [ ] No real customer names, unpublished metrics, or internal system codenames
+- [ ] Output is consistently English with consistent terminology
 
-## 9. 交付话术
+## 9. Handover
 
-给出文件路径（若有）、模式、总字数、预估时长、待补条目数，再一句提示：
-「待补清单里的项确认后，内容就能定稿；要排成演示页交给 `fintech-presentation`」。
+Give the file path (if any), mode, word count, estimated duration, and open-item count, then one line:
 
-不在稿子里写制作说明、状态标注或模板注释。
+"Once the open items are confirmed the content is final; hand it to `fintech-presentation` to lay it out as a deck."
+
+Do not put production notes, status labels, or template comments inside the script itself.

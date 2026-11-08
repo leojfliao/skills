@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 690" width="720" height="690" role="img" aria-label="自绘架构图标集，47 个，统一 24 网格与 1.5 线宽">
-<title>自绘架构图标集</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 690" width="720" height="690" role="img" aria-label="Hand-drawn architecture icon set, 47 icons, unified 24 grid and 1.5 stroke">
+<title>Hand-Drawn Architecture Icon Set</title>
 <defs>
   <symbol id="icon-cloud" viewBox="0 0 24 24"><path d="M7 18h10.5a3.5 3.5 0 0 0 .2-7A5.5 5.5 0 0 0 6.8 9.4 4.3 4.3 0 0 0 7 18Z"/></symbol>
   <symbol id="icon-region" viewBox="0 0 24 24"><path d="M12 2.6 20.5 7v10L12 21.4 3.5 17V7Z"/><path d="M12 8.5 16 10.7v4.6L12 17.5 8 15.3v-4.6Z"/></symbol>
@@ -51,8 +51,8 @@
 </defs>
 
 <rect x="0" y="0" width="720" height="690" fill="#FFFFFF"/>
-<text x="24" y="32" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="600" fill="#141414">自绘架构图标集 · 47 个</text>
-<text x="24" y="50" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#767676">统一 24×24 网格 · 线宽 1.5 · 无填充 · 描边继承 currentColor · 示例素材</text>
+<text x="24" y="32" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="600" fill="#141414">Hand-drawn architecture icons · 47</text>
+<text x="24" y="50" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#767676">Unified 24×24 grid · stroke 1.5 · no fill · inherits currentColor · sample asset</text>
 
 <g fill="none" stroke="#141414" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10">
 <use href="#icon-cloud" x="8" y="64" width="24" height="24"/><text x="8" y="100" fill="#767676" stroke="none">cloud</text>
@@ -110,5 +110,5 @@
 <use href="#icon-boundary" x="368" y="596" width="24" height="24"/><text x="368" y="632" fill="#767676" stroke="none">boundary</text>
 <use href="#icon-note" x="488" y="596" width="24" height="24"/><text x="488" y="632" fill="#767676" stroke="none">note</text>
 </g>
-<text x="24" y="668" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#767676">用法：把需要的 symbol 整段复制进输出图的 defs，再以 use href="#id" 同文件引用；不要跨文件引用。</text>
+<text x="24" y="668" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#767676">Copy needed symbols into the output defs; reference in-file with use href="#id". No cross-file refs.</text>
 </svg>

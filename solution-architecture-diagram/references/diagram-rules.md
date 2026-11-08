@@ -1,109 +1,109 @@
-# 架构图绘制规则
+# Architecture Diagram Drawing Rules
 
-本文件定死画布、分层、连线、图例和自包含规则。目标是让不同人画出来的图看起来像同一个人画的，并且离线打开不缺图标。
+This file locks down the rules for the canvas, layered layout, connectors, legend, and self-contained behavior. The goal is for diagrams drawn by different people to look like the work of one person, and for no icons to be missing when opened offline.
 
-## 1. 画布与网格
+## 1. Canvas and Grid
 
-| 项 | 值 |
+| Item | Value |
 |---|---|
-| 基准画布 | `viewBox="0 0 1200 720"`，16:10 |
-| 外边距 | 40 |
-| 网格 | 8px 基准，组件框边缘对齐到 8 的倍数 |
-| 组件框 | 宽 180、高 72，圆角 2，描边 1.5 |
-| 组件间距 | 水平 32，垂直 40 |
-| 分层带间距 | 64 |
-| 图标 | 24×24，放在框内左侧，距左边 16 |
-| 文字 | 组件名 14px，类型标签 11px，连线标签 11px，标题 22px，图注 12px |
-| 最小字号 | 10px，低于这个值缩放后读不清 |
+| Base canvas | `viewBox="0 0 1200 720"`, 16:10 |
+| Outer margin | 40 |
+| Grid | 8px base, component box edges snap to multiples of 8 |
+| Component box | Width 180, height 72, corner radius 2, stroke 1.5 |
+| Component spacing | Horizontal 32, vertical 40 |
+| Tier band spacing | 64 |
+| Icon | 24x24, placed on the left inside the box, 16 from the left edge |
+| Text | Component name 14px, type label 11px, connector label 11px, title 22px, caption 12px |
+| Minimum type size | 10px, unreadable after scaling below this value |
 
-组件超过 6 个时改用 `viewBox="0 0 1600 900"`，不靠缩字号塞进 1200 画布。
+When there are more than 6 components, switch to `viewBox="0 0 1600 900"` instead of shrinking the type size to cram them into the 1200 canvas.
 
-## 2. 分层布局
+## 2. Layered Layout
 
-统一**从上到下**：外部参与方 → 接入层 → 服务层 → 数据层。数据流图可以改**从左到右**，但一张图里只能选一个方向，不混用。
+Use a uniform **top-to-bottom** order: external participants -> access tier -> service tier -> data tier. A data flow diagram may switch to **left-to-right**, but a single diagram may pick only one direction, never mix them.
 
 ```text
-┌──────────────────────── 标题区 ────────────────────────┐
-│ [外部]  用户 / 合作方 / 外部系统                        │
-├────────────────────────────────────────────────────────┤
-│ [接入]  网关 · 负载均衡 · API · 防火墙                  │
-├────────────────────────────────────────────────────────┤
-│ [服务]  服务 A · 服务 B · 调度 · 代理                   │
-├────────────────────────────────────────────────────────┤
-│ [数据]  数据库 · 缓存 · 消息队列 · 对象存储             │
-├────────────────────────────────────────────────────────┤
-│ 图例区                                                  │
-└────────────────────────────────────────────────────────┘
+┌───────────────────────────── Title Area ─────────────────────────────┐
+│ [External]  Users / Partners / External Systems                      │
+├──────────────────────────────────────────────────────────────────────┤
+│ [Ingress]  Gateway / Load Balancer / API / Firewall                  │
+├──────────────────────────────────────────────────────────────────────┤
+│ [Service]  Service A / Service B / Scheduler / Proxy                 │
+├──────────────────────────────────────────────────────────────────────┤
+│ [Data]  Database / Cache / Message Queue / Object Storage            │
+├──────────────────────────────────────────────────────────────────────┤
+│ Legend Area                                                          │
+└──────────────────────────────────────────────────────────────────────┘
 ```
 
-- 每层左侧写层名（11px，次要灰），层与层之间用 1px 分隔线，不画实心色块。
-- 同一层内按调用顺序从左到右排列，不按重要性乱放。
-- 跨层连线走正交折线（水平 + 垂直），不画斜线；两条线重叠时错开 8px。
-- 组件编号 `C01`、`C02` 放在框右上角，和正文引用一致。
+- Write the tier name on the left of each tier (11px, secondary gray), separate tiers with a 1px divider line, and never draw solid color blocks.
+- Within a tier, arrange components left to right in call order, not randomly by importance.
+- Cross-tier connectors use orthogonal routing (horizontal + vertical), never diagonal lines; when two lines overlap, offset them by 8px.
+- Component IDs `C01`, `C02` go in the top-right corner of the box and match the references in the text.
 
-## 3. 连线
+## 3. Connectors
 
-| 类型 | 样式 | 用途 |
+| Type | Style | Use |
 |---|---|---|
-| 同步调用 | 实线 1.5px `#333333`，末端实心箭头 | 请求 / 响应明确的一次调用 |
-| 异步消息 | 虚线 `stroke-dasharray="6 4"`，末端实心箭头 | 队列、事件、回调 |
-| 数据流 | 实线 2px `#767676`，末端空心箭头 | 数据流转为主角时 |
-| 边界 / 分组 | 虚线 1px `#D7D8D6`，无箭头 | 信任域、网络分区，框住组件 |
-| 焦点路径 | 实线 2px `#DB0011` | 全图最多一条，标本次要讲的那条链路 |
+| Synchronous call | Solid 1.5px `#333333`, solid arrowhead | A single call with a clear request / response |
+| Asynchronous message | Dashed `stroke-dasharray="6 4"`, solid arrowhead | Queues, events, callbacks |
+| Data flow | Solid 2px `#767676`, hollow arrowhead | When data movement is the main subject |
+| Boundary / grouping | Dashed 1px `#D7D8D6`, no arrowhead | Trust zones, network segments, enclosing components |
+| Focal path | Solid 2px `#DB0011` | At most one per diagram, marking the chain to be discussed |
 
-- 每条连线带一个动词短语标签（「读取」「写入」「推送」「鉴权」），标签压在白底小矩形上，避免被线穿过。
-- 返回路径不重复画，除非返回本身是要讲的重点。
-- 箭头统一用 `<marker>` 定义在 `<defs>`，不在每条线上手画三角形。
-- 连线不穿过组件框，不穿过层名文字。
+- Every connector carries a short verb phrase label ("read", "write", "publish", "authenticate"), placed on a small white rectangle so the line does not cut through it.
+- Do not draw the return path twice, unless the return itself is the point being made.
+- Define all arrowheads uniformly with `<marker>` in `<defs>` and do not hand-draw triangles on each line.
+- Connectors must not pass through component boxes or tier-name text.
 
-## 4. 边界框与图例
+## 4. Boundary Boxes and Legend
 
-- 信任域、网络分区、团队归属用虚线框，右上角写域名，框内不填色。
-- 图例固定三块：**图标含义**（用到的图标各列一次）、**线型含义**（实线 / 虚线 / 焦点线）、**颜色含义**（黑灰 / 红）。少一块算不完整。
-- 图例放在画布底部单独一区，用 1px 上边线隔开，不叠在组件上。
-- 标题下必须有一行图注，写清「这张图回答什么问题」和「示例 / 真实」标注。
+- Trust zones, network segments, and team ownership use dashed boxes, with the zone name in the top-right corner and no fill inside.
+- The legend always has three blocks: **icon meaning** (list each icon used once), **line-style meaning** (solid / dashed / focal line), **color meaning** (black-gray / red). Missing any one counts as incomplete.
+- Place the legend in a separate area at the bottom of the canvas, separated by a 1px top border, never overlapping components.
+- There must be a caption line under the title stating "what question this diagram answers" and a "sample / real" mark.
 
-## 5. 自包含（最容易出事的一条）
+## 5. Self-Contained (the rule most likely to break)
 
-浏览器在 `file://` 下常会拦掉跨文件 SVG 引用。所以：
+Browsers often block cross-file SVG references under `file://`. Therefore:
 
-- **不要**写 `<use href="icon-library.svg#icon-database">` 这类跨文件引用。
-- **要**把用到的 `<symbol>` 整段从 `assets/icon-library.svg` 复制进输出文件的 `<defs>`，再用 `<use href="#icon-database">` 引用（同文件内引用）。
-- 只复制用到的，不把 47 个全塞进去；但复制进来的是完整 `<symbol>`，不截断 path。
-- `<marker>`、渐变（本规范禁用渐变）、样式全部内联，不写 `<style src>`、不写 `@import`。
-- 交付前逐个核对：每个 `<use>` 的 `href` 去掉 `#` 后，都能在本文 `<defs>` 找到同名 `id`。
+- **Do not** write cross-file references such as `<use href="icon-library.svg#icon-database">`.
+- **Do** copy the full `<symbol>` for each used icon from `assets/icon-library.svg` into the `<defs>` of the output file, then reference it with `<use href="#icon-database">` (a same-file reference).
+- Copy only what is used, do not stuff all 47 in; but what you copy must be the complete `<symbol>`, with the path intact.
+- Inline `<marker>`, gradients (gradients are forbidden by this spec), and all styles; do not write `<style src>` or `@import`.
+- Before delivery, check one by one: after removing the `#` from the `href` of every `<use>`, a matching `id` can be found in the `<defs>` of this file.
 
-## 6. 可访问性与可编辑性
+## 6. Accessibility and Editability
 
-- 根 `<svg>` 带 `role="img"` 和 `aria-label`，用一句话描述整图。
-- 每个组件分组带 `<title>`，文字用 `<text>` 而非把字转成路径，方便后续改名字。
-- 组件、连线、边界、图例分别放进命名 `<g id="components">` / `<g id="flows">` / `<g id="boundaries">` / `<g id="legend">`。
-- 不栅格化、不把整图合并成一条 `<path>`、不用 `<image>` 嵌入位图。
+- The root `<svg>` carries `role="img"` and `aria-label`, describing the whole diagram in one sentence.
+- Each component group carries a `<title>`, use `<text>` for text rather than converting glyphs to paths, so names can be edited later.
+- Put components, connectors, boundaries, and legend into named `<g id="components">` / `<g id="flows">` / `<g id="boundaries">` / `<g id="legend">` respectively.
+- Do not rasterize, do not merge the whole diagram into a single `<path>`, and do not embed bitmaps with `<image>`.
 
-## 7. 常见坑
+## 7. Common Pitfalls
 
-| 坑 | 表现 | 处理 |
+| Pitfall | Symptom | Fix |
 |---|---|---|
-| 跨文件 `<use>` | 本地打开图标全空白 | 把 symbol 内联进 `<defs>` |
-| 图标风格混用 | 一部分线宽粗、一部分带填充 | 只用图标集里的 symbol，继承统一描边 |
-| 斜线乱穿 | 连线交叉、压住文字 | 正交折线，重叠处错开 8px |
-| 红色滥用 | 三条红链路，焦点消失 | 全图只留一条焦点路径 |
-| 字太小 | 缩到 50% 后标签糊成一片 | 最小 10px，超量就拆图 |
-| 图例缺线型 | 看不懂虚线是什么意思 | 三块图例齐全 |
-| 臆造组件 | 图里出现用户没提过的系统 | 未知部分放「待确认」框，不补画 |
-| 组件超出上限 | 20 个框挤在一层 | 拆图或换图类型 |
-| 混用方向 | 一部分上下、一部分左右 | 全图统一一个方向 |
-| 线无标签 | 看不出调用在做什么 | 每条线补动词短语 |
-| 真实信息入图 | 公开分享时泄露内部系统名 | 用抽象名，另附脱敏说明 |
+| Cross-file `<use>` | All icons blank when opened locally | Inline the symbol into `<defs>` |
+| Mixed icon styles | Some stroke widths thick, some with fills | Use only symbols from the icon set, inheriting a uniform stroke |
+| Diagonal lines crossing | Connectors cross and cover text | Orthogonal routing, offset 8px at overlaps |
+| Red overuse | Three red chains, the focal point disappears | Keep only one focal path per diagram |
+| Text too small | Labels blur together after scaling to 50% | Minimum 10px, split into multiple diagrams if over the limit |
+| Legend missing line styles | Dashed lines make no sense | All three legend blocks present |
+| Invented components | Systems appear that the user never mentioned | Put unknown parts in a "to be confirmed" box, do not add them |
+| Too many components | 20 boxes crammed into one tier | Split into multiple diagrams or switch diagram type |
+| Mixed directions | Some top-bottom, some left-right | One uniform direction for the whole diagram |
+| Lines without labels | Impossible to tell what a call does | Add a verb phrase to every line |
+| Real info in the diagram | Internal system names leak when shared publicly | Use abstract names, and add a separate note on what to redact |
 
-## 8. 验收
+## 8. Acceptance
 
-- [ ] 离线打开，`<use>` 全部有对应 `id`，零网络请求
-- [ ] 组件与确认表逐条对应，无多余无缺失
-- [ ] 分层方向统一，连线全为正交折线且带标签
-- [ ] 边界框、三块图例、标题、图注齐全
-- [ ] 红、黑、灰、白取自视觉规范，红色只标一个焦点
-- [ ] 文字不小于 10px，线宽统一 1.5
-- [ ] 分组命名清晰，`<text>` 可编辑
-- [ ] 50% 与 200% 缩放下各检查一次，无重叠、无糊字
-- [ ] 无真实业务数据、无厂商 logo、无外部引用
+- [ ] Opens offline, every `<use>` has a matching `id`, zero network requests
+- [ ] Components match the confirmation list item by item, nothing extra or missing
+- [ ] Layered direction is uniform, all connectors are orthogonal routing and labeled
+- [ ] Boundary boxes, three legend blocks, title, and caption all present
+- [ ] Red, black, gray, white taken from the visual spec, red marks only one focal point
+- [ ] Text no smaller than 10px, stroke width uniform at 1.5
+- [ ] Groups clearly named, `<text>` editable
+- [ ] Checked once at both 50% and 200% zoom, no overlap, no blurry text
+- [ ] No real business data, no vendor logo, no external references

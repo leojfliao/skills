@@ -1,106 +1,108 @@
-# 内部分享工具包 · 三个 Skill
+# Internal Tech Talk Toolkit
 
-三个可复用的 Skill，覆盖一次公司内部分享的完整链路：**先想清楚系统怎么画，再想清楚怎么讲，最后装进能点击的演示页**。
+Three reusable Skills covering the full path of an internal company presentation: **decide how the system is drawn, decide how the story is told, then package it into a clickable deck**.
 
-> **非官方声明**：本仓库是个人整理的通用方法与素材，不是汇丰官方品牌规范，也不由汇丰发布。视觉部分只采用公开可查的视觉特征；演示页含一枚 HSBC Hexagon **示意重绘**（非官方资产，见「品牌标志与 create.hsbc」），不含内部模板、官方 logo 文件、真实客户或业务数据。依据与核验日期见 `visual-system.md`。
+> **Non-official notice.** This repository is a personal collection of general methods and assets. It is not an official HSBC brand guideline and is not published by HSBC. The visual layer uses only publicly verifiable brand characteristics. The deck includes a **redrawn representation of the HSBC Hexagon**, which is not an official asset (see "Brand Mark and create.hsbc"). No internal templates, official logo files, real customer names, or business data are included. Sources and the verification date are in `visual-system.md`.
 
-## 三个 Skill
+**Language**: all documentation, sample copy, and generated deliverables are in English.
 
-| Skill | 管什么 | 输入 | 输出 |
+## The Three Skills
+
+| Skill | Owns | Input | Output |
 |---|---|---|---|
-| `solution-architecture-diagram` | 系统怎么搭 | 组件清单、调用关系、部署环境 | 单个自包含 SVG 架构 / 方案图 |
-| `internal-share-narrative` | 讲什么、按什么顺序讲 | 主题、听众、时长、已有材料 | Markdown 叙事大纲 / 复盘故事 / 逐段讲稿 + 问答预案 |
-| `fintech-presentation` | 长什么样、怎么点 | 已定稿的大纲或讲稿 | 单个自包含 HTML 交互演示页 |
+| `solution-architecture-diagram` | How the system is built | Component list, call relationships, deployment environment | One self-contained SVG architecture / solution diagram |
+| `internal-share-narrative` | What to say, and in what order | Topic, audience, duration, existing material | Markdown narrative outline / retrospective story / section-by-section speaker script + Q&A prep |
+| `fintech-presentation` | How it looks and how it is navigated | Approved outline or script | One self-contained interactive HTML deck |
 
-三者共用 `visual-system.md` 的同一套视觉约定。推荐顺序：图 → 稿 → 页；也可以单独使用任意一个。
+All three share the same visual conventions from `visual-system.md`. Recommended order: diagram → narrative → deck; any one can also be used on its own.
 
-## 该找谁（避免误触发）
+## Routing: Which Skill to Use
 
-| 用户真实想要 | 用哪个 |
+| What the user actually wants | Use |
 |---|---|
-| 画架构图、系统上下文图、部署图、方案设计图 | `solution-architecture-diagram` |
-| 理叙事、写分享大纲、写讲稿、做项目复盘 | `internal-share-narrative` |
-| 做可点击切换的单文件演示页 | `fintech-presentation` |
-| 把大量材料压成滚动长文 HTML + PDF | 已有的 `html-longread-story` |
-| 把一批讲义 PDF 转成 PPTX + HTML deck | 已有的 `conference-pdf-to-deck` |
-| 给已生成的 PPTX 做排版体检 | 已有的 `pptx-layout-qc` |
+| Architecture diagram, system context, deployment topology, solution design | `solution-architecture-diagram` |
+| Narrative structure, talk outline, speaker script, project retrospective | `internal-share-narrative` |
+| A single clickable HTML deck | `fintech-presentation` |
+| Compress a large body of material into a scrolling long-read HTML + PDF | existing `html-longread-story` |
+| Turn a batch of conference PDFs into PPTX + HTML deck | existing `conference-pdf-to-deck` |
+| Layout QA on an existing PPTX | existing `pptx-layout-qc` |
 
-后三项是本机已有的 Skill，不在本仓库内，列出来只为划清触发边界。
+The last three are Skills already installed on this machine; they are not part of this repository and are listed only to make the trigger boundary explicit.
 
-## 目录结构
+## Repository Structure
 
 ```text
 skills/
 ├── README.md
-├── visual-system.md                    视觉规范主副本
+├── visual-system.md                    Canonical visual system
 ├── fintech-presentation/
 │   ├── SKILL.md
-│   ├── references/visual-system.md     规范副本，保证 Skill 独立可用
+│   ├── references/visual-system.md     Local copy, keeps the Skill standalone
 │   ├── references/layout-and-interaction.md
-│   ├── assets/deck-shell.html          可运行的单文件演示页骨架（内置品牌标志）
-│   └── assets/brand-mark.svg           HSBC Hexagon 示意重绘与用法预览
+│   ├── assets/deck-shell.html          Runnable single-file deck shell (brand mark included)
+│   └── assets/brand-mark.svg           HSBC Hexagon redraw and usage preview
 ├── internal-share-narrative/
 │   ├── SKILL.md
 │   └── references/narrative-modes.md
 └── solution-architecture-diagram/
     ├── SKILL.md
-    ├── references/visual-system.md     规范副本
+    ├── references/visual-system.md     Local copy
     ├── references/diagram-rules.md
     ├── references/icon-catalog.md
-    ├── assets/icon-library.svg         自绘图标集，可直接打开预览
-    └── assets/diagram-shell.svg        分层架构图骨架
+    ├── assets/icon-library.svg         Hand-drawn icon set; open directly to preview
+    └── assets/diagram-shell.svg        Layered architecture diagram shell
 ```
 
-视觉规范在三个位置各存一份，内容完全一致；要改规范时，先改根目录的 `visual-system.md`，再把内容同步到两个 `references/visual-system.md`。这样每个 Skill 单独拷走也能用，不依赖跨目录引用。
+The visual system is stored in three places with identical content. When changing it, edit the root `visual-system.md` first, then copy it to both `references/visual-system.md` files. Each Skill therefore works when copied out on its own, with no cross-directory dependency.
 
-## 品牌标志与 create.hsbc
+## Brand Mark and create.hsbc
 
-`fintech-presentation` 的演示页右上角带一枚 HSBC Hexagon 的**示意重绘**，几何与用法见 `fintech-presentation/assets/brand-mark.svg` 及 `visual-system.md`「品牌标识」。
+The `fintech-presentation` deck carries a **redrawn representation of the HSBC Hexagon** in the top-right corner. Geometry and usage rules live in `fintech-presentation/assets/brand-mark.svg` and the "Brand Mark" section of `visual-system.md`.
 
-| 问题 | 结论 |
+| Question | Answer |
 |---|---|
-| `create.hsbc` 要不要登录 | **要**。首页与 `/external/newsfeed/*` 文章公开可读（含 Brand identity 全文与官方品牌原则）；品牌资产库、guidelines、toolkits、官方 logo 文件在登录后区域 |
-| 登录方式 | `https://create.hsbc/login.html` — 内网一键进入；网外用邮箱密码登录，可注册 |
-| 本仓库有没有官方资产 | 没有。不含任何登录后取得的文件，也不代为登录 |
-| 拿到官方 logo 后怎么换 | 只替换 `deck-shell.html` 里 `<symbol id="brand-hex">` 内的路径，全页 `<use>` 引用自动生效 |
-| 不想要标志 | 把 `<html>` 的 `data-brand="show"` 改成 `"hide"` |
+| Does `create.hsbc` require a login? | **Yes.** The home page and `/external/newsfeed/*` articles are public (including the full Brand identity article and the official brand principles). The asset library, guidelines, toolkits, and official logo files sit behind the login. |
+| How do I sign in? | `https://create.hsbc/login.html` — one-click access inside the HSBC network, or email + password from outside (registration available). |
+| Does this repository contain official assets? | No. It contains nothing retrieved from behind the login, and no login is performed on your behalf. |
+| How do I swap in the official logo? | Replace only the path inside `<symbol id="brand-hex">` in `deck-shell.html`; every `<use>` reference on the page picks it up automatically. |
+| I do not want the mark | Change `<html data-brand="show">` to `"hide"`. |
 
-**商标声明**：HSBC 名称及 Hexagon 标志的权利归 HSBC Holdings plc 所有。本仓库为个人整理的非官方素材，不由汇丰发布；官方文章明确 "there's only one HSBC logo"，故示意重绘仅用于内部技术分享的版式示意，不得对外当作官方标志。几何路径参考 Simple Icons（CC0 1.0）并已渲染核验；其余 47 个架构图标为自绘，不打包第三方图标库。
+**Trademark notice.** The HSBC name and the Hexagon mark belong to HSBC Holdings plc. This repository is a personal, non-official collection and is not published by HSBC. The official article states "there's only one HSBC logo", so this redraw is for internal layout illustration only and must not be presented externally as the official mark. The geometry is referenced from Simple Icons (CC0 1.0) and has been render-verified; the other 47 architecture icons are hand-drawn and no third-party icon library is bundled.
 
-> 本仓库当前为 **public**。若不希望商标图形出现在公开仓库，可将仓库转为 private，或按上表关闭标志后再推送。
+> This repository is currently **public**. If you would rather not have a trademark representation in a public repo, make it private, or switch the mark off as described above and push again.
 
-## 安装
+## Installation
 
-目标平台 WorkBuddy，安装位置为用户级 `~/.workbuddy/skills/`。把对应的 Skill 目录整个复制到该目录下即可，三个 Skill 互不依赖，可只装其中一个。安装由使用者自行确认后执行，本仓库不提供自动安装脚本。
+Target platform: WorkBuddy, user-level Skills at `~/.workbuddy/skills/`. Copy the Skill directory as a whole into that location. The three Skills are independent, so you may install only one. Installation is performed only after you confirm it; this repository ships no auto-installer.
 
-## 平台与环境
+## Platform and Environment
 
-| 项 | 说明 |
+| Item | Detail |
 |---|---|
-| 目标平台 | WorkBuddy 用户级 Skill |
-| Python | 不需要；三个 Skill 均无脚本 |
-| 外部依赖 | 无。无 MCP、CLI、API、账号、Token、网络调用 |
-| 产物查看 | 任意现代浏览器打开 `.html` / `.svg` 即可，离线可用 |
-| 已验证系统 | macOS（本次制作环境） |
-| 未验证系统 | Windows、Linux 上的浏览器渲染细节；未做跨平台截图比对 |
-| 字体 | 使用系统字体栈回退，不随包分发字体文件 |
+| Target platform | WorkBuddy user-level Skill |
+| Python | Not required; none of the three Skills contains scripts |
+| External dependencies | None. No MCP, CLI, API, account, token, or network calls |
+| Viewing output | Open the `.html` / `.svg` in any modern browser; works offline |
+| Verified on | macOS (authoring environment) |
+| Not verified | Browser rendering details on Windows and Linux; no cross-platform screenshot comparison |
+| Fonts | System font stack fallback; no font files distributed |
 
-## 降级与边界
+## Fallbacks and Boundaries
 
-| 情况 | 行为 |
+| Situation | Behaviour |
 |---|---|
-| 无法生成 HTML 演示页 | 输出结构化 Markdown 分页大纲，标注「未渲染」 |
-| 无法生成 SVG 图 | 输出组件清单 + 关系表 + 分层 Markdown 表，标注「未绘图」 |
-| 输入材料不足 | 先列出缺失项并停下，不编造组件、数字或结论 |
-| 材料含未公开数据 | 提示脱敏后再继续，不把原文写进产物 |
-| 用户要 PPTX、滚动长文或批量 PDF 转换 | 转介到上表对应的已有 Skill，不硬做 |
+| Cannot generate an HTML deck | Output a structured Markdown slide-by-slide outline, marked "not rendered" |
+| Cannot generate an SVG diagram | Output a component list + relationship table + layered Markdown table, marked "not drawn" |
+| Insufficient input | List what is missing and stop; no invented components, numbers, or conclusions |
+| Material contains non-public data | Ask for redaction before continuing; do not copy the source text into the output |
+| User wants PPTX, long-read, or batch PDF conversion | Route to the corresponding existing Skill above; do not force it |
 
-## 使用入口
+## Example Prompts
 
-- 「画一下这个方案的系统架构图，把云、库和中间件标出来」
-- 「帮我理一下这次内部分享怎么讲，45 分钟，听众是跨部门同事」
-- 「把这版大纲做成能点击切换的演示页，用那套红黑白风格」
+- "Draw the architecture diagram for this solution, showing the cloud, databases, and middleware"
+- "Help me structure this internal talk, 45 minutes, cross-functional audience"
+- "Turn this outline into a clickable deck using the red, white and black style"
 
-## 未覆盖范围
+## Out of Scope
 
-不生成 PPTX / Word / PDF 成品，不做 UI 界面设计稿，不绘制流程图与时序图，不接入真实数据源，不做自动发布或在线托管，不提供汇丰官方品牌资产（演示页中的 Hexagon 为示意重绘；获取官方资产须自行登录 `create.hsbc`）。
+No PPTX / Word / PDF deliverables, no UI mockups, no flowcharts or sequence diagrams, no live data sources, no auto-publishing or hosting, and no official HSBC brand assets (the Hexagon in the deck is a redraw; obtaining official assets requires signing in to `create.hsbc` yourself).

@@ -1,137 +1,138 @@
-# Fintech 演示与图示视觉规范
+# Fintech Presentation & Diagram Visual System
 
-## 这份规范是什么
+## What this document is
 
-这不是汇丰官方品牌规范，也不是汇丰发布的物料。它是根据公开可查的视觉特征整理的一套内部演示与图示约定，供本仓库的三个 Skill 共用，让演示页和架构图看起来属于同一套体系。
+This is not an official HSBC brand guideline, nor material published by HSBC. It is a set of internal presentation and diagramming conventions distilled from publicly verifiable brand characteristics, shared by the three Skills in this repository so that decks and diagrams look like they belong to the same system.
 
-- 核验日期：2026-11-08
-- 官方设计系统入口：`https://create.hsbc/` — 首页与 `/external/newsfeed/*` 文章公开可读；品牌资产库、guidelines、toolkits 与官方 logo 文件需要登录（`https://create.hsbc/login.html`：内网一键进入，或网外用邮箱密码登录/注册）。本仓库不含任何从登录后区域取得的资产。
-- 公开可引的官方品牌原则（`https://create.hsbc/external/newsfeed/brand-identity.html`）：Make it proudly HSBC（原文 "there's only one HSBC logo"）、Use distinctive assets、Embrace our angles、Lead with red、Express internationalism、Showcase our open, inclusive and human values。
-- 公开参考：
-  - `https://brandpalettes.com/hsbc-colors/` — 主色与黑白值
-  - `https://www.designsystems.one/design-systems/hsbc-design` — 色彩 token 与字阶整理，该站自述为「非官方、指示性数值」
-  - `https://www.designyourway.net/blog/hsbc-logo/` — 字标沿革，文中明确说明汇丰未发布公开品牌规范
-  - `https://www.hsbc.com/who-we-are/our-strategy-and-values/our-history` — Hexagon 由 Henry Steiner 于 1983 年设计，灵感取自圣安德鲁旗
-- 一致性说明：主流来源给主红 `#DB0011`；个别第三方站点给 `#DA0011`。本规范统一采用 `#DB0011`，不混用。
-- 合规边界：**演示页允许放置一枚受控的 HSBC Hexagon 示意重绘**（见「品牌标识」），除此之外不引入任何第三方品牌标识或厂商 logo；不打包商业字体、不写入真实客户或业务数据。公开展示时保留「非官方」标注。
+- Verified on: 2026-11-08
+- Official design system: `https://create.hsbc/` — the home page and `/external/newsfeed/*` articles are public; the brand asset library, guidelines, toolkits, and official logo files require a login (`https://create.hsbc/login.html`: one-click inside the network, or email + password outside). This repository contains nothing obtained from behind that login.
+- Publicly citable official brand principles (`https://create.hsbc/external/newsfeed/brand-identity.html`): Make it proudly HSBC ("there's only one HSBC logo"), Use distinctive assets, Embrace our angles, Lead with red, Express internationalism, Showcase our open, inclusive and human values.
+- Public references:
+  - `https://brandpalettes.com/hsbc-colors/` — primary colour and black/white values
+  - `https://www.designsystems.one/design-systems/hsbc-design` — colour tokens and type scale; the site describes itself as "non-official, indicative values"
+  - `https://www.designyourway.net/blog/hsbc-logo/` — wordmark history; the article states explicitly that HSBC has not published a public brand guideline
+  - `https://www.hsbc.com/who-we-are/our-strategy-and-values/our-history` — the Hexagon was designed by Henry Steiner in 1983, inspired by the Saltire
+- Consistency note: mainstream sources give the primary red as `#DB0011`; a few third-party sites give `#DA0011`. This system uses `#DB0011` throughout and never mixes the two.
+- Compliance boundary: **decks may carry one controlled redraw of the HSBC Hexagon** (see "Brand Mark"); no other third-party brand marks or vendor logos are introduced. No commercial fonts are bundled and no real customer or business data is written. Keep the "non-official" notice on public display.
+- Language: all prose, labels, sample copy, and generated deliverables are in English.
 
-## 颜色
+## Colour
 
-| 用途 | 值 | 说明 |
+| Use | Value | Notes |
 |---|---|---|
-| 品牌红 / 主强调 | `#DB0011` | 只用于焦点、进度、主按钮、关键数字 |
-| 纯白 / 页面底 | `#FFFFFF` | 默认背景 |
-| 纯黑 / 标题 | `#000000` | 最高级标题与图标描边 |
-| 正文 | `#333333` | 默认文字 |
-| 次要文字 | `#767676` | 注释、图例、标签 |
-| 浅灰面 | `#F4F4F4` | 卡片底、斑马纹 |
-| 分隔线 | `#D7D8D6` | 1px 边框、网格线 |
-| 深色面 | `#141414` | 封面与章节页反白底，属设计扩展色 |
-| 正向状态 | `#008580` | 成功、达成 |
-| 负向状态 | `#A8000B` | 错误、风险 |
+| Brand red / primary accent | `#DB0011` | Focal points, progress, primary buttons, key figures only |
+| Pure white / page | `#FFFFFF` | Default background |
+| Pure black / headings | `#000000` | Top-level headings and icon strokes |
+| Body text | `#333333` | Default text |
+| Secondary text | `#767676` | Notes, legends, labels |
+| Light grey surface | `#F4F4F4` | Card backgrounds, zebra striping |
+| Divider | `#D7D8D6` | 1px borders, grid lines |
+| Dark surface | `#141414` | Reversed cover and section pages; a design extension, not a brand colour |
+| Positive status | `#008580` | Success, achieved |
+| Negative status | `#A8000B` | Error, risk |
 
-使用纪律：
+Rules:
 
-- 红色是稀缺资源。任何一屏里红色覆盖面积控制在 10% 以内（品牌标志的红色也计入），靠留白和字重建立层级，不靠大面积色块。
-- 不用色彩渐变、不用发光、不用霓虹、不用玻璃拟态。Fintech 的「酷」来自数据密度、精确对齐和等宽数字，不是特效。
-- 允许用重复线性渐变绘制 1px 细网格线（透明度不高于 0.4），但不得用作色彩过渡装饰。
-- 红底白字对比度约 5.2:1（AA 通过）；红字白底仅用于不小于 24px 的短标题，不用于正文。
-- 正文对比度不低于 4.5:1，大字不低于 3:1。
-- 图表以黑白灰为主，红色只标一个焦点系列；多系列用灰阶明度区分，不引入彩虹色。
+- Red is scarce. Keep red coverage under 10% of any screen (the brand mark counts toward this). Build hierarchy with whitespace and weight, not large colour blocks.
+- No gradients, glows, neon, or glassmorphism. The "Fintech cool" comes from data density, precise alignment, and tabular numerals — not effects.
+- Repeating linear gradients are allowed only to draw 1px grid lines (opacity no higher than 0.4), never as a colour transition.
+- White on red is about 5.2:1 (passes AA); red text on white is only for short headings of at least 24px, never body copy.
+- Body contrast is at least 4.5:1, large text at least 3:1.
+- Charts stay black / white / grey; red marks a single focal series. Multiple series are separated by grey luminance, never a rainbow palette.
 
-## 品牌标识（仅演示页）
+## Brand Mark (decks only)
 
-`fintech-presentation` 允许在演示页固定位置放置一枚 HSBC Hexagon。这是**示意重绘，不是汇丰官方资产**；`solution-architecture-diagram` 与 `internal-share-narrative` 的产物默认不出现品牌标志。
+`fintech-presentation` may place one HSBC Hexagon at a fixed position on the deck. This is a **redraw, not an official HSBC asset**. `solution-architecture-diagram` and `internal-share-narrative` outputs contain no brand mark by default.
 
-| 项 | 约定 |
+| Item | Rule |
 |---|---|
-| 几何 | 横向六边形，四个红色三角楔尖对尖，中心白色沙漏形负空间；比例 24 : 12.2 |
-| 颜色 | 仅 `#DB0011` + 白底；不反白、不换色、不加描边或阴影 |
-| 位置 | 演示页右上角，白底小方块托住，深色封面与浅色内容页表现一致 |
-| 尺寸 | 宽约 2.7cqw，最小 32px；小于 32px 会丢失中心负空间 |
-| 数量 | 每页至多一枚，不重复、不平铺、不做水印、不进图表 |
-| 面积 | 计入该屏 10% 红色上限 |
+| Geometry | Horizontally stretched hexagon of four red triangular wedges tip-to-tip, with a white hourglass negative space at the centre; ratio 24 : 12.2 |
+| Colour | `#DB0011` on white only; never reversed, recoloured, outlined, or shadowed |
+| Position | Top-right of the deck, held by a small white badge so dark covers and light content pages behave identically |
+| Size | About 2.7cqw wide, 32px minimum; below 32px the central negative space is lost |
+| Count | At most one per page; never repeated, tiled, used as a watermark, or placed inside a chart |
+| Area | Counts toward the 10% red ceiling for that screen |
 
-实现：`fintech-presentation/assets/brand-mark.svg` 是可直接预览的标志文件与唯一几何来源；`assets/deck-shell.html` 内联 `<symbol id="brand-hex">`，全页通过 `<use href="#brand-hex">` 引用（同文档引用，不跨文件）。
+Implementation: `fintech-presentation/assets/brand-mark.svg` is the previewable source of truth for the geometry; `assets/deck-shell.html` inlines `<symbol id="brand-hex">` and every page references it with `<use href="#brand-hex">` (same-document reference, never cross-file).
 
-- **替换官方资产**：登录 `https://create.hsbc/` 下载官方 logo SVG，只替换 `<symbol id="brand-hex">` 内的路径，页面其余部分不用改。
-- **移除标志**：把 `<html>` 的 `data-brand="show"` 改为 `"hide"`，或删掉 `.brand` 元素。
-- **禁止**：拉伸变形、旋转、改色、加圆角或投影、与文字混排拼成「新 logo」、用作背景纹理、缩到 32px 以下、放进架构图或数据图。
-- **商标声明**：HSBC 名称及 Hexagon 标志的权利归 HSBC Holdings plc 所有。官方文章明确 "there's only one HSBC logo"，因此本重绘只用于内部技术分享的版式示意，不得对外当作官方标志使用；正式或对外物料一律以登录后取得的官方资产为准。
-- **来源与许可**：几何依据公开可见的标志形状；路径数据参考 Simple Icons 的 HSBC 图标（CC0 1.0），已渲染核验。本仓库其余 47 个架构图标仍为自绘，不含第三方图标库。
+- **Swap in the official asset**: sign in to `https://create.hsbc/`, download the official logo SVG, and replace only the path inside `<symbol id="brand-hex">`. Nothing else on the page needs to change.
+- **Remove the mark**: change `<html>` from `data-brand="show"` to `"hide"`, or delete the `.brand` element.
+- **Prohibited**: stretching, rotating, recolouring, rounded corners or drop shadows, combining with text into a "new logo", use as a background pattern, anything below 32px, and placement in architecture or data diagrams.
+- **Trademark notice**: the HSBC name and Hexagon mark belong to HSBC Holdings plc. The official article states "there's only one HSBC logo", so this redraw is for internal layout illustration only and must not be presented externally as the official mark. Formal or external material must use the official asset obtained after login.
+- **Source and licence**: geometry follows the publicly visible mark; path data is referenced from the Simple Icons HSBC icon (CC0 1.0) and has been render-verified. The other 47 architecture icons remain hand-drawn; no third-party icon library is bundled.
 
-## 字体
+## Typography
 
 ```css
 --font-sans: 'Univers Next', 'Nimbus Sans', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif;
 --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 ```
 
-- 不打包、不远程加载字体。`Univers Next` 是商业定制字体，本机没有时自动回退到系统无衬线字体，不因此改变布局。
-- 所有数字、金额、百分比、时间戳用等宽字体并开启 `font-variant-numeric: tabular-nums`，保证列对齐和数值滚动时不跳动。
-- 中文字体交给系统回退，不指定具体中文字族。
-- 不在演示页里用系统字体拼排「HSBC」字标冒充官方组合标志；需要完整组合标志时用官方资产文件替换。
+- Fonts are neither bundled nor loaded remotely. `Univers Next` is a commercial custom typeface; when absent the stack falls back to system sans-serif without changing the layout.
+- All numbers, amounts, percentages, and timestamps use the monospace stack with `font-variant-numeric: tabular-nums` so columns align and values do not shift.
+- No CJK font family is specified; any non-Latin text falls back to the system.
+- Do not compose an "HSBC" wordmark out of system fonts to imitate the official lockup. Use the official asset file if the full lockup is needed.
 
-## 字号与行高
+## Type Scale and Line Height
 
-| 层级 | 演示页 | 图示 | 行高 |
+| Level | Deck | Diagram | Line height |
 |---|---|---|---|
-| 主标题 | 44–56px | 20–24px | 1.15 |
-| 章节标题 | 28–36px | 16–18px | 1.25 |
-| 小标题 | 20–24px | 13–14px | 1.35 |
-| 正文 | 16–20px | 12–13px | 1.6 |
-| 注释 | 13–14px | 10–11px | 1.5 |
+| Main title | 44–56px | 20–24px | 1.15 |
+| Section title | 28–36px | 16–18px | 1.25 |
+| Subheading | 20–24px | 13–14px | 1.35 |
+| Body | 16–20px | 12–13px | 1.6 |
+| Note | 13–14px | 10–11px | 1.5 |
 
-- 演示页以 1920×1080 / 16:9 为基准，用容器单位或 `clamp()` 随视口缩放。
-- 图示里文字不得小于 10px，缩放导出后仍需可读。
+- Decks are designed at 1920×1080 / 16:9 and scale with container units or `clamp()`.
+- Diagram text is never smaller than 10px and stays readable after scaled export.
 
-## 间距与形状
+## Spacing and Shape
 
-- 基准 4px，只使用 4 / 8 / 16 / 24 / 32 / 48 / 64。
-- 圆角 0–2px。不用大圆角、不用投影堆叠，最多一层 1px 边框。
-- 网格线 1px `#D7D8D6`，可作极淡背景网格增加技术感。
-- 对齐优先于装饰：元素左边缘对齐同一条基线，数字右对齐。
-- 官方 "Embrace our angles" 原则可用六边形的斜切角做极少量装饰，但不得把标志本身当装饰纹样重复铺排。
+- 4px base unit; use only 4 / 8 / 16 / 24 / 32 / 48 / 64.
+- Corner radius 0–2px. No large radii, no stacked shadows, at most one 1px border.
+- Grid lines are 1px `#D7D8D6`; a very light background grid is acceptable for a technical feel.
+- Alignment beats decoration: left edges share a baseline, numbers are right-aligned.
+- The official "Embrace our angles" principle permits a small amount of hexagonal chamfer detailing, but the mark itself must never be repeated as a decorative pattern.
 
-## 动效
+## Motion
 
-- 过渡 120–200ms `ease-out`，只允许：淡入、不超过 8px 的纵向位移、数字滚动、进度条长度变化。
-- 禁止：弹跳、旋转、视差、自动轮播、自动播放动画、鼠标跟随特效。品牌标志不做入场动画、不旋转。
-- 动效必须响应用户操作，不自动发生；必须实现 `prefers-reduced-motion: reduce` 下关闭全部过渡。
-- 打印或导出 PDF 时禁用所有动画，展开全部内容。
+- Transitions are 120–200ms `ease-out` and limited to: fade in, vertical displacement of no more than 8px, number rolls, progress-bar length changes.
+- Prohibited: bounce, rotation, parallax, auto-carousel, autoplaying animation, cursor-following effects. The brand mark never animates or rotates.
+- Motion must respond to user action, never start on its own; `prefers-reduced-motion: reduce` must disable every transition.
+- Printing or PDF export disables all animation and expands all content.
 
-## 交互（仅演示页）
+## Interaction (decks only)
 
-| 交互 | 行为 |
+| Interaction | Behaviour |
 |---|---|
-| `→` / `空格` / `PgDn` | 下一页 |
-| `←` / `PgUp` | 上一页 |
-| `Home` / `End` | 首 / 末页 |
-| `Esc` | 总览缩略网格，再按退出 |
-| 目录点击 | 跳到指定章节 |
-| 进度条 | 显示当前位置，可点击跳转 |
-| 图表数据点 | hover / focus 显示数值，不遮挡正文 |
+| `→` / `Space` / `PgDn` | Next slide |
+| `←` / `PgUp` | Previous slide |
+| `Home` / `End` | First / last slide |
+| `Esc` | Toggle overview grid |
+| TOC click | Jump to a section |
+| Progress bar | Shows position, click to jump |
+| Chart data point | Hover / focus reveals the value without covering body text |
 
-- 全部交互键盘可达，焦点有可见描边（2px `#DB0011`）。
-- 交互不依赖任何外部库、CDN 或网络请求，单文件离线可运行。
-- 品牌标志不是可点击控件，不抢焦点、不绑定事件。
+- Every interaction is keyboard reachable, with a visible focus outline (2px `#DB0011`).
+- Interaction uses no external library, CDN, or network request; the single file runs offline.
+- The brand mark is not a control: it takes no focus and binds no events.
 
-## 禁止清单
+## Prohibited List
 
-1. 除「品牌标识」一节定义的演示页专用 Hexagon 示意重绘外，不引入任何第三方品牌标识、厂商 logo 或变形标志。
-2. 不写真实客户名、账户数据、内部系统名、真实交易量。示例一律用中性虚构数据并标注「示例」。
-3. 不引用外部 CSS、JS、字体、图片、图标库。
-4. 不用色彩渐变、发光、霓虹、玻璃拟态、大圆角。
-5. 不自动播放动画，不自动翻页。
-6. 不在正文里标注版本、修改记录或状态字样。
+1. Apart from the deck-only Hexagon redraw defined under "Brand Mark", introduce no third-party brand marks, vendor logos, or distorted marks.
+2. No real customer names, account data, internal system names, or real transaction volumes. Samples use neutral fictional data labelled "sample".
+3. No external CSS, JS, fonts, images, or icon libraries.
+4. No colour gradients, glows, neon, glassmorphism, or large corner radii.
+5. No autoplaying animation and no auto-advance.
+6. No version numbers, change logs, or status labels in body copy.
 
-## 验收
+## Acceptance
 
-- [ ] 离线打开，开发者工具网络面板零请求
-- [ ] 红、白、黑、灰四类色值全部来自上表
-- [ ] 所有数字等宽对齐
-- [ ] 键盘走完全部页面，`Esc` 总览可用
-- [ ] `prefers-reduced-motion` 下无动画
-- [ ] 打印预览不截断、不丢页，每页右上角标志正常
-- [ ] 不含任何真实业务数据；品牌标志仅在演示页约定位置出现，未变形、未超量
-- [ ] 标志为示意重绘或已替换为官方资产，README 的商标声明完整
+- [ ] Opens offline with zero requests in the network panel
+- [ ] All red / white / black / grey values come from the table above
+- [ ] All numbers use tabular alignment
+- [ ] Keyboard navigation reaches every slide; `Esc` overview works
+- [ ] No transitions under `prefers-reduced-motion`
+- [ ] Print preview is not clipped and loses no pages; the brand mark appears correctly on every page
+- [ ] No real business data; the brand mark appears only in the agreed deck position, undistorted and within limits
+- [ ] The mark is either the redraw or an official replacement, and the README trademark notice is intact
